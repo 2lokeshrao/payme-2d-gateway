@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">PayMe 2D</a>
+            <ul class="navbar-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="login.html">Admin Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Admin Login Form -->
+    <section style="padding: 60px 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <div style="max-width: 500px; margin: 0 auto;">
+                <div class="card">
+                    <h2 style="margin-bottom: 8px;">Admin Login</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 32px;">Access the admin dashboard</p>
+                    
+                    <div id="alertMessage" class="alert"></div>
+                    
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="username" class="form-input" placeholder="admin" required>
+                            <div class="form-error" id="usernameError">Please enter your username</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                            <div class="form-error" id="passwordError">Please enter your password</div>
+                        </div>
+
+                        <div class="spinner" id="spinner"></div>
+
+                        <button type="submit" class="btn btn-primary btn-full btn-large">Sign In</button>
+                    </form>
+
+                    <p style="text-align: center; margin-top: 24px; color: var(--color-text-secondary); font-size: 14px;">
+                        Default credentials: admin / admin123
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/admin-login.js"></script>
+</body>
+</html>

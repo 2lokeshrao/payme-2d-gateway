@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="dashboard.html" class="navbar-brand">PayMe 2D</a>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="payment.html">Make Payment</a></li>
+                <li><a href="transactions.html">Transactions</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Welcome, <span id="userName">User</span></h2>
+                <p style="color: var(--color-text-secondary);">Manage your payments and transactions</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3>Total Transactions</h3>
+                    <div class="value" id="totalTransactions">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Successful Payments</h3>
+                    <div class="value" id="successfulPayments">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Amount</h3>
+                    <div class="value" id="totalAmount">$0.00</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending</h3>
+                    <div class="value" id="pendingPayments">0</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="margin-bottom: 40px;">
+                <h3 style="margin-bottom: 24px;">Quick Actions</h3>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <a href="payment.html" class="btn btn-primary">Make Payment</a>
+                    <a href="transactions.html" class="btn btn-secondary">View Transactions</a>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="card">
+                <h3 style="margin-bottom: 24px;">Recent Transactions</h3>
+                <div class="spinner" id="spinner"></div>
+                <div id="transactionsContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

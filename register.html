@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">PayMe 2D</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Registration Form -->
+    <section style="padding: 60px 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <div style="max-width: 500px; margin: 0 auto;">
+                <div class="card">
+                    <h2 style="margin-bottom: 8px;">Create Account</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 32px;">Sign up to start accepting payments</p>
+                    
+                    <div id="alertMessage" class="alert"></div>
+                    
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="fullName" class="form-input" placeholder="John Doe" required>
+                            <div class="form-error" id="nameError">Please enter your full name</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+                            <div class="form-error" id="emailError">Please enter a valid email</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="+1 234 567 8900" required>
+                            <div class="form-error" id="phoneError">Please enter your phone number</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                            <div class="form-error" id="passwordError">Password must be at least 6 characters</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="••••••••" required>
+                            <div class="form-error" id="confirmPasswordError">Passwords do not match</div>
+                        </div>
+
+                        <div class="spinner" id="spinner"></div>
+
+                        <button type="submit" class="btn btn-primary btn-full btn-large">Create Account</button>
+                    </form>
+
+                    <p style="text-align: center; margin-top: 24px; color: var(--color-text-secondary);">
+                        Already have an account? <a href="login.html" style="color: var(--color-accent); text-decoration: none;">Sign In</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/register.js"></script>
+</body>
+</html>
