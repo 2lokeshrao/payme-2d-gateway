@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions - PayMe 2D Gateway</title>
+    <title>Settlements - PayMe 2D Gateway</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -73,38 +73,12 @@
             color: #333;
         }
         
-        .search-filter {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        
-        .filter-select {
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
+        .info-card {
             background: white;
-        }
-        
-        .btn-export {
-            padding: 12px 24px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
         
         .table-container {
@@ -153,21 +127,9 @@
             color: #856404;
         }
         
-        .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
         }
     </style>
 </head>
@@ -188,57 +150,54 @@
 
     <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
         <div class="container">
-            <h1 style="font-size: 32px; margin-bottom: 8px;">💰 All Transactions</h1>
-            <p style="color: #666; margin-bottom: 30px;">View and manage all your payment transactions</p>
+            <h1 style="font-size: 32px; margin-bottom: 8px;">🏦 Settlements</h1>
+            <p style="color: #666; margin-bottom: 30px;">Track your payment settlements and payouts</p>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Total Transactions</h3>
-                    <div class="value">0</div>
+                    <h3>Pending Settlement</h3>
+                    <div class="value" style="color: #ffc107;">₹0.00</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Successful</h3>
-                    <div class="value" style="color: #28a745;">0</div>
+                    <h3>This Month</h3>
+                    <div class="value" style="color: #28a745;">₹0.00</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Failed</h3>
-                    <div class="value" style="color: #dc3545;">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Total Amount</h3>
+                    <h3>Total Settled</h3>
                     <div class="value">₹0.00</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Next Settlement</h3>
+                    <div class="value" style="font-size: 16px;">T+2 Days</div>
                 </div>
             </div>
 
-            <div class="search-filter">
-                <input type="text" class="search-box" placeholder="🔍 Search by transaction ID, customer, or amount..." id="searchBox">
-                <select class="filter-select">
-                    <option value="">All Status</option>
-                    <option value="success">Success</option>
-                    <option value="pending">Pending</option>
-                    <option value="failed">Failed</option>
-                </select>
-                <input type="date" class="filter-select">
-                <button class="btn-export">📥 Export CSV</button>
+            <div class="info-card">
+                <h2 style="margin: 0 0 15px 0;">💰 Settlement Information</h2>
+                <p style="color: #666; margin-bottom: 10px;"><strong>Settlement Cycle:</strong> T+2 Days (Transactions are settled 2 business days after capture)</p>
+                <p style="color: #666; margin-bottom: 10px;"><strong>Bank Account:</strong> XXXX XXXX XXXX 1234 (HDFC Bank)</p>
+                <p style="color: #666; margin-bottom: 10px;"><strong>Settlement Fee:</strong> 2% + ₹3 per transaction</p>
+                <p style="color: #666;"><strong>Next Settlement Date:</strong> October 6, 2025</p>
             </div>
+
+            <h2 style="font-size: 24px; margin: 30px 0 20px 0;">Settlement History</h2>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Transaction ID</th>
-                            <th>Customer</th>
+                            <th>Settlement ID</th>
                             <th>Amount</th>
-                            <th>Payment Method</th>
+                            <th>Transactions</th>
                             <th>Status</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Settlement Date</th>
+                            <th>UTR Number</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
-                                No transactions yet. Start accepting payments!
+                            <td colspan="6" style="text-align: center; padding: 40px; color: #999;">
+                                No settlements yet. Settlements will appear here once transactions are processed.
                             </td>
                         </tr>
                     </tbody>

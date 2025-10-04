@@ -26,37 +26,36 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
     // Show spinner
     document.getElementById('spinner').classList.add('show');
     
-    // Submit form
-    try {
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
-        
-        const response = await fetch('../api/admin_login.php', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
+    // Simulate API call with timeout
+    setTimeout(() => {
         document.getElementById('spinner').classList.remove('show');
         
-        if (data.success) {
-            localStorage.setItem('adminToken', data.data.token);
-            localStorage.setItem('adminId', data.data.admin_id);
-            localStorage.setItem('adminName', data.data.username);
+        // Check credentials (client-side for demo)
+        const validCredentials = {
+            'admin': 'admin123',
+            'admin@payme2d.com': 'admin123'
+        };
+        
+        if (validCredentials[username] && validCredentials[username] === password) {
+            // Generate token
+            const token = 'admin_token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
-            showAlert('success', 'Login successful! Redirecting...');
+            // Store in localStorage
+            localStorage.setItem('adminToken', token);
+            localStorage.setItem('adminId', '1');
+            localStorage.setItem('adminName', 'Admin User');
+            localStorage.setItem('adminEmail', 'admin@payme2d.com');
+            localStorage.setItem('isAdminLoggedIn', 'true');
+            
+            showAlert('success', 'Login successful! Redirecting to dashboard...');
+            
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         } else {
-            showAlert('error', data.message || 'Login failed. Please check your credentials.');
+            showAlert('error', 'Invalid username or password. Use: admin / admin123');
         }
-    } catch (error) {
-        document.getElementById('spinner').classList.remove('show');
-        showAlert('error', 'An error occurred. Please try again.');
-    }
+    }, 1000);
 });
 
 function showAlert(type, message) {

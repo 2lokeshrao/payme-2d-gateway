@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - PayMe 2D Admin</title>
+    <title>Merchant Management - PayMe 2D Admin</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -165,12 +165,12 @@
             color: white;
         }
         
-        .btn-edit {
+        .btn-approve {
             background: #28a745;
             color: white;
         }
         
-        .btn-block {
+        .btn-reject {
             background: #dc3545;
             color: white;
         }
@@ -224,93 +224,79 @@
         <div class="container">
             <div class="page-header">
                 <div>
-                    <h1 style="font-size: 32px; margin-bottom: 8px;">👥 User Management</h1>
-                    <p style="color: #666;">Manage all users and their permissions</p>
+                    <h1 style="font-size: 32px; margin-bottom: 8px;">🏪 Merchant Management</h1>
+                    <p style="color: #666;">Manage all merchants, KYC, and settlements</p>
                 </div>
-                <button class="btn-add" onclick="addUser()">➕ Add New User</button>
+                <button class="btn-add" onclick="addMerchant()">➕ Add New Merchant</button>
             </div>
 
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Total Users</h3>
-                    <div class="value">2</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Active Users</h3>
-                    <div class="value">2</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Admins</h3>
+                    <h3>Total Merchants</h3>
                     <div class="value">1</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Merchants</h3>
+                    <h3>Active Merchants</h3>
                     <div class="value">1</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending KYC</h3>
+                    <div class="value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Revenue</h3>
+                    <div class="value">$0</div>
                 </div>
             </div>
 
             <!-- Search and Filter -->
             <div class="search-filter">
-                <input type="text" class="search-box" placeholder="🔍 Search users by name, email, or ID..." id="searchBox">
-                <select class="filter-select" id="roleFilter">
-                    <option value="">All Roles</option>
-                    <option value="admin">Admin</option>
-                    <option value="merchant">Merchant</option>
-                    <option value="user">User</option>
-                </select>
+                <input type="text" class="search-box" placeholder="🔍 Search merchants by name, email, or business..." id="searchBox">
                 <select class="filter-select" id="statusFilter">
                     <option value="">All Status</option>
                     <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="blocked">Blocked</option>
+                    <option value="pending">Pending</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+                <select class="filter-select" id="kycFilter">
+                    <option value="">All KYC Status</option>
+                    <option value="verified">Verified</option>
+                    <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
                 </select>
             </div>
 
-            <!-- Users Table -->
+            <!-- Merchants Table -->
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Business Name</th>
+                            <th>Owner Email</th>
+                            <th>Business Type</th>
+                            <th>KYC Status</th>
                             <th>Status</th>
-                            <th>Joined Date</th>
-                            <th>Last Login</th>
+                            <th>Total Transactions</th>
+                            <th>Revenue</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="usersTableBody">
+                    <tbody id="merchantsTableBody">
                         <tr>
                             <td>1</td>
-                            <td>Admin User</td>
-                            <td>admin@payme2d.com</td>
-                            <td><span class="badge badge-danger">Admin</span></td>
-                            <td><span class="badge badge-success">Active</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td>Just now</td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="btn-sm btn-view" onclick="viewUser(1)">👁️ View</button>
-                                    <button class="btn-sm btn-edit" onclick="editUser(1)">✏️ Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Test Merchant</td>
+                            <td>Test Business</td>
                             <td>merchant@test.com</td>
-                            <td><span class="badge badge-info">Merchant</span></td>
+                            <td>E-commerce</td>
+                            <td><span class="badge badge-warning">Pending</span></td>
                             <td><span class="badge badge-success">Active</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td>2 hours ago</td>
+                            <td>0</td>
+                            <td>$0.00</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="btn-sm btn-view" onclick="viewUser(2)">👁️ View</button>
-                                    <button class="btn-sm btn-edit" onclick="editUser(2)">✏️ Edit</button>
-                                    <button class="btn-sm btn-block" onclick="blockUser(2)">🚫 Block</button>
+                                    <button class="btn-sm btn-view" onclick="viewMerchant(1)">👁️ View</button>
+                                    <button class="btn-sm btn-approve" onclick="approveKYC(1)">✅ KYC</button>
                                 </div>
                             </td>
                         </tr>
@@ -326,22 +312,18 @@
             window.location.href = 'login.html';
         }
 
-        function viewUser(id) {
-            window.location.href = `user-details.html?id=${id}`;
+        function viewMerchant(id) {
+            window.location.href = `merchant-details.html?id=${id}`;
         }
 
-        function editUser(id) {
-            alert(`Edit user ${id} - Feature coming soon!`);
-        }
-
-        function blockUser(id) {
-            if (confirm('Are you sure you want to block this user?')) {
-                alert(`User ${id} blocked successfully!`);
+        function approveKYC(id) {
+            if (confirm('Approve KYC for this merchant?')) {
+                alert(`KYC approved for merchant ${id}!`);
             }
         }
 
-        function addUser() {
-            alert('Add new user - Feature coming soon!');
+        function addMerchant() {
+            alert('Add new merchant - Feature coming soon!');
         }
 
         function logout() {
@@ -354,7 +336,7 @@
         // Search functionality
         document.getElementById('searchBox').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#usersTableBody tr');
+            const rows = document.querySelectorAll('#merchantsTableBody tr');
             
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();

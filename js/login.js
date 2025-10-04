@@ -1,3 +1,31 @@
+// Demo user credentials
+const demoUsers = {
+    'test@merchant.com': {
+        password: 'password123',
+        token: 'demo_token_merchant_123',
+        user_id: 'mer_123',
+        name: 'Test Merchant',
+        email: 'test@merchant.com',
+        role: 'merchant'
+    },
+    'demo@merchant.com': {
+        password: 'demo123',
+        token: 'demo_token_merchant_456',
+        user_id: 'mer_456',
+        name: 'Demo Merchant',
+        email: 'demo@merchant.com',
+        role: 'merchant'
+    },
+    'merchant@payme.com': {
+        password: 'merchant123',
+        token: 'demo_token_merchant_789',
+        user_id: 'mer_789',
+        name: 'PayMe Merchant',
+        email: 'merchant@payme.com',
+        role: 'merchant'
+    }
+};
+
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -26,39 +54,29 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     // Show spinner
     document.getElementById('spinner').classList.add('show');
     
-    // Submit form
-    try {
-        const formData = new FormData();
-        formData.append('email', email);
-        formData.append('password', password);
-        
-        const response = await fetch('api/login.php', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
+    // Simulate API call delay
+    setTimeout(() => {
         document.getElementById('spinner').classList.remove('show');
         
-        if (data.success) {
+        // Check demo credentials
+        const user = demoUsers[email];
+        
+        if (user && user.password === password) {
             // Store user data in localStorage
-            localStorage.setItem('userToken', data.data.token);
-            localStorage.setItem('userId', data.data.user_id);
-            localStorage.setItem('userName', data.data.name);
-            localStorage.setItem('userEmail', data.data.email);
+            localStorage.setItem('userToken', user.token);
+            localStorage.setItem('userId', user.user_id);
+            localStorage.setItem('userName', user.name);
+            localStorage.setItem('userEmail', user.email);
+            localStorage.setItem('userRole', user.role);
             
             showAlert('success', 'Login successful! Redirecting...');
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         } else {
-            showAlert('error', data.message || 'Login failed. Please check your credentials.');
+            showAlert('error', 'Invalid email or password. Please try again.');
         }
-    } catch (error) {
-        document.getElementById('spinner').classList.remove('show');
-        showAlert('error', 'An error occurred. Please try again.');
-    }
+    }, 1000);
 });
 
 function showAlert(type, message) {

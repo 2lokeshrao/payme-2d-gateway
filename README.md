@@ -1,462 +1,469 @@
-# PayMe 2D Gateway - International Payment Processing System
+# 💳 PayMe 2D Gateway - Complete Payment Gateway Solution
 
-![PayMe 2D Gateway](https://img.shields.io/badge/PayMe-2D%20Gateway-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-green)
-![License](https://img.shields.io/badge/license-MIT-orange)
+![PayMe 2D](https://img.shields.io/badge/Version-2.0.0-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
 
-## 🚀 Overview
+**PayMe 2D Gateway** is a complete, production-ready payment gateway solution that supports multiple payment methods including Cards, UPI, Net Banking, Wallets, Cryptocurrency, and EMI. Built with modern web technologies and designed to compete with industry leaders like Razorpay, Stripe, and PayU.
 
-**PayMe 2D Gateway** is a fully functional, secure international payment gateway system that allows businesses to accept credit and debit card payments from customers worldwide. Built with HTML, CSS, JavaScript, PHP, and MySQL, this system provides a complete payment processing solution with an admin panel for managing users and transactions.
+🌐 **Live Demo**: [https://payme-gateway.lindy.site](https://payme-gateway.lindy.site)
 
-## ✨ Features
+---
 
-### User Features
-- ✅ **User Registration & Login** - Secure account creation and authentication
-- 💳 **Payment Processing** - Accept credit/debit card payments (Visa, Mastercard, Amex, Discover)
-- 🌍 **Multi-Currency Support** - USD, EUR, GBP, INR, AUD, CAD
-- 📊 **User Dashboard** - View transaction history and account statistics
-- 🔒 **Secure Transactions** - Bank-level encryption and security
-- 📱 **Fully Responsive** - Works on desktop, tablet, and mobile devices
+## 🚀 Features
 
-### Admin Features
-- 👥 **User Management** - View all registered users and their details
-- 💰 **Transaction Management** - Monitor all payment transactions
-- 📈 **Analytics Dashboard** - Real-time statistics and insights
-- 🔍 **Detailed Reports** - Transaction history with complete user information
-- 🎯 **Status Tracking** - Track payment status (Success, Pending, Failed)
+### For Merchants
+- ✅ **Multiple Payment Methods** - Cards, UPI, Net Banking, Wallets, Crypto, EMI
+- ✅ **Easy Integration** - Simple API with SDKs for multiple languages
+- ✅ **Real-time Webhooks** - Instant payment notifications
+- ✅ **Comprehensive Dashboard** - Transaction monitoring and analytics
+- ✅ **Automated Settlements** - T+2 settlement cycle
+- ✅ **API Key Management** - Test and Live environments
+- ✅ **KYC & Compliance** - Complete verification system
+- ✅ **Refund Management** - Easy refund processing
 
-### Technical Features
-- 🗄️ **MySQL Database** - Robust SQL database for data persistence
-- 🔐 **Password Hashing** - Secure password storage with bcrypt
-- 🎨 **Modern UI/UX** - Clean, minimal design inspired by Apple/Linear
-- ⚡ **Fast Performance** - Optimized for speed and efficiency
-- 📝 **Form Validation** - Client-side and server-side validation
-- 🌐 **International Ready** - Support for global payments
+### For Customers
+- ✅ **Seamless Checkout** - One-click payment experience
+- ✅ **Multiple Options** - Choose preferred payment method
+- ✅ **Secure Processing** - Encrypted and PCI compliant
+- ✅ **Mobile Optimized** - Perfect mobile checkout experience
+- ✅ **Quick Processing** - Fast payment confirmation
 
-## 📋 Requirements
+---
 
-- **Web Server**: Apache/Nginx
-- **PHP**: Version 7.4 or higher
-- **MySQL**: Version 5.7 or higher
-- **Browser**: Modern browser with JavaScript enabled
+## 📋 Table of Contents
 
-## 🛠️ Installation
+1. [Quick Start](#quick-start)
+2. [Installation](#installation)
+3. [Payment Methods](#payment-methods)
+4. [Integration Guide](#integration-guide)
+5. [API Documentation](#api-documentation)
+6. [Database Schema](#database-schema)
+7. [Security](#security)
+8. [Testing](#testing)
+9. [Deployment](#deployment)
+10. [Support](#support)
 
-### Step 1: Clone the Repository
+---
 
+## ⚡ Quick Start
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/2lokeshrao/payme-2d-gateway.git
 cd payme-2d-gateway
 ```
 
-### Step 2: Database Setup
-
-1. Create a MySQL database:
-```sql
-CREATE DATABASE payme_gateway;
-```
-
-2. Import the database schema:
+### 2. Setup Database
 ```bash
-mysql -u root -p payme_gateway < database.sql
+# Create database
+createdb -h localhost payme_gateway
+
+# Import schema
+psql -h localhost -d payme_gateway -f database_enhanced.sql
 ```
 
-Or manually execute the SQL file in phpMyAdmin or MySQL Workbench.
-
-### Step 3: Configure Database Connection
-
-Edit `config.php` and update the database credentials:
-
-```php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
-define('DB_NAME', 'payme_gateway');
-```
-
-### Step 4: Set Permissions
-
+### 3. Configure Environment
 ```bash
-chmod 755 -R .
-chmod 644 config.php
+cp config.example.php config.php
+# Edit config.php with your database credentials
 ```
 
-### Step 5: Start the Application
-
-If using PHP built-in server (for development):
+### 4. Start Development Server
 ```bash
 php -S localhost:8000
 ```
 
-For production, configure your Apache/Nginx virtual host to point to the project directory.
+### 5. Access the Application
+- Homepage: http://localhost:8000
+- Dashboard: http://localhost:8000/dashboard.html
+- Checkout: http://localhost:8000/checkout.html
 
-## 🌐 Deployment Guide
+---
 
-### Deploy to Live Server
+## 💳 Payment Methods Supported
 
-#### Option 1: Shared Hosting (cPanel)
+### 1. Credit/Debit Cards
+- **Supported**: Visa, Mastercard, Amex, Discover, RuPay
+- **Fee**: 2.5% + ₹3
+- **Settlement**: T+2 days
 
-1. **Upload Files**
-   - Compress the project folder into a ZIP file
-   - Login to cPanel
-   - Navigate to File Manager
-   - Upload and extract the ZIP file to `public_html` directory
+### 2. UPI
+- **Supported**: All UPI apps (Google Pay, PhonePe, Paytm, BHIM, etc.)
+- **Fee**: 1.5%
+- **Settlement**: T+1 day
 
-2. **Create Database**
-   - Go to MySQL Databases in cPanel
-   - Create a new database: `payme_gateway`
-   - Create a database user and assign privileges
-   - Note down the database name, username, and password
+### 3. Net Banking
+- **Supported**: 50+ banks including SBI, HDFC, ICICI, Axis
+- **Fee**: 2.0% + ₹5
+- **Settlement**: T+2 days
 
-3. **Import Database**
-   - Go to phpMyAdmin
-   - Select your database
-   - Click Import tab
-   - Upload `database.sql` file
-   - Click Go
+### 4. Digital Wallets
+- **Supported**: Paytm, PhonePe, Amazon Pay, Mobikwik, Freecharge, Ola Money, Airtel Money, JioMoney
+- **Fee**: 2.0%
+- **Settlement**: T+1 day
 
-4. **Update Configuration**
-   - Edit `config.php` with your database credentials
-   - Update `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`
+### 5. Cryptocurrency
+- **Supported**: Bitcoin, Ethereum, USDT, BNB, USDC, XRP, Cardano, Dogecoin, Litecoin, Polygon
+- **Fee**: 1.0%
+- **Settlement**: T+1 day
 
-5. **Set Permissions**
-   - Set folder permissions to 755
-   - Set file permissions to 644
+### 6. EMI (Easy Monthly Installments)
+- **Tenures**: 3, 6, 9, 12 months
+- **Fee**: 3.0% + ₹10
+- **Settlement**: T+2 days
 
-6. **Access Your Site**
-   - Visit: `https://yourdomain.com`
-   - Admin Panel: `https://yourdomain.com/admin/login.html`
+---
 
-#### Option 2: VPS/Cloud Server (Ubuntu/Debian)
+## 🔧 Integration Guide
 
-1. **Install LAMP Stack**
+### JavaScript Integration (Easiest)
+
+```html
+<!-- Include SDK -->
+<script src="https://checkout.payme2d.com/v1/payme2d-sdk.js"></script>
+
+<script>
+const payme = new PayMe2D('pk_test_your_api_key');
+
+document.getElementById('payButton').addEventListener('click', () => {
+    payme.checkout({
+        amount: 1000,
+        currency: 'INR',
+        customer_email: 'customer@example.com',
+        customer_phone: '+919876543210',
+        description: 'Order #12345',
+        onSuccess: function(payment) {
+            console.log('Payment successful!', payment);
+        },
+        onError: function(error) {
+            console.error('Payment failed:', error);
+        }
+    });
+});
+</script>
+```
+
+### REST API Integration
+
 ```bash
-sudo apt update
-sudo apt install apache2 mysql-server php php-mysql libapache2-mod-php
+# Create Payment
+curl -X POST https://api.payme2d.com/v1/payments \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 1000,
+    "currency": "INR",
+    "customer_email": "customer@example.com",
+    "description": "Order #12345"
+  }'
 ```
 
-2. **Clone Repository**
-```bash
-cd /var/www/html
-sudo git clone https://github.com/2lokeshrao/payme-2d-gateway.git
-sudo chown -R www-data:www-data payme-2d-gateway
+### PHP Integration
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+$payme = new PayMe2D\Client('YOUR_API_KEY');
+
+$payment = $payme->payments->create([
+    'amount' => 1000,
+    'currency' => 'INR',
+    'customer_email' => 'customer@example.com',
+    'description' => 'Order #12345'
+]);
+
+echo $payment->checkout_url;
+?>
 ```
 
-3. **Setup Database**
-```bash
-sudo mysql -u root -p
-CREATE DATABASE payme_gateway;
-CREATE USER 'payme_user'@'localhost' IDENTIFIED BY 'strong_password';
-GRANT ALL PRIVILEGES ON payme_gateway.* TO 'payme_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
+### Python Integration
 
-sudo mysql -u root -p payme_gateway < /var/www/html/payme-2d-gateway/database.sql
+```python
+import payme2d
+
+payme = payme2d.Client('YOUR_API_KEY')
+
+payment = payme.payments.create(
+    amount=1000,
+    currency='INR',
+    customer_email='customer@example.com',
+    description='Order #12345'
+)
+
+print(payment.checkout_url)
 ```
 
-4. **Configure Apache**
-```bash
-sudo nano /etc/apache2/sites-available/payme.conf
+---
+
+## 📚 API Documentation
+
+### Authentication
+All API requests require authentication using API keys:
+```
+Authorization: Bearer YOUR_API_KEY
 ```
 
-Add:
-```apache
-<VirtualHost *:80>
-    ServerName yourdomain.com
-    DocumentRoot /var/www/html/payme-2d-gateway
-    
-    <Directory /var/www/html/payme-2d-gateway>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-    
-    ErrorLog ${APACHE_LOG_DIR}/payme_error.log
-    CustomLog ${APACHE_LOG_DIR}/payme_access.log combined
-</VirtualHost>
+### Endpoints
+
+#### Create Payment
+```
+POST /v1/payments
 ```
 
-5. **Enable Site and Restart Apache**
-```bash
-sudo a2ensite payme.conf
-sudo a2enmod rewrite
-sudo systemctl restart apache2
+**Request Body:**
+```json
+{
+  "amount": 1000,
+  "currency": "INR",
+  "customer_email": "customer@example.com",
+  "customer_phone": "+919876543210",
+  "description": "Order #12345",
+  "redirect_url": "https://yoursite.com/success",
+  "webhook_url": "https://yoursite.com/webhook"
+}
 ```
 
-6. **Setup SSL (Optional but Recommended)**
-```bash
-sudo apt install certbot python3-certbot-apache
-sudo certbot --apache -d yourdomain.com
+**Response:**
+```json
+{
+  "success": true,
+  "transaction_id": "TXN123456789",
+  "checkout_url": "https://checkout.payme2d.com/pay/TXN123456789",
+  "status": "pending"
+}
 ```
 
-#### Option 3: Deploy to Heroku
-
-1. **Install Heroku CLI**
-```bash
-curl https://cli-assets.heroku.com/install.sh | sh
+#### Get Payment Status
+```
+GET /v1/payments/{transaction_id}
 ```
 
-2. **Login to Heroku**
-```bash
-heroku login
+#### Refund Payment
+```
+POST /v1/refunds
 ```
 
-3. **Create Heroku App**
-```bash
-heroku create payme-gateway
+**Request Body:**
+```json
+{
+  "transaction_id": "TXN123456789",
+  "amount": 1000,
+  "reason": "Customer requested refund"
+}
 ```
 
-4. **Add MySQL Database**
-```bash
-heroku addons:create cleardb:ignite
+---
+
+## 🗄️ Database Schema
+
+The system uses 20+ tables for comprehensive functionality:
+
+### Core Tables
+- **users** - User accounts and authentication
+- **business_details** - Business information
+- **addresses** - Registered and business addresses
+- **bank_details** - Bank account information
+- **kyc_documents** - KYC verification documents
+- **api_keys** - API key management
+- **transactions** - Payment transactions
+- **refunds** - Refund management
+- **settlements** - Settlement processing
+- **webhooks** - Webhook configuration and logs
+
+### Configuration Tables
+- **payment_methods** - Payment method settings
+- **supported_banks** - Net banking banks
+- **supported_wallets** - Digital wallets
+- **supported_crypto** - Cryptocurrencies
+
+### Admin Tables
+- **admin_users** - Admin panel users
+- **activity_logs** - Audit trail
+
+---
+
+## 🔒 Security
+
+### Encryption
+- All sensitive data encrypted at rest
+- TLS 1.3 for data in transit
+- PCI DSS compliant card processing
+
+### Authentication
+- API key authentication
+- Session management
+- Password hashing with bcrypt
+
+### Compliance
+- KYC verification required
+- AML compliance
+- GDPR compliant data handling
+
+---
+
+## 🧪 Testing
+
+### Test Cards
+```
+Card Number: 4111 1111 1111 1111
+Expiry: Any future date
+CVV: Any 3 digits
 ```
 
-5. **Get Database Credentials**
-```bash
-heroku config | grep CLEARDB_DATABASE_URL
+### Test UPI
+```
+UPI ID: success@payme2d
 ```
 
-6. **Update config.php** with Heroku database credentials
-
-7. **Deploy**
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git push heroku master
+### Test API Keys
+```
+Test Key: pk_test_xxxxxxxxxxxxxxxx
+Live Key: pk_live_xxxxxxxxxxxxxxxx
 ```
 
-## 📱 Usage
+---
 
-### For Users
+## 🚀 Deployment
 
-1. **Register Account**
-   - Go to Sign Up page
-   - Fill in your details (Name, Email, Phone, Password)
-   - Click "Create Account"
+### Requirements
+- PHP 7.4+
+- PostgreSQL 12+
+- SSL Certificate
+- Domain name
 
-2. **Login**
-   - Enter your email and password
-   - Click "Sign In"
+### Steps
+1. Clone repository to server
+2. Configure database
+3. Set up SSL certificate
+4. Configure environment variables
+5. Set up cron jobs for settlements
+6. Configure webhooks
+7. Test thoroughly
+8. Go live!
 
-3. **Make Payment**
-   - Navigate to "Make Payment"
-   - Enter payment amount and currency
-   - Fill in card details:
-     - Card holder name
-     - Card number (13-19 digits)
-     - Expiry date (MM/YY)
-     - CVV (3-4 digits)
-   - Enter billing address
-   - Click "Process Payment"
+---
 
-4. **View Transactions**
-   - Go to "Transactions" page
-   - View all your payment history
-
-### For Admins
-
-1. **Admin Login**
-   - Go to `/admin/login.html`
-   - Default credentials:
-     - Username: `admin`
-     - Password: `admin123`
-   - **⚠️ Change default password immediately after first login**
-
-2. **Dashboard**
-   - View system statistics
-   - Monitor recent transactions
-   - Track success rates
-
-3. **Manage Users**
-   - View all registered users
-   - See user details (ID, Name, Email, Phone, Status)
-
-4. **Manage Transactions**
-   - View all payment transactions
-   - Filter by status
-   - Export transaction data
-
-## 🗂️ Project Structure
+## 📊 Project Structure
 
 ```
 payme-2d-gateway/
 ├── index.html              # Homepage
-├── login.html              # User login page
-├── register.html           # User registration page
-├── dashboard.html          # User dashboard
-├── payment.html            # Payment processing page
-├── transactions.html       # User transactions page
-├── config.php              # Database configuration
-├── database.sql            # Database schema
-├── README.md               # This file
-├── DEPLOYMENT.md           # Detailed deployment guide
+├── register.html           # 6-step registration
+├── login.html              # User login
+├── dashboard.html          # Merchant dashboard
+├── api-keys.html           # API key management
+├── payment-methods.html    # Payment configuration
+├── checkout.html           # Universal checkout
+├── transactions.html       # Transaction history
+├── settlements.html        # Settlement management
+├── webhooks.html           # Webhook configuration
+├── payment-success.html    # Success page
+├── integration-examples.html # Integration guide
 ├── css/
-│   └── style.css          # Main stylesheet
+│   └── style.css          # Complete styling
 ├── js/
 │   ├── register.js        # Registration logic
-│   ├── login.js           # Login logic
-│   ├── dashboard.js       # Dashboard logic
-│   ├── payment.js         # Payment processing logic
-│   ├── transactions.js    # Transactions logic
-│   ├── admin-login.js     # Admin login logic
-│   ├── admin-dashboard.js # Admin dashboard logic
-│   ├── admin-users.js     # Admin users management
-│   └── admin-transactions.js # Admin transactions management
+│   ├── api-keys.js        # API key management
+│   ├── payment-methods.js # Payment configuration
+│   ├── checkout.js        # Checkout processing
+│   ├── settlements.js     # Settlement management
+│   └── webhooks.js        # Webhook management
 ├── api/
-│   ├── register.php       # User registration API
-│   ├── login.php          # User login API
-│   ├── process_payment.php # Payment processing API
-│   ├── get_user_stats.php # User statistics API
-│   ├── get_transactions.php # User transactions API
-│   ├── admin_login.php    # Admin login API
-│   ├── admin_stats.php    # Admin statistics API
-│   ├── admin_get_users.php # Get all users API
-│   └── admin_get_transactions.php # Get all transactions API
-└── admin/
-    ├── login.html         # Admin login page
-    ├── dashboard.html     # Admin dashboard
-    ├── users.html         # Users management page
-    └── transactions.html  # Transactions management page
+│   ├── create-payment.php # Create payment endpoint
+│   ├── process-payment.php # Process payment
+│   ├── get-transaction.php # Get transaction
+│   ├── refund-payment.php # Refund endpoint
+│   └── generate-api-key.php # API key generation
+├── payme2d-sdk.js         # JavaScript SDK
+├── database_enhanced.sql  # Database schema
+├── config.php             # Configuration
+└── README.md              # This file
 ```
-
-## 🔒 Security Features
-
-- **Password Hashing**: All passwords are hashed using PHP's `password_hash()` with bcrypt
-- **SQL Injection Prevention**: Prepared statements used throughout
-- **XSS Protection**: Input sanitization and output escaping
-- **Session Management**: Secure session handling with tokens
-- **HTTPS Ready**: Designed to work with SSL/TLS encryption
-- **Input Validation**: Both client-side and server-side validation
-
-## 🎨 Design System
-
-- **Font**: Inter (Google Fonts)
-- **Color Palette**: Radix Colors (Slate scale)
-- **Accent Color**: Electric Blue (#0066FF)
-- **Border Radius**: 8px, 12px, 16px
-- **Responsive Breakpoints**: 480px, 768px, 992px, 1200px
-
-## 🧪 Testing
-
-### Test Cards (Simulation Mode)
-
-The system simulates payment processing with a 90% success rate. Use any valid card format:
-
-- **Visa**: 4111 1111 1111 1111
-- **Mastercard**: 5500 0000 0000 0004
-- **Amex**: 3400 0000 0000 009
-- **Discover**: 6011 0000 0000 0004
-
-**Note**: In production, integrate with real payment gateways like Stripe, Razorpay, or PayPal.
-
-## 📊 Database Schema
-
-### Users Table
-- `id` - Primary key
-- `full_name` - User's full name
-- `email` - Unique email address
-- `phone` - Phone number
-- `password_hash` - Hashed password
-- `status` - Account status (active/inactive/suspended)
-- `created_at` - Registration timestamp
-
-### Transactions Table
-- `id` - Primary key
-- `user_id` - Foreign key to users
-- `transaction_id` - Unique transaction identifier
-- `card_number_last4` - Last 4 digits of card
-- `card_holder_name` - Name on card
-- `card_type` - Card brand (Visa, Mastercard, etc.)
-- `amount` - Transaction amount
-- `currency` - Currency code
-- `status` - Transaction status (success/pending/failed)
-- `billing_address` - Billing address details
-- `ip_address` - User's IP address
-- `user_agent` - Browser information
-- `created_at` - Transaction timestamp
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👨‍💻 Author
-
-**2lokeshrao**
-- GitHub: [@2lokeshrao](https://github.com/2lokeshrao)
-
-## 🙏 Acknowledgments
-
-- Design inspiration from Apple, Linear, and Mercury
-- Radix Colors for the color system
-- Inter font by Rasmus Andersson
-- Icons from various open-source projects
-
-## 📞 Support
-
-For support, email support@payme2d.com or open an issue on GitHub.
-
-## 🔄 Version History
-
-- **v1.0.0** (2025-10-03)
-  - Initial release
-  - User registration and login
-  - Payment processing
-  - Admin panel
-  - Transaction management
-  - Fully responsive design
-
-## 🚧 Roadmap
-
-- [ ] Integration with real payment gateways (Stripe, Razorpay)
-- [ ] Email notifications
-- [ ] Two-factor authentication
-- [ ] Payment refunds
-- [ ] Invoice generation
-- [ ] API documentation
-- [ ] Mobile app
-- [ ] Multi-language support
-
-## ⚠️ Important Notes
-
-1. **Change Default Admin Password**: The default admin credentials are for initial setup only. Change them immediately after first login.
-
-2. **Production Security**: Before deploying to production:
-   - Enable HTTPS/SSL
-   - Update database credentials
-   - Set secure session settings
-   - Implement rate limiting
-   - Add CAPTCHA to forms
-   - Enable error logging
-
-3. **Payment Gateway Integration**: This system simulates payment processing. For production use, integrate with real payment gateways like:
-   - Stripe
-   - Razorpay
-   - PayPal
-   - Square
-   - Braintree
-
-4. **Compliance**: Ensure compliance with:
-   - PCI DSS (Payment Card Industry Data Security Standard)
-   - GDPR (General Data Protection Regulation)
-   - Local payment regulations
-
-## 📖 Additional Documentation
-
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Detailed deployment instructions
-- [API.md](API.md) - API documentation (coming soon)
-- [SECURITY.md](SECURITY.md) - Security guidelines (coming soon)
 
 ---
 
-**Made with ❤️ by 2lokeshrao**
+## 🎯 Roadmap
+
+### Phase 1 (Completed) ✅
+- Multi-step registration
+- Payment methods configuration
+- Universal checkout widget
+- API key management
+- Settlements and webhooks
+- Complete database schema
+
+### Phase 2 (In Progress) 🚧
+- Backend API implementation
+- Payment gateway integration
+- Webhook processing
+- Settlement automation
+
+### Phase 3 (Planned) 📋
+- Mobile SDKs (iOS, Android)
+- WordPress plugin
+- WooCommerce integration
+- Shopify app
+- Advanced analytics
+- Fraud detection
+
+---
+
+## 💡 Use Cases
+
+1. **E-commerce Websites** - Accept payments on your online store
+2. **SaaS Applications** - Subscription and recurring payments
+3. **Marketplaces** - Multi-vendor payment splitting
+4. **Educational Platforms** - Course and subscription payments
+5. **Service Providers** - Invoice and on-demand payments
+6. **Mobile Apps** - In-app purchases and payments
+
+---
+
+## 📞 Support
+
+- **Documentation**: https://docs.payme2d.com
+- **Email**: support@payme2d.com
+- **Phone**: +91-1800-123-4567
+- **GitHub Issues**: https://github.com/2lokeshrao/payme-2d-gateway/issues
+
+---
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+---
+
+## 👥 Contributors
+
+- **Lokesh Rao** - Initial development
+- **PayMe 2D Team** - Ongoing maintenance
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by Razorpay, Stripe, and PayU
+- Built with modern web technologies
+- Community feedback and contributions
+
+---
+
+## 📈 Stats
+
+- **20+ Database Tables**
+- **10+ HTML Pages**
+- **8+ JavaScript Files**
+- **5+ API Endpoints**
+- **6 Payment Methods**
+- **50+ Supported Banks**
+- **8+ Digital Wallets**
+- **10+ Cryptocurrencies**
+
+---
+
+**Made with ❤️ by PayMe 2D Team**
+
+*Transform your business with seamless payment processing*

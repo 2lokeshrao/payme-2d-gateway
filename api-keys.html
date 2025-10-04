@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Keys - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .dashboard-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dashboard-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        
+        .dashboard-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .api-key-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .api-key-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .key-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .btn-copy {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-generate {
+            padding: 12px 24px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-revoke {
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="dashboard-nav">
+        <div class="container">
+            <a href="index.html" class="dashboard-brand">💳 PayMe 2D Gateway</a>
+            <ul class="dashboard-menu">
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="transactions.html">💰 Transactions</a></li>
+                <li><a href="api-keys.html">🔑 API Keys</a></li>
+                <li><a href="payment-methods.html">💳 Payment Methods</a></li>
+                <li><a href="settlements.html">🏦 Settlements</a></li>
+                <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
+        <div class="container">
+            <h1 style="font-size: 32px; margin-bottom: 8px;">🔑 API Keys Management</h1>
+            <p style="color: #666; margin-bottom: 30px;">Manage your API keys for integration</p>
+
+            <div class="warning-box">
+                <strong>⚠️ Security Warning:</strong> Never share your API keys publicly or commit them to version control. Keep them secure!
+            </div>
+
+            <div class="info-box">
+                <strong>ℹ️ Test Mode:</strong> Use test keys for development. Switch to live keys only when ready for production.
+            </div>
+
+            <!-- Test API Keys -->
+            <div class="api-key-card">
+                <div class="api-key-header">
+                    <h2 style="margin: 0;">🧪 Test API Keys</h2>
+                    <button class="btn-generate" onclick="generateTestKey()">🔄 Regenerate</button>
+                </div>
+                
+                <h3 style="margin-bottom: 10px;">Publishable Key (Public)</h3>
+                <div class="key-display">
+                    <span id="testPublicKey">pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE</span>
+                    <button class="btn-copy" onclick="copyKey('testPublicKey')">📋 Copy</button>
+                </div>
+
+                <h3 style="margin-bottom: 10px;">Secret Key (Private)</h3>
+                <div class="key-display">
+                    <span id="testSecretKey">sk_test_YOUR_STRIPE_SECRET_KEY_HERE</span>
+                    <button class="btn-copy" onclick="copyKey('testSecretKey')">📋 Copy</button>
+                </div>
+
+                <p style="color: #666; font-size: 14px;">Use these keys for testing and development. No real transactions will be processed.</p>
+            </div>
+
+            <!-- Live API Keys -->
+            <div class="api-key-card">
+                <div class="api-key-header">
+                    <h2 style="margin: 0;">🚀 Live API Keys</h2>
+                    <button class="btn-generate" onclick="generateLiveKey()">🔄 Regenerate</button>
+                </div>
+                
+                <h3 style="margin-bottom: 10px;">Publishable Key (Public)</h3>
+                <div class="key-display">
+                    <span id="livePublicKey">pk_live_YOUR_PUBLIC_KEY_HERE</span>
+                    <button class="btn-copy" onclick="copyKey('livePublicKey')">📋 Copy</button>
+                </div>
+
+                <h3 style="margin-bottom: 10px;">Secret Key (Private)</h3>
+                <div class="key-display">
+                    <span id="liveSecretKey">sk_live_YOUR_SECRET_KEY_HERE</span>
+                    <button class="btn-copy" onclick="copyKey('liveSecretKey')">📋 Copy</button>
+                </div>
+
+                <p style="color: #666; font-size: 14px;">⚠️ Use these keys for production. Real transactions will be processed and charged.</p>
+                <button class="btn-revoke" onclick="revokeKeys()">🗑️ Revoke All Keys</button>
+            </div>
+
+            <!-- Integration Guide -->
+            <div class="api-key-card">
+                <h2 style="margin-bottom: 15px;">📚 Quick Integration Guide</h2>
+                <p style="color: #666; margin-bottom: 15px;">Use these keys in your application:</p>
+                
+                <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto;"><code>// Initialize PayMe Gateway
+const payme = new PayMe({
+  publishableKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE...',
+  secretKey: 'sk_test_YOUR_STRIPE_SECRET_KEY_HERE...'
+});
+
+// Create a payment
+const payment = await payme.createPayment({
+  amount: 1000,
+  currency: 'INR',
+  description: 'Order #123'
+});</code></pre>
+
+                <a href="integration-examples.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 6px;">📖 View Full Documentation</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function copyKey(elementId) {
+            const keyElement = document.getElementById(elementId);
+            const key = keyElement.textContent;
+            
+            navigator.clipboard.writeText(key).then(() => {
+                alert('✅ API Key copied to clipboard!');
+            }).catch(() => {
+                alert('❌ Failed to copy. Please copy manually.');
+            });
+        }
+
+        function generateTestKey() {
+            if (confirm('Generate new test API keys? Old keys will be revoked.')) {
+                alert('🔄 New test keys generated successfully!');
+                // In production, this would call an API to generate new keys
+            }
+        }
+
+        function generateLiveKey() {
+            if (confirm('⚠️ Generate new live API keys? This will revoke old keys and may break existing integrations!')) {
+                alert('🔄 New live keys generated successfully!');
+                // In production, this would call an API to generate new keys
+            }
+        }
+
+        function revokeKeys() {
+            if (confirm('⚠️ Are you sure you want to revoke all live keys? This will break all existing integrations!')) {
+                alert('🗑️ All live keys have been revoked!');
+                // In production, this would call an API to revoke keys
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+    <script src="js/auth-check.js"></script>
+</body>
+</html>

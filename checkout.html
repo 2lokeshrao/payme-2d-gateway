@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .payment-tab {
+            flex: 1;
+            min-width: 80px;
+            padding: 12px;
+            border: 2px solid var(--slate-6);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .payment-tab:hover {
+            border-color: var(--blue-9);
+            background: var(--blue-2);
+        }
+        .payment-tab.active {
+            border-color: var(--blue-9);
+            background: var(--blue-3);
+        }
+        .payment-tab-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .payment-tab-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .payment-form {
+            display: none;
+        }
+        .payment-form.active {
+            display: block;
+        }
+        .bank-grid, .wallet-grid, .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .bank-option, .wallet-option, .crypto-option {
+            padding: 15px;
+            border: 2px solid var(--slate-6);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .bank-option:hover, .wallet-option:hover, .crypto-option:hover {
+            border-color: var(--blue-9);
+            background: var(--blue-2);
+        }
+        .bank-option.selected, .wallet-option.selected, .crypto-option.selected {
+            border-color: var(--blue-9);
+            background: var(--blue-3);
+        }
+        .order-summary {
+            background: var(--slate-2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .summary-total {
+            font-size: 20px;
+            font-weight: 600;
+            padding-top: 10px;
+            border-top: 2px solid var(--slate-6);
+        }
+        .qr-code {
+            text-align: center;
+            padding: 20px;
+        }
+        .qr-code img {
+            max-width: 200px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Merchant:</span>
+                <span id="merchantName">Demo Store</span>
+            </div>
+            <div class="summary-row">
+                <span>Order ID:</span>
+                <span id="orderId">ORD-12345</span>
+            </div>
+            <div class="summary-row">
+                <span>Description:</span>
+                <span id="orderDesc">Product Purchase</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total Amount:</span>
+                <span id="totalAmount">₹1,000.00</span>
+            </div>
+        </div>
+
+        <!-- Payment Methods Tabs -->
+        <div class="card">
+            <div class="card-body">
+                <h3 style="margin-bottom: 15px;">Select Payment Method</h3>
+                
+                <div class="payment-tabs">
+                    <div class="payment-tab active" onclick="showPaymentMethod('card')">
+                        <span class="payment-tab-icon">💳</span>
+                        <span class="payment-tab-label">Card</span>
+                    </div>
+                    <div class="payment-tab" onclick="showPaymentMethod('upi')">
+                        <span class="payment-tab-icon">📱</span>
+                        <span class="payment-tab-label">UPI</span>
+                    </div>
+                    <div class="payment-tab" onclick="showPaymentMethod('netbanking')">
+                        <span class="payment-tab-icon">🏦</span>
+                        <span class="payment-tab-label">Net Banking</span>
+                    </div>
+                    <div class="payment-tab" onclick="showPaymentMethod('wallet')">
+                        <span class="payment-tab-icon">👛</span>
+                        <span class="payment-tab-label">Wallet</span>
+                    </div>
+                    <div class="payment-tab" onclick="showPaymentMethod('crypto')">
+                        <span class="payment-tab-icon">₿</span>
+                        <span class="payment-tab-label">Crypto</span>
+                    </div>
+                    <div class="payment-tab" onclick="showPaymentMethod('emi')">
+                        <span class="payment-tab-icon">📊</span>
+                        <span class="payment-tab-label">EMI</span>
+                    </div>
+                </div>
+
+                <!-- Card Payment Form -->
+                <div id="card-form" class="payment-form active">
+                    <h4>Card Details</h4>
+                    <div class="form-group">
+                        <label>Card Number *</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date *</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV *</label>
+                            <input type="text" id="cardCVV" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cardholder Name *</label>
+                        <input type="text" id="cardName" placeholder="John Doe">
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('card')">
+                        Pay ₹1,000.00
+                    </button>
+                </div>
+
+                <!-- UPI Payment Form -->
+                <div id="upi-form" class="payment-form">
+                    <h4>UPI Payment</h4>
+                    <div class="form-group">
+                        <label>Enter UPI ID</label>
+                        <input type="text" id="upiId" placeholder="yourname@upi">
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('upi')">
+                        Pay with UPI
+                    </button>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <span style="color: var(--slate-11);">OR</span>
+                    </div>
+                    
+                    <div class="qr-code">
+                        <h4>Scan QR Code</h4>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=merchant@upi&pn=PayMe2D&am=1000&cu=INR" alt="UPI QR Code">
+                        <p class="text-muted">Scan with any UPI app</p>
+                    </div>
+                </div>
+
+                <!-- Net Banking Form -->
+                <div id="netbanking-form" class="payment-form">
+                    <h4>Select Your Bank</h4>
+                    <div class="bank-grid">
+                        <div class="bank-option" onclick="selectBank('SBI')">
+                            <strong>SBI</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('HDFC')">
+                            <strong>HDFC</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('ICICI')">
+                            <strong>ICICI</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('AXIS')">
+                            <strong>Axis</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('PNB')">
+                            <strong>PNB</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('BOB')">
+                            <strong>BOB</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('KOTAK')">
+                            <strong>Kotak</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('YES')">
+                            <strong>Yes Bank</strong>
+                        </div>
+                        <div class="bank-option" onclick="selectBank('OTHER')">
+                            <strong>Other</strong>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('netbanking')">
+                        Continue to Bank
+                    </button>
+                </div>
+
+                <!-- Wallet Payment Form -->
+                <div id="wallet-form" class="payment-form">
+                    <h4>Select Wallet</h4>
+                    <div class="wallet-grid">
+                        <div class="wallet-option" onclick="selectWallet('PAYTM')">
+                            <div style="font-size: 24px;">💙</div>
+                            <strong>Paytm</strong>
+                        </div>
+                        <div class="wallet-option" onclick="selectWallet('PHONEPE')">
+                            <div style="font-size: 24px;">💜</div>
+                            <strong>PhonePe</strong>
+                        </div>
+                        <div class="wallet-option" onclick="selectWallet('GPAY')">
+                            <div style="font-size: 24px;">🔵</div>
+                            <strong>Google Pay</strong>
+                        </div>
+                        <div class="wallet-option" onclick="selectWallet('AMAZONPAY')">
+                            <div style="font-size: 24px;">🟠</div>
+                            <strong>Amazon Pay</strong>
+                        </div>
+                        <div class="wallet-option" onclick="selectWallet('MOBIKWIK')">
+                            <div style="font-size: 24px;">🔵</div>
+                            <strong>Mobikwik</strong>
+                        </div>
+                        <div class="wallet-option" onclick="selectWallet('FREECHARGE')">
+                            <div style="font-size: 24px;">🟢</div>
+                            <strong>Freecharge</strong>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('wallet')">
+                        Pay with Wallet
+                    </button>
+                </div>
+
+                <!-- Crypto Payment Form -->
+                <div id="crypto-form" class="payment-form">
+                    <h4>Select Cryptocurrency</h4>
+                    <div class="crypto-grid">
+                        <div class="crypto-option" onclick="selectCrypto('BTC')">
+                            <div style="font-size: 24px;">₿</div>
+                            <strong>Bitcoin</strong>
+                        </div>
+                        <div class="crypto-option" onclick="selectCrypto('ETH')">
+                            <div style="font-size: 24px;">Ξ</div>
+                            <strong>Ethereum</strong>
+                        </div>
+                        <div class="crypto-option" onclick="selectCrypto('USDT')">
+                            <div style="font-size: 24px;">₮</div>
+                            <strong>USDT</strong>
+                        </div>
+                        <div class="crypto-option" onclick="selectCrypto('BNB')">
+                            <div style="font-size: 24px;">◆</div>
+                            <strong>BNB</strong>
+                        </div>
+                        <div class="crypto-option" onclick="selectCrypto('USDC')">
+                            <div style="font-size: 24px;">⊙</div>
+                            <strong>USDC</strong>
+                        </div>
+                        <div class="crypto-option" onclick="selectCrypto('XRP')">
+                            <div style="font-size: 24px;">✕</div>
+                            <strong>XRP</strong>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        ℹ️ You'll be redirected to complete the crypto payment
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('crypto')">
+                        Continue to Crypto Payment
+                    </button>
+                </div>
+
+                <!-- EMI Payment Form -->
+                <div id="emi-form" class="payment-form">
+                    <h4>EMI Options</h4>
+                    <div class="form-group">
+                        <label>Select EMI Tenure</label>
+                        <select id="emiTenure">
+                            <option value="3">3 Months (₹340/month)</option>
+                            <option value="6">6 Months (₹175/month)</option>
+                            <option value="9">9 Months (₹120/month)</option>
+                            <option value="12">12 Months (₹92/month)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Number *</label>
+                        <input type="text" id="emiCardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="alert alert-info">
+                        ℹ️ EMI is available on select credit cards only
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="processPayment('emi')">
+                        Pay with EMI
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Badge -->
+        <div style="text-align: center; margin-top: 20px; color: var(--slate-11);">
+            <p>🔒 Secured by PayMe 2D Gateway</p>
+            <p style="font-size: 12px;">Your payment information is encrypted and secure</p>
+        </div>
+    </div>
+
+    <script src="js/checkout.js"></script>
+</body>
+</html>

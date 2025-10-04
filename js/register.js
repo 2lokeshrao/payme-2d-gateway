@@ -1,165 +1,127 @@
+// Multi-step registration form handler
 let currentStep = 1;
 const totalSteps = 6;
-const formData = {};
 
-// Initialize
+// Initialize form
 document.addEventListener('DOMContentLoaded', () => {
-    updateProgress();
+    showStep(1);
     setupEventListeners();
 });
 
 function setupEventListeners() {
     // Next button
-    document.getElementById('nextBtn').addEventListener('click', () => {
-        if (validateStep(currentStep)) {
-            saveStepData(currentStep);
-            currentStep++;
-            showStep(currentStep);
-        }
-    });
-
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', handleNext);
+    }
+    
     // Previous button
-    document.getElementById('prevBtn').addEventListener('click', () => {
-        currentStep--;
-        showStep(currentStep);
-    });
-
-    // Form submission
-    document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (validateStep(6)) {
-            await submitForm();
-        }
-    });
-
+    const prevBtn = document.getElementById('prevBtn');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', handlePrevious);
+    }
+    
+    // Submit button
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', handleSubmit);
+    }
+    
     // Same address checkbox
-    document.getElementById('sameAddress').addEventListener('change', (e) => {
-        const businessAddressSection = document.getElementById('businessAddressSection');
-        businessAddressSection.style.display = e.target.checked ? 'none' : 'block';
-    });
-
-    // File upload handlers
-    setupFileUpload('idProofFile', 'idProofPreview');
-    setupFileUpload('addressProofFile', 'addressProofPreview');
-    setupFileUpload('panCardFile', 'panCardPreview');
-    setupFileUpload('businessDocFile', 'businessDocPreview');
-    setupFileUpload('bankProofFile', 'bankProofPreview');
+    const sameAddressCheckbox = document.getElementById('sameAddress');
+    if (sameAddressCheckbox) {
+        sameAddressCheckbox.addEventListener('change', handleSameAddress);
+    }
 }
 
 function showStep(step) {
     // Hide all steps
-    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-    
-    // Show current step
-    document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
-    
-    // Update progress
-    updateProgress();
-    
-    // Update buttons
-    document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'block';
-    document.getElementById('nextBtn').style.display = step === totalSteps ? 'none' : 'block';
-    document.getElementById('submitBtn').style.display = step === totalSteps ? 'block' : 'none';
-    
-    // Show review summary on last step
-    if (step === 6) {
-        showReviewSummary();
+    for (let i = 1; i <= totalSteps; i++) {
+        const stepElement = document.getElementById(`step${i}`);
+        if (stepElement) {
+            stepElement.style.display = 'none';
+        }
     }
     
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Show current step
+    const currentStepElement = document.getElementById(`step${step}`);
+    if (currentStepElement) {
+        currentStepElement.style.display = 'block';
+    }
+    
+    // Update progress indicators
+    updateProgressIndicators(step);
+    
+    // Update buttons
+    updateButtons(step);
+    
+    currentStep = step;
 }
 
-function updateProgress() {
-    // Update step circles
-    document.querySelectorAll('.step').forEach((step, index) => {
-        const stepNum = index + 1;
-        step.classList.remove('active', 'completed');
-        
-        if (stepNum < currentStep) {
-            step.classList.add('completed');
-            step.querySelector('.step-circle').innerHTML = '✓';
-        } else if (stepNum === currentStep) {
-            step.classList.add('active');
-            step.querySelector('.step-circle').innerHTML = stepNum;
-        } else {
-            step.querySelector('.step-circle').innerHTML = stepNum;
+function updateProgressIndicators(step) {
+    for (let i = 1; i <= totalSteps; i++) {
+        const indicator = document.querySelector(`.step-indicator[data-step="${i}"]`);
+        if (indicator) {
+            if (i < step) {
+                indicator.classList.add('completed');
+                indicator.classList.remove('active');
+            } else if (i === step) {
+                indicator.classList.add('active');
+                indicator.classList.remove('completed');
+            } else {
+                indicator.classList.remove('active', 'completed');
+            }
         }
-    });
+    }
+}
+
+function updateButtons(step) {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
     
-    // Update progress line
-    const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-    document.getElementById('progressLine').style.width = progressPercentage + '%';
+    if (prevBtn) {
+        prevBtn.style.display = step === 1 ? 'none' : 'inline-block';
+    }
+    
+    if (nextBtn) {
+        nextBtn.style.display = step === totalSteps ? 'none' : 'inline-block';
+    }
+    
+    if (submitBtn) {
+        submitBtn.style.display = step === totalSteps ? 'inline-block' : 'none';
+    }
+}
+
+function handleNext() {
+    if (validateStep(currentStep)) {
+        if (currentStep < totalSteps) {
+            showStep(currentStep + 1);
+        }
+    }
+}
+
+function handlePrevious() {
+    if (currentStep > 1) {
+        showStep(currentStep - 1);
+    }
 }
 
 function validateStep(step) {
-    const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
-    const inputs = stepElement.querySelectorAll('input[required], select[required], textarea[required]');
+    const stepElement = document.getElementById(`step${step}`);
+    if (!stepElement) return true;
+    
+    const requiredFields = stepElement.querySelectorAll('[required]');
     let isValid = true;
     
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.style.borderColor = '#ef4444';
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('error');
             isValid = false;
         } else {
-            input.style.borderColor = '';
+            field.classList.remove('error');
         }
     });
-    
-    // Additional validations
-    if (step === 1) {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        if (password !== confirmPassword) {
-            showAlert('error', 'Passwords do not match');
-            return false;
-        }
-        
-        if (password.length < 8) {
-            showAlert('error', 'Password must be at least 8 characters long');
-            return false;
-        }
-        
-        const email = document.getElementById('email').value;
-        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-            showAlert('error', 'Please enter a valid email address');
-            return false;
-        }
-    }
-    
-    if (step === 4) {
-        const accountNumber = document.getElementById('accountNumber').value;
-        const confirmAccountNumber = document.getElementById('confirmAccountNumber').value;
-        
-        if (accountNumber !== confirmAccountNumber) {
-            showAlert('error', 'Account numbers do not match');
-            return false;
-        }
-    }
-    
-    if (step === 5) {
-        const idProofFile = document.getElementById('idProofFile').files[0];
-        const addressProofFile = document.getElementById('addressProofFile').files[0];
-        const panCardFile = document.getElementById('panCardFile').files[0];
-        const bankProofFile = document.getElementById('bankProofFile').files[0];
-        
-        if (!idProofFile || !addressProofFile || !panCardFile || !bankProofFile) {
-            showAlert('error', 'Please upload all required documents');
-            return false;
-        }
-    }
-    
-    if (step === 6) {
-        const termsAccept = document.getElementById('termsAccept').checked;
-        const dataConsent = document.getElementById('dataConsent').checked;
-        const accuracyConfirm = document.getElementById('accuracyConfirm').checked;
-        
-        if (!termsAccept || !dataConsent || !accuracyConfirm) {
-            showAlert('error', 'Please accept all required terms and conditions');
-            return false;
-        }
-    }
     
     if (!isValid) {
         showAlert('error', 'Please fill in all required fields');
@@ -168,146 +130,115 @@ function validateStep(step) {
     return isValid;
 }
 
-function saveStepData(step) {
-    const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
-    const inputs = stepElement.querySelectorAll('input, select, textarea');
-    
-    inputs.forEach(input => {
-        if (input.type === 'checkbox') {
-            formData[input.name] = input.checked;
-        } else if (input.type === 'file') {
-            formData[input.name] = input.files[0];
-        } else {
-            formData[input.name] = input.value;
+function handleSameAddress(e) {
+    const businessAddress = document.getElementById('businessAddress');
+    if (businessAddress) {
+        businessAddress.style.display = e.target.checked ? 'none' : 'block';
+    }
+}
+
+async function handleSubmit() {
+    // Validate all steps
+    for (let i = 1; i <= totalSteps; i++) {
+        if (!validateStep(i)) {
+            showStep(i);
+            return;
         }
-    });
-}
-
-function setupFileUpload(inputId, previewId) {
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
-    
-    input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file size (5MB max)
-            if (file.size > 5 * 1024 * 1024) {
-                showAlert('error', 'File size should not exceed 5MB');
-                input.value = '';
-                return;
-            }
-            
-            // Show preview
-            preview.innerHTML = `
-                <div class="uploaded-file">
-                    <span class="uploaded-file-name">📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</span>
-                    <span class="remove-file" onclick="removeFile('${inputId}', '${previewId}')">×</span>
-                </div>
-            `;
-        }
-    });
-}
-
-function removeFile(inputId, previewId) {
-    document.getElementById(inputId).value = '';
-    document.getElementById(previewId).innerHTML = '';
-}
-
-function showReviewSummary() {
-    const summary = document.getElementById('reviewSummary');
-    
-    summary.innerHTML = `
-        <h3 style="margin-bottom: 20px; font-size: 18px;">Application Summary</h3>
-        
-        <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 14px; color: var(--slate-11); margin-bottom: 8px;">Personal Information</h4>
-            <p style="margin: 4px 0;"><strong>Name:</strong> ${formData.firstName || ''} ${formData.lastName || ''}</p>
-            <p style="margin: 4px 0;"><strong>Email:</strong> ${formData.email || ''}</p>
-            <p style="margin: 4px 0;"><strong>Phone:</strong> ${formData.phone || ''}</p>
-            <p style="margin: 4px 0;"><strong>Date of Birth:</strong> ${formData.dateOfBirth || ''}</p>
-        </div>
-        
-        <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 14px; color: var(--slate-11); margin-bottom: 8px;">Business Details</h4>
-            <p style="margin: 4px 0;"><strong>Business Name:</strong> ${formData.businessName || ''}</p>
-            <p style="margin: 4px 0;"><strong>Business Type:</strong> ${formData.businessType || ''}</p>
-            <p style="margin: 4px 0;"><strong>Category:</strong> ${formData.businessCategory || ''}</p>
-            <p style="margin: 4px 0;"><strong>PAN:</strong> ${formData.pan || ''}</p>
-            ${formData.gst ? `<p style="margin: 4px 0;"><strong>GST:</strong> ${formData.gst}</p>` : ''}
-        </div>
-        
-        <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 14px; color: var(--slate-11); margin-bottom: 8px;">Address</h4>
-            <p style="margin: 4px 0;">${formData.address1 || ''}, ${formData.address2 || ''}</p>
-            <p style="margin: 4px 0;">${formData.city || ''}, ${formData.state || ''} - ${formData.pincode || ''}</p>
-            <p style="margin: 4px 0;">${formData.country || ''}</p>
-        </div>
-        
-        <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 14px; color: var(--slate-11); margin-bottom: 8px;">Bank Details</h4>
-            <p style="margin: 4px 0;"><strong>Account Holder:</strong> ${formData.accountHolderName || ''}</p>
-            <p style="margin: 4px 0;"><strong>Account Number:</strong> ****${formData.accountNumber ? formData.accountNumber.slice(-4) : ''}</p>
-            <p style="margin: 4px 0;"><strong>IFSC:</strong> ${formData.ifscCode || ''}</p>
-            <p style="margin: 4px 0;"><strong>Bank:</strong> ${formData.bankName || ''}</p>
-            ${formData.upiId ? `<p style="margin: 4px 0;"><strong>UPI ID:</strong> ${formData.upiId}</p>` : ''}
-        </div>
-        
-        <div>
-            <h4 style="font-size: 14px; color: var(--slate-11); margin-bottom: 8px;">Documents Uploaded</h4>
-            <p style="margin: 4px 0;">✓ Identity Proof</p>
-            <p style="margin: 4px 0;">✓ Address Proof</p>
-            <p style="margin: 4px 0;">✓ PAN Card</p>
-            <p style="margin: 4px 0;">✓ Bank Account Proof</p>
-            ${formData.businessDocFile ? '<p style="margin: 4px 0;">✓ Business Registration Document</p>' : ''}
-        </div>
-    `;
-}
-
-async function submitForm() {
-    // Show spinner
-    document.getElementById('spinner').classList.add('show');
-    
-    // Create FormData object
-    const submitData = new FormData();
-    
-    // Add all form data
-    for (const key in formData) {
-        submitData.append(key, formData[key]);
     }
     
-    try {
-        // Simulate API call (replace with actual API endpoint)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    // Check terms acceptance
+    const termsCheckbox = document.getElementById('termsAccept');
+    if (termsCheckbox && !termsCheckbox.checked) {
+        showAlert('error', 'Please accept the Terms & Conditions');
+        return;
+    }
+    
+    // Show loading
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+    }
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Get form data
+        const formData = collectFormData();
         
-        // In production, uncomment this:
-        // const response = await fetch('api/register.php', {
-        //     method: 'POST',
-        //     body: submitData
-        // });
-        // const data = await response.json();
+        // Store in localStorage (demo)
+        const merchantId = 'mer_' + Date.now();
+        localStorage.setItem('pendingMerchant', JSON.stringify({
+            id: merchantId,
+            ...formData,
+            status: 'pending',
+            created_at: new Date().toISOString()
+        }));
         
-        document.getElementById('spinner').classList.remove('show');
+        showAlert('success', 'Registration submitted successfully! Redirecting...');
         
-        // Show success message
-        showAlert('success', 'Application submitted successfully! You will receive a confirmation email shortly.');
-        
-        // Redirect after 3 seconds
         setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 3000);
+            window.location.href = 'login.html?registered=true';
+        }, 2000);
+    }, 1500);
+}
+
+function collectFormData() {
+    return {
+        // Personal Info
+        firstName: document.getElementById('firstName')?.value || '',
+        lastName: document.getElementById('lastName')?.value || '',
+        email: document.getElementById('email')?.value || '',
+        phone: document.getElementById('phone')?.value || '',
+        dob: document.getElementById('dob')?.value || '',
+        gender: document.getElementById('gender')?.value || '',
         
-    } catch (error) {
-        document.getElementById('spinner').classList.remove('show');
-        showAlert('error', 'An error occurred. Please try again.');
-    }
+        // Business Details
+        businessType: document.getElementById('businessType')?.value || '',
+        businessName: document.getElementById('businessName')?.value || '',
+        tradeName: document.getElementById('tradeName')?.value || '',
+        businessCategory: document.getElementById('businessCategory')?.value || '',
+        website: document.getElementById('website')?.value || '',
+        gstNumber: document.getElementById('gstNumber')?.value || '',
+        panNumber: document.getElementById('panNumber')?.value || '',
+        
+        // Address
+        address1: document.getElementById('address1')?.value || '',
+        address2: document.getElementById('address2')?.value || '',
+        city: document.getElementById('city')?.value || '',
+        state: document.getElementById('state')?.value || '',
+        pincode: document.getElementById('pincode')?.value || '',
+        country: document.getElementById('country')?.value || '',
+        
+        // Bank Details
+        accountHolder: document.getElementById('accountHolder')?.value || '',
+        accountNumber: document.getElementById('accountNumber')?.value || '',
+        ifscCode: document.getElementById('ifscCode')?.value || '',
+        bankName: document.getElementById('bankName')?.value || '',
+        branchName: document.getElementById('branchName')?.value || '',
+        accountType: document.getElementById('accountType')?.value || '',
+        upiId: document.getElementById('upiId')?.value || ''
+    };
 }
 
 function showAlert(type, message) {
-    const alert = document.getElementById('alertMessage');
-    alert.className = `alert alert-${type} show`;
-    alert.textContent = message;
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = message;
+    alertDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(alertDiv);
     
     setTimeout(() => {
-        alert.classList.remove('show');
-    }, 5000);
+        alertDiv.remove();
+    }, 3000);
 }

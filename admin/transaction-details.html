@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details - PayMe 2D Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .admin-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .admin-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        
+        .admin-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .transaction-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .transaction-id {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .timeline {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        
+        .timeline h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 30px;
+            bottom: -20px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        
+        .timeline-item:last-child:before {
+            display: none;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-time {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin: 5px 0;
+        }
+        
+        .timeline-desc {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Navigation -->
+    <nav class="admin-nav">
+        <div class="container">
+            <a href="dashboard.html" class="admin-brand">🔐 PayMe 2D Admin</a>
+            <ul class="admin-menu">
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="users.html">👥 Users</a></li>
+                <li><a href="merchants.html">🏪 Merchants</a></li>
+                <li><a href="transactions.html">💳 Transactions</a></li>
+                <li><a href="settings.html">⚙️ Settings</a></li>
+                <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
+        <div class="container">
+            <a href="transactions.html" class="back-btn">← Back to Transactions</a>
+
+            <!-- Transaction Header -->
+            <div class="transaction-header">
+                <div class="transaction-id">Transaction #TXN123456789</div>
+                <span class="badge badge-success">Success</span>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="downloadReceipt()">📥 Download Receipt</button>
+                    <button class="btn btn-warning" onclick="initiateRefund()">💰 Refund</button>
+                    <button class="btn btn-danger" onclick="reportFraud()">⚠️ Report Fraud</button>
+                </div>
+            </div>
+
+            <!-- Transaction Details Grid -->
+            <div class="info-grid">
+                <!-- Payment Information -->
+                <div class="info-card">
+                    <h3>💳 Payment Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Amount</span>
+                        <span class="info-value">₹1,000.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Currency</span>
+                        <span class="info-value">INR</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Payment Method</span>
+                        <span class="info-value">Credit Card</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Card Number</span>
+                        <span class="info-value">**** **** **** 1111</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Card Type</span>
+                        <span class="info-value">Visa</span>
+                    </div>
+                </div>
+
+                <!-- Merchant Information -->
+                <div class="info-card">
+                    <h3>🏪 Merchant Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Merchant Name</span>
+                        <span class="info-value">Test Business</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Merchant ID</span>
+                        <span class="info-value">MERCH001</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">merchant@test.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">+91 98765 43210</span>
+                    </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="info-card">
+                    <h3>👤 Customer Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Name</span>
+                        <span class="info-value">John Doe</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">customer@example.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">+91 98765 43211</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">IP Address</span>
+                        <span class="info-value">192.168.1.1</span>
+                    </div>
+                </div>
+
+                <!-- Transaction Status -->
+                <div class="info-card">
+                    <h3>📊 Transaction Status</h3>
+                    <div class="info-item">
+                        <span class="info-label">Status</span>
+                        <span class="info-value">Success</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Gateway</span>
+                        <span class="info-value">Razorpay</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Gateway TXN ID</span>
+                        <span class="info-value">pay_xyz123456</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Created At</span>
+                        <span class="info-value">Oct 4, 2025 6:30 AM</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Completed At</span>
+                        <span class="info-value">Oct 4, 2025 6:31 AM</span>
+                    </div>
+                </div>
+
+                <!-- Fee Information -->
+                <div class="info-card">
+                    <h3>💰 Fee Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Transaction Fee</span>
+                        <span class="info-value">₹20.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Gateway Fee</span>
+                        <span class="info-value">₹10.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">GST</span>
+                        <span class="info-value">₹5.40</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Net Amount</span>
+                        <span class="info-value">₹964.60</span>
+                    </div>
+                </div>
+
+                <!-- Settlement Information -->
+                <div class="info-card">
+                    <h3>🏦 Settlement Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Settlement Status</span>
+                        <span class="info-value">Pending</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Settlement Date</span>
+                        <span class="info-value">Oct 6, 2025</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Settlement Amount</span>
+                        <span class="info-value">₹964.60</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Bank Account</span>
+                        <span class="info-value">**** **** 1234</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Timeline -->
+            <div class="timeline">
+                <h3>📅 Transaction Timeline</h3>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:30:00 AM</div>
+                        <div class="timeline-title">Transaction Initiated</div>
+                        <div class="timeline-desc">Customer initiated payment of ₹1,000.00</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:30:15 AM</div>
+                        <div class="timeline-title">Payment Gateway Request</div>
+                        <div class="timeline-desc">Request sent to Razorpay gateway</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:30:45 AM</div>
+                        <div class="timeline-title">Card Authorized</div>
+                        <div class="timeline-desc">Card authorization successful</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:31:00 AM</div>
+                        <div class="timeline-title">Payment Captured</div>
+                        <div class="timeline-desc">Payment captured successfully</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:31:05 AM</div>
+                        <div class="timeline-title">Webhook Sent</div>
+                        <div class="timeline-desc">Success webhook sent to merchant</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">Oct 4, 2025 6:31:10 AM</div>
+                        <div class="timeline-title">Transaction Completed</div>
+                        <div class="timeline-desc">Transaction completed successfully</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Check if admin is logged in
+        if (!localStorage.getItem('isAdminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        function downloadReceipt() {
+            alert('Downloading receipt - Feature coming soon!');
+        }
+
+        function initiateRefund() {
+            const amount = prompt('Enter refund amount (₹):');
+            if (amount) {
+                if (confirm(`Refund ₹${amount} to customer?`)) {
+                    alert('Refund initiated successfully!');
+                }
+            }
+        }
+
+        function reportFraud() {
+            if (confirm('Report this transaction as fraudulent?')) {
+                alert('Transaction reported. Investigation initiated.');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

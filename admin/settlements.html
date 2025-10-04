@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - PayMe 2D Admin</title>
+    <title>Settlements - PayMe 2D Admin</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -53,6 +53,43 @@
             margin-bottom: 30px;
         }
         
+        .btn-process {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+        }
+        
         .search-filter {
             display: flex;
             gap: 15px;
@@ -75,18 +112,6 @@
             border-radius: 8px;
             font-size: 14px;
             background: white;
-        }
-        
-        .btn-add {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
         }
         
         .table-container {
@@ -165,41 +190,9 @@
             color: white;
         }
         
-        .btn-edit {
+        .btn-process-sm {
             background: #28a745;
             color: white;
-        }
-        
-        .btn-block {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid #667eea;
-        }
-        
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
         }
     </style>
 </head>
@@ -224,94 +217,69 @@
         <div class="container">
             <div class="page-header">
                 <div>
-                    <h1 style="font-size: 32px; margin-bottom: 8px;">👥 User Management</h1>
-                    <p style="color: #666;">Manage all users and their permissions</p>
+                    <h1 style="font-size: 32px; margin-bottom: 8px;">💰 Settlements Management</h1>
+                    <p style="color: #666;">Manage merchant settlements and payouts</p>
                 </div>
-                <button class="btn-add" onclick="addUser()">➕ Add New User</button>
+                <button class="btn-process" onclick="processSettlements()">⚡ Process All Pending</button>
             </div>
 
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Total Users</h3>
-                    <div class="value">2</div>
+                    <h3>Pending Settlements</h3>
+                    <div class="value" style="color: #ffc107;">₹0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Active Users</h3>
-                    <div class="value">2</div>
+                    <h3>Processed Today</h3>
+                    <div class="value" style="color: #28a745;">₹0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Admins</h3>
-                    <div class="value">1</div>
+                    <h3>Total This Month</h3>
+                    <div class="value">₹0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Merchants</h3>
-                    <div class="value">1</div>
+                    <h3>Failed Settlements</h3>
+                    <div class="value" style="color: #dc3545;">0</div>
                 </div>
             </div>
 
             <!-- Search and Filter -->
             <div class="search-filter">
-                <input type="text" class="search-box" placeholder="🔍 Search users by name, email, or ID..." id="searchBox">
-                <select class="filter-select" id="roleFilter">
-                    <option value="">All Roles</option>
-                    <option value="admin">Admin</option>
-                    <option value="merchant">Merchant</option>
-                    <option value="user">User</option>
-                </select>
+                <input type="text" class="search-box" placeholder="🔍 Search by settlement ID or merchant..." id="searchBox">
                 <select class="filter-select" id="statusFilter">
                     <option value="">All Status</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="blocked">Blocked</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
                 </select>
+                <select class="filter-select" id="merchantFilter">
+                    <option value="">All Merchants</option>
+                    <option value="1">Test Business</option>
+                </select>
+                <input type="date" class="filter-select" id="dateFrom" placeholder="From Date">
+                <input type="date" class="filter-select" id="dateTo" placeholder="To Date">
             </div>
 
-            <!-- Users Table -->
+            <!-- Settlements Table -->
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Settlement ID</th>
+                            <th>Merchant</th>
+                            <th>Amount</th>
+                            <th>Transactions</th>
+                            <th>Bank Account</th>
                             <th>Status</th>
-                            <th>Joined Date</th>
-                            <th>Last Login</th>
+                            <th>Settlement Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="usersTableBody">
+                    <tbody id="settlementsTableBody">
                         <tr>
-                            <td>1</td>
-                            <td>Admin User</td>
-                            <td>admin@payme2d.com</td>
-                            <td><span class="badge badge-danger">Admin</span></td>
-                            <td><span class="badge badge-success">Active</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td>Just now</td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="btn-sm btn-view" onclick="viewUser(1)">👁️ View</button>
-                                    <button class="btn-sm btn-edit" onclick="editUser(1)">✏️ Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Test Merchant</td>
-                            <td>merchant@test.com</td>
-                            <td><span class="badge badge-info">Merchant</span></td>
-                            <td><span class="badge badge-success">Active</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td>2 hours ago</td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="btn-sm btn-view" onclick="viewUser(2)">👁️ View</button>
-                                    <button class="btn-sm btn-edit" onclick="editUser(2)">✏️ Edit</button>
-                                    <button class="btn-sm btn-block" onclick="blockUser(2)">🚫 Block</button>
-                                </div>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                                No settlements found
                             </td>
                         </tr>
                     </tbody>
@@ -326,22 +294,20 @@
             window.location.href = 'login.html';
         }
 
-        function viewUser(id) {
-            window.location.href = `user-details.html?id=${id}`;
-        }
-
-        function editUser(id) {
-            alert(`Edit user ${id} - Feature coming soon!`);
-        }
-
-        function blockUser(id) {
-            if (confirm('Are you sure you want to block this user?')) {
-                alert(`User ${id} blocked successfully!`);
+        function processSettlements() {
+            if (confirm('Process all pending settlements?')) {
+                alert('Processing settlements - Feature coming soon!');
             }
         }
 
-        function addUser() {
-            alert('Add new user - Feature coming soon!');
+        function viewSettlement(id) {
+            alert(`View settlement ${id} - Feature coming soon!`);
+        }
+
+        function processSettlement(id) {
+            if (confirm(`Process settlement ${id}?`)) {
+                alert(`Settlement ${id} processed successfully!`);
+            }
         }
 
         function logout() {
@@ -354,7 +320,7 @@
         // Search functionality
         document.getElementById('searchBox').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#usersTableBody tr');
+            const rows = document.querySelectorAll('#settlementsTableBody tr');
             
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();

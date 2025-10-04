@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions - PayMe 2D Gateway</title>
+    <title>Disputes - PayMe 2D Gateway</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -73,6 +73,14 @@
             color: #333;
         }
         
+        .alert-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
         .search-filter {
             display: flex;
             gap: 15px;
@@ -95,16 +103,6 @@
             border-radius: 8px;
             font-size: 14px;
             background: white;
-        }
-        
-        .btn-export {
-            padding: 12px 24px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
         }
         
         .table-container {
@@ -143,11 +141,6 @@
             font-weight: 600;
         }
         
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
-        
         .badge-warning {
             background: #fff3cd;
             color: #856404;
@@ -158,6 +151,11 @@
             color: #721c24;
         }
         
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
         .btn-sm {
             padding: 6px 12px;
             border: none;
@@ -166,8 +164,6 @@
             cursor: pointer;
             background: #007bff;
             color: white;
-            text-decoration: none;
-            display: inline-block;
         }
     </style>
 </head>
@@ -188,57 +184,68 @@
 
     <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
         <div class="container">
-            <h1 style="font-size: 32px; margin-bottom: 8px;">💰 All Transactions</h1>
-            <p style="color: #666; margin-bottom: 30px;">View and manage all your payment transactions</p>
+            <h1 style="font-size: 32px; margin-bottom: 8px;">⚠️ Disputes & Chargebacks</h1>
+            <p style="color: #666; margin-bottom: 30px;">Manage payment disputes and chargeback requests</p>
+
+            <div class="alert-box">
+                <strong>⚠️ Important:</strong> Respond to disputes within 7 days to avoid automatic acceptance. Upload evidence to support your case.
+            </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Total Transactions</h3>
+                    <h3>Total Disputes</h3>
                     <div class="value">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Successful</h3>
+                    <h3>Open Disputes</h3>
+                    <div class="value" style="color: #ffc107;">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Won</h3>
                     <div class="value" style="color: #28a745;">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Failed</h3>
+                    <h3>Lost</h3>
                     <div class="value" style="color: #dc3545;">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Total Amount</h3>
-                    <div class="value">₹0.00</div>
                 </div>
             </div>
 
             <div class="search-filter">
-                <input type="text" class="search-box" placeholder="🔍 Search by transaction ID, customer, or amount..." id="searchBox">
+                <input type="text" class="search-box" placeholder="🔍 Search by dispute ID or transaction..." id="searchBox">
                 <select class="filter-select">
                     <option value="">All Status</option>
-                    <option value="success">Success</option>
-                    <option value="pending">Pending</option>
-                    <option value="failed">Failed</option>
+                    <option value="open">Open</option>
+                    <option value="under_review">Under Review</option>
+                    <option value="won">Won</option>
+                    <option value="lost">Lost</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="chargeback">Chargeback</option>
+                    <option value="inquiry">Inquiry</option>
+                    <option value="fraud">Fraud</option>
                 </select>
                 <input type="date" class="filter-select">
-                <button class="btn-export">📥 Export CSV</button>
             </div>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
+                            <th>Dispute ID</th>
                             <th>Transaction ID</th>
-                            <th>Customer</th>
                             <th>Amount</th>
-                            <th>Payment Method</th>
+                            <th>Type</th>
+                            <th>Reason</th>
                             <th>Status</th>
-                            <th>Date</th>
+                            <th>Deadline</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
-                                No transactions yet. Start accepting payments!
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                                No disputes yet. This is good news! 🎉
                             </td>
                         </tr>
                     </tbody>

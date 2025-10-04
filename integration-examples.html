@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayMe 2D - Integration Examples</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container" style="margin-top: 50px;">
+        <h1>🚀 PayMe 2D Gateway - Integration Examples</h1>
+        
+        <!-- JavaScript Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>1️⃣ JavaScript Integration (Easiest)</h2>
+            </div>
+            <div class="card-body">
+                <h3>Step 1: Include the SDK</h3>
+                <pre><code>&lt;script src="https://checkout.payme2d.com/v1/payme2d-sdk.js"&gt;&lt;/script&gt;</code></pre>
+                
+                <h3>Step 2: Initialize and Create Payment</h3>
+                <pre><code>&lt;script&gt;
+const payme = new PayMe2D('pk_test_your_api_key');
+
+// Create payment button
+document.getElementById('payButton').addEventListener('click', () => {
+    payme.checkout({
+        amount: 1000,
+        currency: 'INR',
+        customer_email: 'customer@example.com',
+        customer_phone: '+919876543210',
+        description: 'Order #12345',
+        onSuccess: function(payment) {
+            console.log('Payment successful!', payment);
+            alert('Payment completed! Transaction ID: ' + payment.transaction_id);
+        },
+        onError: function(error) {
+            console.error('Payment failed:', error);
+            alert('Payment failed: ' + error.message);
+        },
+        onClose: function() {
+            console.log('Checkout closed');
+        }
+    });
+});
+&lt;/script&gt;</code></pre>
+
+                <h3>Try it now:</h3>
+                <button id="demoPayButton" class="btn btn-primary">Pay ₹1,000</button>
+            </div>
+        </div>
+
+        <!-- HTML Form Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>2️⃣ HTML Form Integration (No Code)</h2>
+            </div>
+            <div class="card-body">
+                <pre><code>&lt;form action="https://checkout.payme2d.com/pay" method="POST"&gt;
+    &lt;input type="hidden" name="api_key" value="pk_test_your_api_key"&gt;
+    &lt;input type="hidden" name="amount" value="1000"&gt;
+    &lt;input type="hidden" name="currency" value="INR"&gt;
+    &lt;input type="hidden" name="customer_email" value="customer@example.com"&gt;
+    &lt;input type="hidden" name="description" value="Order #12345"&gt;
+    &lt;input type="hidden" name="redirect_url" value="https://yoursite.com/success"&gt;
+    &lt;button type="submit"&gt;Pay Now&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- REST API Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>3️⃣ REST API Integration (Backend)</h2>
+            </div>
+            <div class="card-body">
+                <h3>Create Payment</h3>
+                <pre><code>POST https://api.payme2d.com/v1/payments
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "currency": "INR",
+  "customer_email": "customer@example.com",
+  "customer_phone": "+919876543210",
+  "description": "Order #12345",
+  "redirect_url": "https://yoursite.com/success",
+  "webhook_url": "https://yoursite.com/webhook"
+}
+
+Response:
+{
+  "success": true,
+  "transaction_id": "TXN123456789",
+  "checkout_url": "https://checkout.payme2d.com/pay/TXN123456789",
+  "status": "pending"
+}</code></pre>
+
+                <h3>Get Payment Status</h3>
+                <pre><code>GET https://api.payme2d.com/v1/payments/TXN123456789
+Authorization: Bearer YOUR_API_KEY</code></pre>
+
+                <h3>Refund Payment</h3>
+                <pre><code>POST https://api.payme2d.com/v1/refunds
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "transaction_id": "TXN123456789",
+  "amount": 1000,
+  "reason": "Customer requested refund"
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- WordPress Plugin -->
+        <div class="card">
+            <div class="card-header">
+                <h2>4️⃣ WordPress Integration</h2>
+            </div>
+            <div class="card-body">
+                <h3>Using Shortcode</h3>
+                <pre><code>[payme2d amount="1000" currency="INR" description="Product Purchase"]</code></pre>
+                
+                <h3>Using PHP</h3>
+                <pre><code>&lt;?php
+// Add to functions.php
+function payme2d_payment_button() {
+    return '&lt;button onclick="payWithPayMe2D()"&gt;Pay Now&lt;/button&gt;
+    &lt;script&gt;
+    function payWithPayMe2D() {
+        const payme = new PayMe2D("' . get_option('payme2d_api_key') . '");
+        payme.checkout({
+            amount: 1000,
+            currency: "INR",
+            customer_email: "' . wp_get_current_user()->user_email . '",
+            onSuccess: function(payment) {
+                window.location.href = "/thank-you";
+            }
+        });
+    }
+    &lt;/script&gt;';
+}
+add_shortcode('payme2d_button', 'payme2d_payment_button');
+?&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- WooCommerce Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>5️⃣ WooCommerce Integration</h2>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>Download PayMe 2D WooCommerce Plugin</li>
+                    <li>Install and activate the plugin</li>
+                    <li>Go to WooCommerce → Settings → Payments</li>
+                    <li>Enable PayMe 2D Gateway</li>
+                    <li>Enter your API keys</li>
+                    <li>Save changes</li>
+                </ol>
+                <button class="btn btn-secondary">📥 Download Plugin</button>
+            </div>
+        </div>
+
+        <!-- Shopify Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>6️⃣ Shopify Integration</h2>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>Install PayMe 2D app from Shopify App Store</li>
+                    <li>Connect your PayMe 2D account</li>
+                    <li>Configure payment settings</li>
+                    <li>Enable PayMe 2D at checkout</li>
+                </ol>
+                <button class="btn btn-secondary">🛍️ Install Shopify App</button>
+            </div>
+        </div>
+
+        <!-- Mobile App Integration -->
+        <div class="card">
+            <div class="card-header">
+                <h2>7️⃣ Mobile App Integration</h2>
+            </div>
+            <div class="card-body">
+                <h3>React Native</h3>
+                <pre><code>import PayMe2D from 'payme2d-react-native';
+
+const payment = await PayMe2D.checkout({
+  apiKey: 'pk_test_your_api_key',
+  amount: 1000,
+  currency: 'INR',
+  customerEmail: 'customer@example.com'
+});
+
+if (payment.status === 'success') {
+  console.log('Payment successful!');
+}</code></pre>
+
+                <h3>Flutter</h3>
+                <pre><code>import 'package:payme2d/payme2d.dart';
+
+final payment = await PayMe2D.checkout(
+  apiKey: 'pk_test_your_api_key',
+  amount: 1000,
+  currency: 'INR',
+  customerEmail: 'customer@example.com',
+);
+
+if (payment.status == 'success') {
+  print('Payment successful!');
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="payme2d-sdk.js"></script>
+    <script>
+        // Demo payment button
+        document.getElementById('demoPayButton').addEventListener('click', () => {
+            // For demo, redirect to checkout page
+            window.location.href = 'checkout.html';
+        });
+    </script>
+</body>
+</html>
