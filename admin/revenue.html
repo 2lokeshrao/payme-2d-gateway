@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Analytics - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 10px; }
+        .stat-card h3 { font-size: 2em; margin-bottom: 5px; }
+        .stat-card p { opacity: 0.9; }
+        .stat-card small { display: block; margin-top: 10px; opacity: 0.8; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters select, .filters input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn:hover { opacity: 0.9; }
+        .chart-placeholder { background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; padding: 60px; text-align: center; color: #6c757d; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; font-weight: 600; color: #333; }
+        tr:hover { background: #f8f9fa; }
+        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-chart-line"></i> Revenue Analytics</h1>
+        <p>Track and analyze revenue performance</p>
+    </div>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>₹12,45,670</h3>
+                <p><i class="fas fa-rupee-sign"></i> Total Revenue</p>
+                <small>↑ 23% from last month</small>
+            </div>
+            <div class="stat-card">
+                <h3>₹1,24,560</h3>
+                <p><i class="fas fa-calendar-day"></i> Today's Revenue</p>
+                <small>↑ 15% from yesterday</small>
+            </div>
+            <div class="stat-card">
+                <h3>₹4,567</h3>
+                <p><i class="fas fa-chart-bar"></i> Average Transaction</p>
+                <small>↑ 8% from last month</small>
+            </div>
+            <div class="stat-card">
+                <h3>2,847</h3>
+                <p><i class="fas fa-receipt"></i> Total Transactions</p>
+                <small>↑ 18% from last month</small>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-filter"></i> Filter Revenue Data</h2>
+            <div class="filters">
+                <select>
+                    <option>Last 7 Days</option>
+                    <option>Last 30 Days</option>
+                    <option>Last 3 Months</option>
+                    <option>Last 6 Months</option>
+                    <option>Last Year</option>
+                    <option>Custom Range</option>
+                </select>
+                <input type="date" placeholder="From Date">
+                <input type="date" placeholder="To Date">
+                <button class="btn"><i class="fas fa-sync"></i> Update</button>
+                <button class="btn"><i class="fas fa-download"></i> Export Report</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-chart-area"></i> Revenue Trend</h2>
+            <div class="chart-placeholder">
+                <i class="fas fa-chart-line" style="font-size: 3em; margin-bottom: 15px;"></i>
+                <p>Revenue trend chart will be displayed here</p>
+                <small>Integrate Chart.js or similar library for visualization</small>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-credit-card"></i> Revenue by Payment Method</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment Method</th>
+                        <th>Transactions</th>
+                        <th>Revenue</th>
+                        <th>Percentage</th>
+                        <th>Growth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-mobile-alt"></i> UPI</td>
+                        <td>1,234</td>
+                        <td>₹5,67,890</td>
+                        <td>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
+                            45%
+                        </td>
+                        <td style="color: #28a745;">↑ 23%</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-credit-card"></i> Cards</td>
+                        <td>856</td>
+                        <td>₹3,89,450</td>
+                        <td>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 31%;"></div></div>
+                            31%
+                        </td>
+                        <td style="color: #28a745;">↑ 18%</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-university"></i> Net Banking</td>
+                        <td>567</td>
+                        <td>₹2,12,340</td>
+                        <td>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 17%;"></div></div>
+                            17%
+                        </td>
+                        <td style="color: #28a745;">↑ 12%</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fab fa-bitcoin"></i> Cryptocurrency</td>
+                        <td>190</td>
+                        <td>₹75,990</td>
+                        <td>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 7%;"></div></div>
+                            7%
+                        </td>
+                        <td style="color: #28a745;">↑ 35%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-users"></i> Top Revenue Generating Merchants</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Merchant</th>
+                        <th>Transactions</th>
+                        <th>Revenue</th>
+                        <th>Commission Earned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tech Solutions Pvt Ltd</td>
+                        <td>456</td>
+                        <td>₹2,34,560</td>
+                        <td>₹4,691</td>
+                    </tr>
+                    <tr>
+                        <td>E-commerce Store</td>
+                        <td>389</td>
+                        <td>₹1,89,450</td>
+                        <td>₹3,789</td>
+                    </tr>
+                    <tr>
+                        <td>Digital Services Inc</td>
+                        <td>312</td>
+                        <td>₹1,56,780</td>
+                        <td>₹3,136</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

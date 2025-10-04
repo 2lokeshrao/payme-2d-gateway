@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant API Keys - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn:hover { opacity: 0.9; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; font-weight: 600; color: #333; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
+        .badge-active { background: #d4edda; color: #155724; }
+        .badge-inactive { background: #f8d7da; color: #721c24; }
+        .action-btn { padding: 6px 12px; margin: 0 3px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; }
+        .view-btn { background: #007bff; color: white; }
+        .revoke-btn { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-key"></i> Merchant API Keys</h1>
+        <p>Manage merchant API keys and access tokens</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-filter"></i> Search Merchant API Keys</h2>
+            <div class="filters">
+                <input type="text" placeholder="Search by merchant name, email, or API key...">
+                <button class="btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Merchant API Keys List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Merchant ID</th>
+                        <th>Merchant Name</th>
+                        <th>API Key</th>
+                        <th>Created Date</th>
+                        <th>Last Used</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#M1001</td>
+                        <td>Tech Solutions Pvt Ltd</td>
+                        <td>pk_live_abc123...xyz789</td>
+                        <td>2025-09-15</td>
+                        <td>2025-10-04 10:30 AM</td>
+                        <td><span class="badge badge-active">Active</span></td>
+                        <td>
+                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn revoke-btn"><i class="fas fa-ban"></i> Revoke</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#M1002</td>
+                        <td>E-commerce Store</td>
+                        <td>pk_live_def456...uvw012</td>
+                        <td>2025-09-20</td>
+                        <td>2025-10-03 08:15 PM</td>
+                        <td><span class="badge badge-active">Active</span></td>
+                        <td>
+                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn revoke-btn"><i class="fas fa-ban"></i> Revoke</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#M1003</td>
+                        <td>Digital Services Inc</td>
+                        <td>pk_live_ghi789...rst345</td>
+                        <td>2025-08-10</td>
+                        <td>2025-09-28 02:45 PM</td>
+                        <td><span class="badge badge-inactive">Revoked</span></td>
+                        <td>
+                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
