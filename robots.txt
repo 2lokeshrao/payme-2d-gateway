@@ -1,0 +1,16 @@
+# robots.txt for PayMe 2D Gateway
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /reseller/
+Disallow: /api/
+Disallow: /dashboard.html
+Disallow: /settings.html
+
+# Sitemap location
+Sitemap: https://payme-gateway.lindy.site/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

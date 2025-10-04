@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Trail - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .filter-bar { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; }
+        .filter-bar select, .filter-bar input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { display: inline-block; padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .audit-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 15px; border-bottom: 1px solid #e0e0e0; color: #555; }
+        tr:hover { background: #f8f9fa; }
+        .action-badge { display: inline-block; padding: 5px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600; }
+        .action-create { background: #e8f5e9; color: #43e97b; }
+        .action-update { background: #e3f2fd; color: #2196f3; }
+        .action-delete { background: #ffebee; color: #f5576c; }
+        .action-login { background: #f3e5f5; color: #9c27b0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-shield-alt"></i> Audit Trail</h1>
+        <p>Track all administrative actions and changes</p>
+    </div>
+
+    <div class="container">
+        <div class="filter-bar">
+            <select id="actionType">
+                <option value="all">All Actions</option>
+                <option value="create">Create</option>
+                <option value="update">Update</option>
+                <option value="delete">Delete</option>
+                <option value="login">Login</option>
+            </select>
+            <select id="userFilter">
+                <option value="all">All Users</option>
+                <option value="admin">Admin</option>
+                <option value="reseller">Resellers</option>
+            </select>
+            <input type="date" id="startDate">
+            <input type="date" id="endDate">
+            <button class="btn" onclick="filterAudit()">Apply Filter</button>
+            <button class="btn" onclick="exportAudit()">Export Report</button>
+        </div>
+
+        <div class="audit-container">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-history"></i> Recent Activities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Resource</th>
+                        <th>Details</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-10-04 10:35:42</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-create">CREATE</span></td>
+                        <td>Activation Code</td>
+                        <td>Generated code ABC123XYZ for Yearly Plan</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 10:28:15</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-update">UPDATE</span></td>
+                        <td>Payment Config</td>
+                        <td>Updated UPI payment settings</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 10:15:33</td>
+                        <td>reseller@payme.com</td>
+                        <td><span class="action-badge action-login">LOGIN</span></td>
+                        <td>Reseller Panel</td>
+                        <td>Successful login with 2FA</td>
+                        <td>192.168.1.75</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 10:05:22</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-create">CREATE</span></td>
+                        <td>Subscription Plan</td>
+                        <td>Created new plan: Premium Monthly</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 09:58:45</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-delete">DELETE</span></td>
+                        <td>User Account</td>
+                        <td>Deleted inactive user: test@example.com</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 09:45:18</td>
+                        <td>reseller@payme.com</td>
+                        <td><span class="action-badge action-create">CREATE</span></td>
+                        <td>Activation Code</td>
+                        <td>Generated 10 codes for Monthly Plan</td>
+                        <td>192.168.1.75</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 09:30:55</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-update">UPDATE</span></td>
+                        <td>System Settings</td>
+                        <td>Changed email SMTP configuration</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 09:15:42</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-login">LOGIN</span></td>
+                        <td>Admin Panel</td>
+                        <td>Successful login with 2FA</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 09:05:33</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-update">UPDATE</span></td>
+                        <td>Reseller Account</td>
+                        <td>Updated commission rate to 25%</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 08:50:28</td>
+                        <td>admin@payme.com</td>
+                        <td><span class="action-badge action-create">CREATE</span></td>
+                        <td>Reseller Account</td>
+                        <td>Created new reseller: newreseller@example.com</td>
+                        <td>192.168.1.50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function filterAudit() {
+            alert('Filtering audit trail...');
+        }
+        function exportAudit() {
+            alert('Exporting audit report to CSV...');
+        }
+    </script>
+</body>
+</html>

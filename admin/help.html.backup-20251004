@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .help-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s; cursor: pointer; }
+        .help-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+        .help-card .icon { width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2em; margin: 0 auto 20px; }
+        .help-card h3 { color: #333; margin-bottom: 10px; }
+        .help-card p { color: #666; line-height: 1.6; }
+        .btn { padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; }
+        .btn:hover { opacity: 0.9; }
+        .faq-item { border-bottom: 1px solid #e0e0e0; padding: 20px 0; }
+        .faq-question { font-weight: 600; color: #333; font-size: 1.1em; margin-bottom: 10px; }
+        .faq-answer { color: #666; line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-life-ring"></i> Help & Support</h1>
+        <p>Get help with admin panel features and functionality</p>
+    </div>
+
+    <div class="container">
+        <div class="help-grid">
+            <div class="help-card">
+                <div class="icon"><i class="fas fa-book"></i></div>
+                <h3>Documentation</h3>
+                <p>Complete admin panel documentation and guides</p>
+            </div>
+            <div class="help-card">
+                <div class="icon"><i class="fas fa-video"></i></div>
+                <h3>Video Tutorials</h3>
+                <p>Watch step-by-step video tutorials</p>
+            </div>
+            <div class="help-card">
+                <div class="icon"><i class="fas fa-comments"></i></div>
+                <h3>Live Chat</h3>
+                <p>Chat with our support team in real-time</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">How do I manage user accounts?</div>
+                <div class="faq-answer">Go to Users section from the sidebar. You can view, edit, block, or delete user accounts. Use filters to search specific users.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I generate activation codes?</div>
+                <div class="faq-answer">Navigate to Activation Codes section. Select the plan type, quantity, and click "Generate Codes". Codes will be created instantly.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I view transaction details?</div>
+                <div class="faq-answer">Go to Transactions section. Click on any transaction to view complete details including user info, payment method, and status.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I configure payment methods?</div>
+                <div class="faq-answer">Visit Payment Methods section. Toggle payment methods on/off and configure settings for each method.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I manage resellers?</div>
+                <div class="faq-answer">Go to Reseller Management. You can add new resellers, set commission rates, and track their performance.</div>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="margin-bottom: 20px;">Need More Help?</h2>
+            <p style="margin-bottom: 20px; opacity: 0.9;">Contact our support team for assistance</p>
+            <a href="mailto:admin-support@payme-gateway.com" class="btn" style="background: white; color: #667eea; margin: 10px;"><i class="fas fa-envelope"></i> Email Support</a>
+            <a href="tel:+919876543210" class="btn" style="background: white; color: #667eea; margin: 10px;"><i class="fas fa-phone"></i> Call Support</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

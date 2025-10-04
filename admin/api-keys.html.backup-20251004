@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Keys - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .api-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .api-section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5em; }
+        .key-card { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #667eea; }
+        .key-card h3 { color: #333; margin-bottom: 15px; }
+        .key-display { background: #2d2d2d; color: #43e97b; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+        .btn { display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; font-size: 0.95em; margin-right: 10px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-danger { background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); }
+        .btn-secondary { background: #6c757d; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .warning-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 15px; border-bottom: 1px solid #e0e0e0; color: #555; }
+        tr:hover { background: #f8f9fa; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600; }
+        .status-active { background: #e8f5e9; color: #43e97b; }
+        .status-revoked { background: #ffebee; color: #f5576c; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-key"></i> API Keys</h1>
+        <p>Manage your API keys for integration</p>
+    </div>
+
+    <div class="container">
+        <!-- Current API Keys -->
+        <div class="api-section">
+            <h2><i class="fas fa-shield-alt"></i> Your API Keys</h2>
+            
+            <div class="warning-box">
+                <strong>⚠️ Security Warning:</strong>
+                <p>Never share your API keys publicly. Keep them secure and rotate them regularly.</p>
+            </div>
+
+            <div class="key-card">
+                <h3>Production API Key</h3>
+                <p style="color: #666; margin-bottom: 10px;">Use this key for live transactions</p>
+                <div class="key-display">
+                    <span id="prodKey">pk_live_••••••••••••••••••••••••••••••••</span>
+                    <div>
+                        <button class="btn btn-secondary" onclick="toggleKey('prodKey', 'pk_live_1234567890abcdefghijklmnopqrstuvwxyz')"><i class="fas fa-eye"></i> Show</button>
+                        <button class="btn" onclick="copyKey('pk_live_1234567890abcdefghijklmnopqrstuvwxyz')"><i class="fas fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Created: 2025-09-15 | Last used: 2025-10-04</p>
+            </div>
+
+            <div class="key-card">
+                <h3>Test API Key</h3>
+                <p style="color: #666; margin-bottom: 10px;">Use this key for testing and development</p>
+                <div class="key-display">
+                    <span id="testKey">pk_test_••••••••••••••••••••••••••••••••</span>
+                    <div>
+                        <button class="btn btn-secondary" onclick="toggleKey('testKey', 'pk_test_abcdefghijklmnopqrstuvwxyz1234567890')"><i class="fas fa-eye"></i> Show</button>
+                        <button class="btn" onclick="copyKey('pk_test_abcdefghijklmnopqrstuvwxyz1234567890')"><i class="fas fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Created: 2025-09-15 | Last used: 2025-10-03</p>
+            </div>
+
+            <button class="btn" onclick="generateNewKey()"><i class="fas fa-plus"></i> Generate New Key</button>
+            <button class="btn btn-danger" onclick="revokeKey()"><i class="fas fa-ban"></i> Revoke Key</button>
+        </div>
+
+        <!-- API Usage -->
+        <div class="api-section">
+            <h2><i class="fas fa-chart-bar"></i> API Usage Statistics</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center;">
+                    <h3 style="color: #667eea; font-size: 2em;">12,456</h3>
+                    <p style="color: #666;">Total Requests</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center;">
+                    <h3 style="color: #43e97b; font-size: 2em;">98.5%</h3>
+                    <p style="color: #666;">Success Rate</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center;">
+                    <h3 style="color: #2196f3; font-size: 2em;">145ms</h3>
+                    <p style="color: #666;">Avg Response Time</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center;">
+                    <h3 style="color: #ff9800; font-size: 2em;">234/min</h3>
+                    <p style="color: #666;">Current Rate</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Documentation -->
+        <div class="api-section">
+            <h2><i class="fas fa-book"></i> Quick Start Guide</h2>
+            
+            <div class="info-box">
+                <strong>ℹ️ Authentication:</strong>
+                <p>Include your API key in the request header:</p>
+            </div>
+
+            <div style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.9em;">
+curl -X POST https://payme-gateway.lindy.site/api/purchase \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "plan_id": "yearly",
+    "customer_email": "customer@example.com",
+    "customer_name": "John Doe"
+  }'
+            </div>
+
+            <p style="margin-top: 20px;">For complete API documentation, visit: <a href="../documentation.html" style="color: #667eea; font-weight: 600;">API Documentation</a></p>
+        </div>
+
+        <!-- API Key History -->
+        <div class="api-section">
+            <h2><i class="fas fa-history"></i> API Key History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key ID</th>
+                        <th>Type</th>
+                        <th>Created</th>
+                        <th>Last Used</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>pk_live_1234...wxyz</td>
+                        <td>Production</td>
+                        <td>2025-09-15</td>
+                        <td>2025-10-04</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9em;" onclick="revokeSpecificKey(1)">Revoke</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>pk_test_abcd...7890</td>
+                        <td>Test</td>
+                        <td>2025-09-15</td>
+                        <td>2025-10-03</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9em;" onclick="revokeSpecificKey(2)">Revoke</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>pk_live_old1...xyz9</td>
+                        <td>Production</td>
+                        <td>2025-08-01</td>
+                        <td>2025-09-14</td>
+                        <td><span class="status-badge status-revoked">Revoked</span></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        let keyVisible = {};
+
+        function toggleKey(elementId, fullKey) {
+            const element = document.getElementById(elementId);
+            if(keyVisible[elementId]) {
+                element.textContent = fullKey.substring(0, 8) + '••••••••••••••••••••••••••••••••';
+                keyVisible[elementId] = false;
+            } else {
+                element.textContent = fullKey;
+                keyVisible[elementId] = true;
+            }
+        }
+
+        function copyKey(key) {
+            navigator.clipboard.writeText(key);
+            alert('API key copied to clipboard!');
+        }
+
+        function generateNewKey() {
+            if(confirm('Generate a new API key? This will create a new key while keeping existing keys active.')) {
+                alert('New API key generated successfully!');
+                location.reload();
+            }
+        }
+
+        function revokeKey() {
+            if(confirm('Are you sure you want to revoke an API key? This action cannot be undone.')) {
+                alert('Please select a specific key from the history table to revoke.');
+            }
+        }
+
+        function revokeSpecificKey(id) {
+            if(confirm('Are you sure you want to revoke this API key? All applications using this key will stop working.')) {
+                alert('API key revoked successfully!');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

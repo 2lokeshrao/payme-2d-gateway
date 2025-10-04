@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Permissions - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters input, .filters select { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn:hover { opacity: 0.9; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; font-weight: 600; color: #333; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
+        .badge-admin { background: #dc3545; color: white; }
+        .badge-manager { background: #ffc107; color: #333; }
+        .badge-user { background: #28a745; color: white; }
+        .action-btn { padding: 6px 12px; margin: 0 3px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; }
+        .edit-btn { background: #007bff; color: white; }
+        .delete-btn { background: #dc3545; color: white; }
+        .permission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .permission-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; }
+        .toggle { width: 50px; height: 26px; background: #ccc; border-radius: 13px; position: relative; cursor: pointer; }
+        .toggle.active { background: #28a745; }
+        .toggle::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: 0.3s; }
+        .toggle.active::after { left: 27px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-user-shield"></i> User Permissions</h1>
+        <p>Manage user roles and access permissions</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-filter"></i> Search Users</h2>
+            <div class="filters">
+                <input type="text" placeholder="Search by name, email...">
+                <select>
+                    <option>All Roles</option>
+                    <option>Admin</option>
+                    <option>Manager</option>
+                    <option>User</option>
+                </select>
+                <button class="btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-users-cog"></i> User Roles & Permissions</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Last Login</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rajesh Kumar</td>
+                        <td>rajesh@example.com</td>
+                        <td><span class="badge badge-admin">Admin</span></td>
+                        <td>2025-10-04 10:30 AM</td>
+                        <td>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i> Remove</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Priya Sharma</td>
+                        <td>priya@example.com</td>
+                        <td><span class="badge badge-manager">Manager</span></td>
+                        <td>2025-10-04 09:15 AM</td>
+                        <td>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i> Remove</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Amit Patel</td>
+                        <td>amit@example.com</td>
+                        <td><span class="badge badge-user">User</span></td>
+                        <td>2025-10-03 08:45 PM</td>
+                        <td>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i> Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-key"></i> Permission Settings</h2>
+            <p style="margin-bottom: 20px; color: #666;">Configure permissions for selected user role</p>
+            
+            <div class="permission-grid">
+                <div class="permission-item">
+                    <div class="toggle active"></div>
+                    <span>View Dashboard</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle active"></div>
+                    <span>Manage Users</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle active"></div>
+                    <span>View Transactions</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle"></div>
+                    <span>Delete Transactions</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle active"></div>
+                    <span>Generate Reports</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle"></div>
+                    <span>Manage Settings</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle active"></div>
+                    <span>View Analytics</span>
+                </div>
+                <div class="permission-item">
+                    <div class="toggle"></div>
+                    <span>Manage API Keys</span>
+                </div>
+            </div>
+
+            <button class="btn" style="margin-top: 20px;"><i class="fas fa-save"></i> Save Permissions</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

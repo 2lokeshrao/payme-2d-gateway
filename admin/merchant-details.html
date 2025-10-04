@@ -3,143 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Details - PayMe 2D Admin</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Merchant Details - PayMe 2D Gateway Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .admin-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .admin-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .admin-brand {
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            text-decoration: none;
-        }
-        
-        .admin-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
         
-        .admin-menu a {
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background 0.3s;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        .admin-menu a:hover {
-            background: rgba(255,255,255,0.2);
+        .header h1 {
+            font-size: clamp(20px, 5vw, 28px);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .header p {
+            font-size: clamp(13px, 3vw, 15px);
+            opacity: 0.95;
         }
         
         .back-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 20px;
-            background: white;
-            color: #667eea;
+            background: rgba(255,255,255,0.2);
+            color: white;
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
         
         .merchant-profile {
             background: white;
+            padding: 25px;
             border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
         }
         
         .profile-header {
             display: flex;
-            gap: 30px;
             align-items: center;
-            margin-bottom: 30px;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
         
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
+        .avatar {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
             color: white;
+            font-size: 32px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .profile-info {
+            flex: 1;
+            min-width: 200px;
         }
         
         .profile-info h2 {
-            font-size: 28px;
+            font-size: clamp(18px, 4vw, 24px);
             margin-bottom: 8px;
+            color: #333;
         }
         
         .profile-info p {
             color: #666;
-            margin: 5px 0;
+            font-size: clamp(13px, 3vw, 15px);
+            margin-bottom: 10px;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .info-item {
             padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
+            border-left: 3px solid #667eea;
         }
         
         .info-item label {
             display: block;
             color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
         }
         
         .info-item .value {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #333;
-        }
-        
-        .password-field {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .password-toggle {
-            cursor: pointer;
-            color: #667eea;
-            font-size: 18px;
+            word-break: break-word;
         }
         
         .badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 600;
-            margin-right: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .badge-success {
@@ -157,15 +176,32 @@
             color: #721c24;
         }
         
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
         .section-title {
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
             font-weight: 700;
-            margin: 30px 0 15px 0;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
@@ -175,9 +211,14 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .btn-primary {
@@ -185,9 +226,17 @@
             color: white;
         }
         
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
         .btn-success {
             background: #28a745;
             color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
         }
         
         .btn-danger {
@@ -195,16 +244,57 @@
             color: white;
         }
         
+        .btn-danger:hover {
+            background: #bd2130;
+        }
+        
         .btn-warning {
             background: #ffc107;
             color: #333;
         }
         
-        .table-container {
-            background: white;
-            border-radius: 12px;
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #117a8b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+        }
+        
+        .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
         }
@@ -212,6 +302,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
         
         table th {
@@ -219,287 +310,337 @@
             padding: 12px;
             text-align: left;
             font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #e0e0e0;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
         }
         
         table td {
             padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #666;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
         }
         
-        .stats-grid {
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .kyc-documents {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid #667eea;
-        }
-        
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        /* Edit Form Styles */
-        .edit-form {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-        
-        .form-actions {
-            display: flex;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            margin-top: 25px;
+            margin-top: 20px;
+        }
+        
+        .doc-card {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .doc-card h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .doc-card .status {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .merchant-profile, .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 20px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            table th, table td {
+                padding: 10px 8px;
+            }
+            
+            .kyc-documents {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .badges {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
+    <link rel="stylesheet" href="responsive-admin.css?v=5.0">
 </head>
 <body>
-    <!-- Admin Navigation -->
-    <nav class="admin-nav">
-        <div class="container">
-            <a href="dashboard.html" class="admin-brand">🔐 PayMe 2D Admin</a>
-            <ul class="admin-menu">
-                <li><a href="dashboard.html">📊 Dashboard</a></li>
-                <li><a href="users.html">👥 Users</a></li>
-                <li><a href="merchants.html">🏪 Merchants</a></li>
-                <li><a href="transactions.html">💳 Transactions</a></li>
-                <li><a href="settings.html">⚙️ Settings</a></li>
-                <li><a href="#" onclick="logout()">🚪 Logout</a></li>
-            </ul>
+    <div class="container">
+        <a href="merchants.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Merchants
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-store"></i> Merchant Details</h1>
+            <p>Complete information about the merchant account</p>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
-        <div class="container">
-            <a href="merchants.html" class="back-btn">← Back to Merchants</a>
-
-            <!-- Merchant Profile (View Mode) -->
-            <div class="merchant-profile" id="viewMode">
-                <div class="profile-header">
-                    <div class="profile-avatar">🏪</div>
-                    <div class="profile-info">
-                        <h2 id="merchantName">Loading...</h2>
-                        <p id="merchantEmail">email@example.com</p>
-                        <p>
-                            <span class="badge badge-success" id="merchantStatus">Active</span>
-                            <span class="badge badge-warning" id="kycStatus">KYC Pending</span>
-                        </p>
+        
+        <div class="merchant-profile">
+            <div class="profile-header">
+                <div class="avatar">TM</div>
+                <div class="profile-info">
+                    <h2>TechMart Solutions Pvt Ltd</h2>
+                    <p>contact@techmart.com</p>
+                    <div class="badges">
+                        <span class="badge badge-success">Active</span>
+                        <span class="badge badge-success">KYC Verified</span>
+                        <span class="badge badge-info">Business</span>
                     </div>
-                </div>
-
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>Merchant ID</label>
-                        <div class="value" id="merchantId">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Business Type</label>
-                        <div class="value" id="businessType">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Phone Number</label>
-                        <div class="value" id="merchantPhone">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Website</label>
-                        <div class="value" id="merchantWebsite">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Registered Date</label>
-                        <div class="value" id="registeredDate">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>API Key</label>
-                        <div class="value" id="apiKey">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label><i class="fas fa-lock"></i> Current Password</label>
-                        <div class="password-field">
-                            <div class="value" id="merchantPassword">••••••••</div>
-                            <i class="fas fa-eye password-toggle" onclick="togglePassword()" id="passwordToggle"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="showEditForm()"><i class="fas fa-edit"></i> Edit Merchant</button>
-                    <button class="btn btn-success" onclick="approveKYC()">✅ Approve KYC</button>
-                    <button class="btn btn-danger" onclick="rejectKYC()">❌ Reject KYC</button>
-                    <button class="btn btn-primary" onclick="viewAPIKeys()">🔑 View API Keys</button>
-                    <button class="btn btn-warning" onclick="viewSettlements()">💰 Settlements</button>
-                    <button class="btn btn-danger" onclick="suspendMerchant()">🚫 Suspend</button>
                 </div>
             </div>
-
-            <!-- Edit Form (Hidden by default) -->
-            <div class="edit-form" id="editMode">
-                <h2 style="margin-bottom: 25px;"><i class="fas fa-edit"></i> Edit Merchant Details</h2>
-                
-                <form id="merchantEditForm">
-                    <div class="info-grid">
-                        <div class="form-group">
-                            <label>Business Name *</label>
-                            <input type="text" id="editName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Email Address *</label>
-                            <input type="email" id="editEmail" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Phone Number *</label>
-                            <input type="tel" id="editPhone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Business Type</label>
-                            <select id="editBusinessType">
-                                <option>E-commerce</option>
-                                <option>Retail</option>
-                                <option>Services</option>
-                                <option>Digital Products</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Website URL</label>
-                            <input type="url" id="editWebsite">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select id="editStatus">
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                                <option value="Suspended">Suspended</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label><i class="fas fa-key"></i> New Password (Leave blank to keep current)</label>
-                            <input type="password" id="editPassword" placeholder="Enter new password">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label><i class="fas fa-key"></i> Confirm New Password</label>
-                            <input type="password" id="editPasswordConfirm" placeholder="Confirm new password">
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
-                        <button type="button" class="btn btn-danger" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancel</button>
-                    </div>
-                </form>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Merchant ID</label>
+                    <div class="value">MERCH001</div>
+                </div>
+                <div class="info-item">
+                    <label>Business Type</label>
+                    <div class="value">Private Limited</div>
+                </div>
+                <div class="info-item">
+                    <label>Industry</label>
+                    <div class="value">E-commerce</div>
+                </div>
+                <div class="info-item">
+                    <label>GST Number</label>
+                    <div class="value">27AABCT1234F1Z5</div>
+                </div>
+                <div class="info-item">
+                    <label>PAN Number</label>
+                    <div class="value">AABCT1234F</div>
+                </div>
+                <div class="info-item">
+                    <label>Phone</label>
+                    <div class="value">+91 98765 43210</div>
+                </div>
+                <div class="info-item">
+                    <label>Registered Date</label>
+                    <div class="value">Aug 10, 2025</div>
+                </div>
+                <div class="info-item">
+                    <label>Last Active</label>
+                    <div class="value">Oct 4, 2025<br>11:45 AM</div>
+                </div>
+                <div class="info-item">
+                    <label>Website</label>
+                    <div class="value">www.techmart.com</div>
+                </div>
+                <div class="info-item">
+                    <label>City</label>
+                    <div class="value">Mumbai</div>
+                </div>
+                <div class="info-item">
+                    <label>State</label>
+                    <div class="value">Maharashtra</div>
+                </div>
+                <div class="info-item">
+                    <label>Country</label>
+                    <div class="value">India</div>
+                </div>
             </div>
-
-            <!-- Business Statistics -->
-            <h3 class="section-title">Business Statistics</h3>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="editMerchantDetails()">
+                    <i class="fas fa-edit"></i> Edit Details
+                </button>
+                <button class="btn btn-success" onclick="approveKYC()">
+                    <i class="fas fa-check-circle"></i> Approve KYC
+                </button>
+                <button class="btn btn-info" onclick="viewAPIKeys()">
+                    <i class="fas fa-key"></i> View API Keys
+                </button>
+                <button class="btn btn-warning" onclick="suspendMerchant()">
+                    <i class="fas fa-pause"></i> Suspend
+                </button>
+                <button class="btn btn-danger" onclick="blockMerchant()">
+                    <i class="fas fa-ban"></i> Block Merchant
+                </button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-university"></i> Bank Account Details
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Bank Name</label>
+                    <div class="value">HDFC Bank</div>
+                </div>
+                <div class="info-item">
+                    <label>Account Holder</label>
+                    <div class="value">TechMart Solutions Pvt Ltd</div>
+                </div>
+                <div class="info-item">
+                    <label>Account Number</label>
+                    <div class="value">50200012345678</div>
+                </div>
+                <div class="info-item">
+                    <label>IFSC Code</label>
+                    <div class="value">HDFC0001234</div>
+                </div>
+                <div class="info-item">
+                    <label>Account Type</label>
+                    <div class="value">Current</div>
+                </div>
+                <div class="info-item">
+                    <label>Branch</label>
+                    <div class="value">Andheri West, Mumbai</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-file-alt"></i> KYC Documents
+            </h3>
+            <div class="kyc-documents">
+                <div class="doc-card">
+                    <h4><i class="fas fa-id-card"></i> Aadhaar Card</h4>
+                    <p>Front & Back uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+                <div class="doc-card">
+                    <h4><i class="fas fa-credit-card"></i> PAN Card</h4>
+                    <p>Document uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+                <div class="doc-card">
+                    <h4><i class="fas fa-building"></i> Business Registration</h4>
+                    <p>Certificate uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+                <div class="doc-card">
+                    <h4><i class="fas fa-file-invoice"></i> GST Certificate</h4>
+                    <p>Document uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+                <div class="doc-card">
+                    <h4><i class="fas fa-home"></i> Address Proof</h4>
+                    <p>Electricity bill uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+                <div class="doc-card">
+                    <h4><i class="fas fa-money-check"></i> Cancelled Cheque</h4>
+                    <p>Bank proof uploaded</p>
+                    <div class="status">
+                        <span class="badge badge-success">Verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-chart-line"></i> Business Statistics
+            </h3>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Transactions</h3>
-                    <div class="value">1,234</div>
+                    <div class="value">1,245</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Successful Payments</h3>
-                    <div class="value" style="color: #28a745;">1,156</div>
+                    <h3>Successful</h3>
+                    <div class="value">1,198</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
-                    <div class="value">₹4,56,789</div>
+                    <div class="value">₹5.2L</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Pending Settlements</h3>
-                    <div class="value">₹12,450</div>
+                    <h3>Failed</h3>
+                    <div class="value">47</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Refunds</h3>
+                    <div class="value">12</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Chargebacks</h3>
+                    <div class="value">2</div>
                 </div>
             </div>
-
-            <!-- KYC Documents -->
-            <h3 class="section-title">KYC Documents</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Document Type</th>
-                            <th>Document Number</th>
-                            <th>Status</th>
-                            <th>Uploaded Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>PAN Card</td>
-                            <td>ABCDE1234F</td>
-                            <td><span class="badge badge-warning">Pending</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>GST Certificate</td>
-                            <td>22ABCDE1234F1Z5</td>
-                            <td><span class="badge badge-warning">Pending</span></td>
-                            <td>Oct 1, 2025</td>
-                            <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Recent Transactions -->
-            <h3 class="section-title">Recent Transactions</h3>
-            <div class="table-container">
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-history"></i> Recent Transactions
+            </h3>
+            <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
@@ -512,16 +653,30 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>#TXN123456</td>
-                            <td>Rajesh Kumar</td>
-                            <td>₹2,500</td>
+                            <td>#TXN456789</td>
+                            <td>Amit Sharma</td>
+                            <td>₹2,499</td>
                             <td><span class="badge badge-success">Success</span></td>
                             <td>Oct 4, 2025</td>
                         </tr>
                         <tr>
-                            <td>#TXN123457</td>
-                            <td>Priya Sharma</td>
-                            <td>₹1,200</td>
+                            <td>#TXN456788</td>
+                            <td>Priya Patel</td>
+                            <td>₹1,299</td>
+                            <td><span class="badge badge-success">Success</span></td>
+                            <td>Oct 4, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>#TXN456787</td>
+                            <td>Rahul Kumar</td>
+                            <td>₹899</td>
+                            <td><span class="badge badge-danger">Failed</span></td>
+                            <td>Oct 3, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>#TXN456786</td>
+                            <td>Sneha Singh</td>
+                            <td>₹3,499</td>
                             <td><span class="badge badge-success">Success</span></td>
                             <td>Oct 3, 2025</td>
                         </tr>
@@ -529,162 +684,50 @@
                 </table>
             </div>
         </div>
-    </section>
-
-    <script>
-        // Check if admin is logged in
-        if (!localStorage.getItem('isAdminLoggedIn')) {
-            window.location.href = 'login.html';
-        }
-
-        // Get merchant ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const merchantId = urlParams.get('id');
-
-        // Sample merchant data with password
-        let merchantData = {
-            name: 'Test Business Pvt Ltd',
-            email: 'merchant@testbusiness.com',
-            businessType: 'E-commerce',
-            phone: '+91 98765 43210',
-            website: 'https://testbusiness.com',
-            status: 'Active',
-            kycStatus: 'Pending',
-            registered: 'Oct 1, 2025',
-            apiKey: 'pk_live_abc123xyz789',
-            password: 'Merchant@123'  // Current password
-        };
-
-        // Load merchant data
-        function loadMerchantData() {
-            document.getElementById('merchantId').textContent = merchantId || 'M1001';
-            document.getElementById('merchantName').textContent = merchantData.name;
-            document.getElementById('merchantEmail').textContent = merchantData.email;
-            document.getElementById('businessType').textContent = merchantData.businessType;
-            document.getElementById('merchantPhone').textContent = merchantData.phone;
-            document.getElementById('merchantWebsite').textContent = merchantData.website;
-            document.getElementById('merchantStatus').textContent = merchantData.status;
-            document.getElementById('kycStatus').textContent = 'KYC ' + merchantData.kycStatus;
-            document.getElementById('registeredDate').textContent = merchantData.registered;
-            document.getElementById('apiKey').textContent = merchantData.apiKey;
-        }
-
-        // Toggle password visibility
-        let passwordVisible = false;
-        function togglePassword() {
-            const passwordField = document.getElementById('merchantPassword');
-            const toggleIcon = document.getElementById('passwordToggle');
-            
-            if (passwordVisible) {
-                passwordField.textContent = '••••••••';
-                toggleIcon.className = 'fas fa-eye password-toggle';
-                passwordVisible = false;
-            } else {
-                passwordField.textContent = merchantData.password;
-                toggleIcon.className = 'fas fa-eye-slash password-toggle';
-                passwordVisible = true;
-            }
-        }
-
-        // Show edit form
-        function showEditForm() {
-            document.getElementById('viewMode').style.display = 'none';
-            document.getElementById('editMode').style.display = 'block';
-            
-            // Populate form with current data
-            document.getElementById('editName').value = merchantData.name;
-            document.getElementById('editEmail').value = merchantData.email;
-            document.getElementById('editPhone').value = merchantData.phone;
-            document.getElementById('editBusinessType').value = merchantData.businessType;
-            document.getElementById('editWebsite').value = merchantData.website;
-            document.getElementById('editStatus').value = merchantData.status;
-            
-            // Scroll to form
-            document.getElementById('editMode').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Cancel edit
-        function cancelEdit() {
-            document.getElementById('editMode').style.display = 'none';
-            document.getElementById('viewMode').style.display = 'block';
-            document.getElementById('merchantEditForm').reset();
-        }
-
-        // Handle form submission
-        document.getElementById('merchantEditForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newPassword = document.getElementById('editPassword').value;
-            const confirmPassword = document.getElementById('editPasswordConfirm').value;
-            
-            // Check if passwords match (if provided)
-            if (newPassword && newPassword !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // Update merchant data
-            merchantData.name = document.getElementById('editName').value;
-            merchantData.email = document.getElementById('editEmail').value;
-            merchantData.phone = document.getElementById('editPhone').value;
-            merchantData.businessType = document.getElementById('editBusinessType').value;
-            merchantData.website = document.getElementById('editWebsite').value;
-            merchantData.status = document.getElementById('editStatus').value;
-            
-            // Update password if provided
-            if (newPassword) {
-                merchantData.password = newPassword;
-            }
-            
-            // Reload data and switch to view mode
-            loadMerchantData();
-            cancelEdit();
-            
-            alert('Merchant details updated successfully!');
-        });
-
-        function approveKYC() {
-            if (confirm('Approve KYC for this merchant?')) {
-                alert('KYC approved successfully!');
-                document.getElementById('kycStatus').textContent = 'KYC Verified';
-                document.getElementById('kycStatus').className = 'badge badge-success';
-                merchantData.kycStatus = 'Verified';
-            }
-        }
-
-        function rejectKYC() {
-            const reason = prompt('Enter reason for rejection:');
-            if (reason) {
-                alert('KYC rejected. Notification sent to merchant.');
-            }
-        }
-
-        function viewAPIKeys() {
-            window.location.href = 'merchant-api-keys.html?id=' + merchantId;
-        }
-
-        function viewSettlements() {
-            window.location.href = 'merchant-settlements.html?id=' + merchantId;
-        }
-
-        function suspendMerchant() {
-            if (confirm('Are you sure you want to suspend this merchant?')) {
-                merchantData.status = 'Suspended';
-                document.getElementById('merchantStatus').textContent = 'Suspended';
-                document.getElementById('merchantStatus').className = 'badge badge-danger';
-                alert('Merchant suspended successfully!');
-            }
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.clear();
-                window.location.href = 'login.html';
-            }
-        }
-
-        // Load data on page load
-        loadMerchantData();
-    </script>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-money-bill-wave"></i> Settlement History
+            </h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Settlement ID</th>
+                            <th>Amount</th>
+                            <th>Transactions</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#SET12345</td>
+                            <td>₹45,670</td>
+                            <td>125</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>Oct 1, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>#SET12344</td>
+                            <td>₹38,920</td>
+                            <td>98</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>Sept 24, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>#SET12343</td>
+                            <td>₹52,340</td>
+                            <td>142</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>Sept 17, 2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="responsive-menu.js"></script>
+    <script src="merchant-details-functions.js"></script>
 </body>
 </html>

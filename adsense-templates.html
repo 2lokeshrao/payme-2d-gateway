@@ -1,0 +1,132 @@
+<!-- AdSense Ad Templates for PayMe 2D Gateway -->
+
+<!-- 1. Header Banner Ad (728x90 Leaderboard) -->
+<div class="ad-container ad-header">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:728px;height:90px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="1234567890"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 2. Sidebar Ad (300x250 Medium Rectangle) -->
+<div class="ad-container ad-sidebar">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:300px;height:250px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="2345678901"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 3. In-Content Ad (336x280 Large Rectangle) -->
+<div class="ad-container ad-content">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:336px;height:280px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="3456789012"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 4. Footer Banner Ad (728x90 Leaderboard) -->
+<div class="ad-container ad-footer">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:728px;height:90px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="4567890123"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 5. Responsive Ad (Auto-size) -->
+<div class="ad-container ad-responsive">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="5678901234"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 6. Mobile Banner Ad (320x50) -->
+<div class="ad-container ad-mobile">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="6789012345"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- 7. In-Article Ad (Responsive) -->
+<div class="ad-container ad-article">
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="7890123456"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- CSS for Ad Containers -->
+<style>
+.ad-container {
+  margin: 20px auto;
+  text-align: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.ad-header, .ad-footer {
+  max-width: 728px;
+}
+
+.ad-sidebar {
+  max-width: 300px;
+  position: sticky;
+  top: 20px;
+}
+
+.ad-content {
+  max-width: 336px;
+  margin: 30px auto;
+}
+
+.ad-responsive {
+  max-width: 100%;
+}
+
+.ad-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .ad-header, .ad-footer {
+    display: none;
+  }
+  
+  .ad-mobile {
+    display: block;
+    max-width: 320px;
+  }
+  
+  .ad-sidebar {
+    position: relative;
+    margin: 20px auto;
+  }
+}
+</style>

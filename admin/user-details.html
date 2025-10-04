@@ -3,122 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details - PayMe 2D Admin</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>User Details - PayMe 2D Gateway Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .admin-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .admin-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .admin-brand {
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            text-decoration: none;
-        }
-        
-        .admin-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
         
-        .admin-menu a {
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background 0.3s;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        .admin-menu a:hover {
-            background: rgba(255,255,255,0.2);
+        .header h1 {
+            font-size: clamp(20px, 5vw, 28px);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .header p {
+            font-size: clamp(13px, 3vw, 15px);
+            opacity: 0.95;
         }
         
         .back-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 20px;
-            background: white;
-            color: #667eea;
+            background: rgba(255,255,255,0.2);
+            color: white;
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
         
         .user-profile {
             background: white;
+            padding: 25px;
             border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
         }
         
         .profile-header {
             display: flex;
-            gap: 30px;
             align-items: center;
-            margin-bottom: 30px;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
         
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
+        .avatar {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
             color: white;
+            font-size: 32px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .profile-info {
+            flex: 1;
+            min-width: 200px;
         }
         
         .profile-info h2 {
-            font-size: 28px;
+            font-size: clamp(18px, 4vw, 24px);
             margin-bottom: 8px;
+            color: #333;
         }
         
         .profile-info p {
             color: #666;
-            margin: 5px 0;
+            font-size: clamp(13px, 3vw, 15px);
+            margin-bottom: 10px;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .info-item {
             padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
+            border-left: 3px solid #667eea;
         }
         
         .info-item label {
             display: block;
             color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
         }
         
         .info-item .value {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #333;
+            word-break: break-word;
         }
         
         .password-field {
@@ -130,16 +160,17 @@
         .password-toggle {
             cursor: pointer;
             color: #667eea;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 600;
-            margin-right: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .badge-success {
@@ -157,15 +188,27 @@
             color: #721c24;
         }
         
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
         .section-title {
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
             font-weight: 700;
-            margin: 30px 0 15px 0;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
@@ -175,9 +218,14 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .btn-primary {
@@ -185,9 +233,17 @@
             color: white;
         }
         
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
         .btn-success {
             background: #28a745;
             color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
         }
         
         .btn-danger {
@@ -195,16 +251,48 @@
             color: white;
         }
         
+        .btn-danger:hover {
+            background: #bd2130;
+        }
+        
         .btn-warning {
             background: #ffc107;
             color: #333;
         }
         
-        .table-container {
-            background: white;
-            border-radius: 12px;
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+        }
+        
+        .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
         }
@@ -212,6 +300,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
         
         table th {
@@ -219,230 +308,175 @@
             padding: 12px;
             text-align: left;
             font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #e0e0e0;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
         }
         
         table td {
             padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #666;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid #667eea;
-        }
-        
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        /* Edit Form Styles */
-        .edit-form {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-bottom: 1px solid #dee2e6;
             font-size: 14px;
         }
         
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #667eea;
-            outline: none;
+        table tr:hover {
+            background: #f8f9fa;
         }
         
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .user-profile, .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 20px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            table th, table td {
+                padding: 10px 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .badges {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
+    <link rel="stylesheet" href="responsive-admin.css?v=5.0">
 </head>
 <body>
-    <!-- Admin Navigation -->
-    <nav class="admin-nav">
-        <div class="container">
-            <a href="dashboard.html" class="admin-brand">🔐 PayMe 2D Admin</a>
-            <ul class="admin-menu">
-                <li><a href="dashboard.html">📊 Dashboard</a></li>
-                <li><a href="users.html">👥 Users</a></li>
-                <li><a href="merchants.html">🏪 Merchants</a></li>
-                <li><a href="transactions.html">💳 Transactions</a></li>
-                <li><a href="settings.html">⚙️ Settings</a></li>
-                <li><a href="#" onclick="logout()">🚪 Logout</a></li>
-            </ul>
+    <div class="container">
+        <a href="users.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-user-circle"></i> User Details</h1>
+            <p>Complete information about the user account</p>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <section style="padding: 40px 0; background: #f5f5f5; min-height: calc(100vh - 100px);">
-        <div class="container">
-            <a href="users.html" class="back-btn">← Back to Users</a>
-
-            <!-- User Profile (View Mode) -->
-            <div class="user-profile" id="viewMode">
-                <div class="profile-header">
-                    <div class="profile-avatar">👤</div>
-                    <div class="profile-info">
-                        <h2 id="userName">Loading...</h2>
-                        <p id="userEmail">email@example.com</p>
-                        <p>
-                            <span class="badge badge-success" id="userStatus">Active</span>
-                            <span class="badge badge-warning" id="verificationStatus">Email Verified</span>
-                        </p>
+        
+        <div class="user-profile">
+            <div class="profile-header">
+                <div class="avatar">RK</div>
+                <div class="profile-info">
+                    <h2>Rajesh Kumar</h2>
+                    <p>rajesh.kumar@example.com</p>
+                    <div class="badges">
+                        <span class="badge badge-success">Active</span>
+                        <span class="badge badge-warning">Email Verified</span>
                     </div>
-                </div>
-
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>User ID</label>
-                        <div class="value" id="userId">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Phone Number</label>
-                        <div class="value" id="userPhone">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Account Type</label>
-                        <div class="value" id="accountType">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Registered Date</label>
-                        <div class="value" id="registeredDate">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Last Login</label>
-                        <div class="value" id="lastLogin">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label>Country</label>
-                        <div class="value" id="userCountry">-</div>
-                    </div>
-                    <div class="info-item">
-                        <label><i class="fas fa-lock"></i> Current Password</label>
-                        <div class="password-field">
-                            <div class="value" id="userPassword">••••••••</div>
-                            <i class="fas fa-eye password-toggle" onclick="togglePassword()" id="passwordToggle"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="showEditForm()"><i class="fas fa-edit"></i> Edit User</button>
-                    <button class="btn btn-success" onclick="verifyEmail()">✅ Verify Email</button>
-                    <button class="btn btn-warning" onclick="resetPassword()">🔑 Reset Password</button>
-                    <button class="btn btn-danger" onclick="blockUser()">🚫 Block User</button>
-                    <button class="btn btn-danger" onclick="deleteUser()">🗑️ Delete User</button>
                 </div>
             </div>
-
-            <!-- Edit Form (Hidden by default) -->
-            <div class="edit-form" id="editMode">
-                <h2 style="margin-bottom: 25px;"><i class="fas fa-edit"></i> Edit User Details</h2>
-                
-                <form id="userEditForm">
-                    <div class="info-grid">
-                        <div class="form-group">
-                            <label>Full Name *</label>
-                            <input type="text" id="editName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Email Address *</label>
-                            <input type="email" id="editEmail" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Phone Number *</label>
-                            <input type="tel" id="editPhone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Account Type</label>
-                            <select id="editAccountType">
-                                <option>Personal</option>
-                                <option>Business</option>
-                                <option>Premium</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Country</label>
-                            <input type="text" id="editCountry">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select id="editStatus">
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                                <option value="Blocked">Blocked</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label><i class="fas fa-key"></i> New Password (Leave blank to keep current)</label>
-                            <input type="password" id="editPassword" placeholder="Enter new password">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label><i class="fas fa-key"></i> Confirm New Password</label>
-                            <input type="password" id="editPasswordConfirm" placeholder="Confirm new password">
-                        </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>User ID</label>
+                    <div class="value">1</div>
+                </div>
+                <div class="info-item">
+                    <label>Phone Number</label>
+                    <div class="value">+91 98765 43210</div>
+                </div>
+                <div class="info-item">
+                    <label>Account Type</label>
+                    <div class="value">Personal</div>
+                </div>
+                <div class="info-item">
+                    <label>Registered Date</label>
+                    <div class="value">Sept 15, 2025</div>
+                </div>
+                <div class="info-item">
+                    <label>Last Login</label>
+                    <div class="value">Oct 4, 2025<br>10:30 AM</div>
+                </div>
+                <div class="info-item">
+                    <label>Country</label>
+                    <div class="value">India</div>
+                </div>
+                <div class="info-item">
+                    <label>Current Password</label>
+                    <div class="password-field">
+                        <div class="value">••••••</div>
+                        <i class="fas fa-eye password-toggle"></i>
                     </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
-                        <button type="button" class="btn btn-danger" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancel</button>
-                    </div>
-                </form>
+                </div>
             </div>
-
-            <!-- User Statistics -->
-            <h3 class="section-title">User Statistics</h3>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit User
+                </button>
+                <button class="btn btn-success">
+                    <i class="fas fa-check-circle"></i> Verify Email
+                </button>
+                <button class="btn btn-warning">
+                    <i class="fas fa-key"></i> Reset Password
+                </button>
+                <button class="btn btn-danger">
+                    <i class="fas fa-ban"></i> Block User
+                </button>
+                <button class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete User
+                </button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-chart-bar"></i> User Statistics
+            </h3>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Transactions</h3>
@@ -450,7 +484,7 @@
                 </div>
                 <div class="stat-card">
                     <h3>Successful Payments</h3>
-                    <div class="value" style="color: #28a745;">42</div>
+                    <div class="value">42</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Spent</h3>
@@ -458,13 +492,16 @@
                 </div>
                 <div class="stat-card">
                     <h3>Failed Transactions</h3>
-                    <div class="value" style="color: #dc3545;">3</div>
+                    <div class="value">3</div>
                 </div>
             </div>
-
-            <!-- Recent Transactions -->
-            <h3 class="section-title">Recent Transactions</h3>
-            <div class="table-container">
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-history"></i> Recent Transactions
+            </h3>
+            <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
@@ -500,10 +537,13 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Activity Log -->
-            <h3 class="section-title">Recent Activity</h3>
-            <div class="table-container">
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
+                <i class="fas fa-clock"></i> Recent Activity
+            </h3>
+            <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
@@ -516,184 +556,27 @@
                     <tbody>
                         <tr>
                             <td>Login</td>
-                            <td>192.168.1.100</td>
-                            <td>Chrome on Windows</td>
+                            <td>103.45.67.89</td>
+                            <td>Mobile - Android</td>
                             <td>Oct 4, 2025 10:30 AM</td>
                         </tr>
                         <tr>
                             <td>Payment Made</td>
-                            <td>192.168.1.100</td>
-                            <td>Chrome on Windows</td>
-                            <td>Oct 4, 2025 10:15 AM</td>
+                            <td>103.45.67.89</td>
+                            <td>Mobile - Android</td>
+                            <td>Oct 4, 2025 10:35 AM</td>
                         </tr>
                         <tr>
                             <td>Profile Updated</td>
-                            <td>192.168.1.100</td>
-                            <td>Chrome on Windows</td>
-                            <td>Oct 3, 2025 09:45 PM</td>
+                            <td>103.45.67.89</td>
+                            <td>Desktop - Windows</td>
+                            <td>Oct 3, 2025 3:20 PM</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-    </section>
-
-    <script>
-        // Check if admin is logged in
-        if (!localStorage.getItem('isAdminLoggedIn')) {
-            window.location.href = 'login.html';
-        }
-
-        // Get user ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
-
-        // Sample user data with password
-        let userData = {
-            name: 'Rajesh Kumar',
-            email: 'rajesh.kumar@example.com',
-            phone: '+91 98765 43210',
-            accountType: 'Personal',
-            country: 'India',
-            status: 'Active',
-            verified: true,
-            registered: 'Sept 15, 2025',
-            lastLogin: 'Oct 4, 2025 10:30 AM',
-            password: 'User@12345'  // Current password
-        };
-
-        // Load user data
-        function loadUserData() {
-            document.getElementById('userId').textContent = userId || 'U1001';
-            document.getElementById('userName').textContent = userData.name;
-            document.getElementById('userEmail').textContent = userData.email;
-            document.getElementById('userPhone').textContent = userData.phone;
-            document.getElementById('accountType').textContent = userData.accountType;
-            document.getElementById('userCountry').textContent = userData.country;
-            document.getElementById('userStatus').textContent = userData.status;
-            document.getElementById('verificationStatus').textContent = userData.verified ? 'Email Verified' : 'Email Not Verified';
-            document.getElementById('registeredDate').textContent = userData.registered;
-            document.getElementById('lastLogin').textContent = userData.lastLogin;
-        }
-
-        // Toggle password visibility
-        let passwordVisible = false;
-        function togglePassword() {
-            const passwordField = document.getElementById('userPassword');
-            const toggleIcon = document.getElementById('passwordToggle');
-            
-            if (passwordVisible) {
-                passwordField.textContent = '••••••••';
-                toggleIcon.className = 'fas fa-eye password-toggle';
-                passwordVisible = false;
-            } else {
-                passwordField.textContent = userData.password;
-                toggleIcon.className = 'fas fa-eye-slash password-toggle';
-                passwordVisible = true;
-            }
-        }
-
-        // Show edit form
-        function showEditForm() {
-            document.getElementById('viewMode').style.display = 'none';
-            document.getElementById('editMode').style.display = 'block';
-            
-            // Populate form with current data
-            document.getElementById('editName').value = userData.name;
-            document.getElementById('editEmail').value = userData.email;
-            document.getElementById('editPhone').value = userData.phone;
-            document.getElementById('editAccountType').value = userData.accountType;
-            document.getElementById('editCountry').value = userData.country;
-            document.getElementById('editStatus').value = userData.status;
-            
-            // Scroll to form
-            document.getElementById('editMode').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Cancel edit
-        function cancelEdit() {
-            document.getElementById('editMode').style.display = 'none';
-            document.getElementById('viewMode').style.display = 'block';
-            document.getElementById('userEditForm').reset();
-        }
-
-        // Handle form submission
-        document.getElementById('userEditForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newPassword = document.getElementById('editPassword').value;
-            const confirmPassword = document.getElementById('editPasswordConfirm').value;
-            
-            // Check if passwords match (if provided)
-            if (newPassword && newPassword !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // Update user data
-            userData.name = document.getElementById('editName').value;
-            userData.email = document.getElementById('editEmail').value;
-            userData.phone = document.getElementById('editPhone').value;
-            userData.accountType = document.getElementById('editAccountType').value;
-            userData.country = document.getElementById('editCountry').value;
-            userData.status = document.getElementById('editStatus').value;
-            
-            // Update password if provided
-            if (newPassword) {
-                userData.password = newPassword;
-            }
-            
-            // Reload data and switch to view mode
-            loadUserData();
-            cancelEdit();
-            
-            alert('User details updated successfully!');
-        });
-
-        function verifyEmail() {
-            if (confirm('Mark this email as verified?')) {
-                userData.verified = true;
-                document.getElementById('verificationStatus').textContent = 'Email Verified';
-                document.getElementById('verificationStatus').className = 'badge badge-success';
-                alert('Email verified successfully!');
-            }
-        }
-
-        function resetPassword() {
-            const newPassword = prompt('Enter new password for user:');
-            if (newPassword) {
-                userData.password = newPassword;
-                alert('Password reset successfully! New password: ' + newPassword);
-            }
-        }
-
-        function blockUser() {
-            if (confirm('Are you sure you want to block this user?')) {
-                userData.status = 'Blocked';
-                document.getElementById('userStatus').textContent = 'Blocked';
-                document.getElementById('userStatus').className = 'badge badge-danger';
-                alert('User blocked successfully!');
-            }
-        }
-
-        function deleteUser() {
-            if (confirm('Are you sure you want to DELETE this user? This action cannot be undone!')) {
-                if (confirm('Final confirmation: Delete user permanently?')) {
-                    alert('User deleted successfully!');
-                    window.location.href = 'users.html';
-                }
-            }
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.clear();
-                window.location.href = 'login.html';
-            }
-        }
-
-        // Load data on page load
-        loadUserData();
-    </script>
+    </div>
+    <script src="responsive-menu.js"></script>
 </body>
 </html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhooks - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .webhook-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .webhook-section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5em; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { display: inline-block; padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; margin-right: 10px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-danger { background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 15px; border-bottom: 1px solid #e0e0e0; color: #555; }
+        tr:hover { background: #f8f9fa; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600; }
+        .status-active { background: #e8f5e9; color: #43e97b; }
+        .status-failed { background: #ffebee; color: #f5576c; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .code-box { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-plug"></i> Webhooks</h1>
+        <p>Configure webhook endpoints for real-time notifications</p>
+    </div>
+
+    <div class="container">
+        <!-- Add New Webhook -->
+        <div class="webhook-section">
+            <h2><i class="fas fa-plus-circle"></i> Add New Webhook</h2>
+            <div class="form-group">
+                <label>Webhook URL</label>
+                <input type="url" placeholder="https://your-domain.com/webhook" id="webhookUrl">
+            </div>
+            <div class="form-group">
+                <label>Event Type</label>
+                <select id="eventType">
+                    <option value="payment.success">Payment Success</option>
+                    <option value="payment.failed">Payment Failed</option>
+                    <option value="code.generated">Activation Code Generated</option>
+                    <option value="code.activated">Code Activated</option>
+                    <option value="subscription.created">Subscription Created</option>
+                    <option value="subscription.expired">Subscription Expired</option>
+                    <option value="user.registered">User Registered</option>
+                    <option value="all">All Events</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Secret Key (for signature verification)</label>
+                <input type="text" placeholder="Enter secret key" id="secretKey">
+            </div>
+            <button class="btn" onclick="addWebhook()"><i class="fas fa-plus"></i> Add Webhook</button>
+        </div>
+
+        <!-- Webhook Documentation -->
+        <div class="webhook-section">
+            <h2><i class="fas fa-book"></i> Webhook Documentation</h2>
+            <div class="info-box">
+                <strong>ℹ️ How Webhooks Work:</strong>
+                <p>Webhooks allow your application to receive real-time notifications when events occur in the payment gateway. When an event happens, we'll send a POST request to your webhook URL with event data.</p>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">Webhook Payload Example:</h3>
+            <div class="code-box">{
+  "event": "payment.success",
+  "timestamp": "2025-10-04T10:35:42Z",
+  "data": {
+    "transaction_id": "TXN1234567890",
+    "amount": 500,
+    "currency": "INR",
+    "payment_method": "UPI",
+    "customer_email": "customer@example.com",
+    "status": "success"
+  },
+  "signature": "sha256_hash_of_payload"
+}</div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">Verifying Webhook Signature:</h3>
+            <div class="code-box">// PHP Example
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'];
+$secret = 'your_secret_key';
+
+$expected_signature = hash_hmac('sha256', $payload, $secret);
+
+if (hash_equals($expected_signature, $signature)) {
+    // Signature is valid, process the webhook
+    $data = json_decode($payload, true);
+    // Handle the event
+} else {
+    // Invalid signature
+    http_response_code(401);
+}</div>
+        </div>
+
+        <!-- Active Webhooks -->
+        <div class="webhook-section">
+            <h2><i class="fas fa-list"></i> Active Webhooks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Event Type</th>
+                        <th>Status</th>
+                        <th>Last Triggered</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>https://example.com/webhook/payment</td>
+                        <td>payment.success</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>2025-10-04 10:35:42</td>
+                        <td>
+                            <button class="btn" style="padding: 8px 15px; font-size: 0.9em;" onclick="testWebhook(1)">Test</button>
+                            <button class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9em;" onclick="deleteWebhook(1)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>https://example.com/webhook/codes</td>
+                        <td>code.generated</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>2025-10-04 09:28:15</td>
+                        <td>
+                            <button class="btn" style="padding: 8px 15px; font-size: 0.9em;" onclick="testWebhook(2)">Test</button>
+                            <button class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9em;" onclick="deleteWebhook(2)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>https://example.com/webhook/all</td>
+                        <td>all</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>2025-10-04 10:15:33</td>
+                        <td>
+                            <button class="btn" style="padding: 8px 15px; font-size: 0.9em;" onclick="testWebhook(3)">Test</button>
+                            <button class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9em;" onclick="deleteWebhook(3)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Webhook Logs -->
+        <div class="webhook-section">
+            <h2><i class="fas fa-history"></i> Recent Webhook Deliveries</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>URL</th>
+                        <th>Event</th>
+                        <th>Status</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-10-04 10:35:42</td>
+                        <td>https://example.com/webhook/payment</td>
+                        <td>payment.success</td>
+                        <td><span class="status-badge status-active">Success</span></td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 10:28:15</td>
+                        <td>https://example.com/webhook/codes</td>
+                        <td>code.generated</td>
+                        <td><span class="status-badge status-active">Success</span></td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>2025-10-04 10:15:33</td>
+                        <td>https://example.com/webhook/payment</td>
+                        <td>payment.failed</td>
+                        <td><span class="status-badge status-failed">Failed</span></td>
+                        <td>500</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function addWebhook() {
+            const url = document.getElementById('webhookUrl').value;
+            const event = document.getElementById('eventType').value;
+            const secret = document.getElementById('secretKey').value;
+            
+            if(!url || !secret) {
+                alert('Please fill all required fields!');
+                return;
+            }
+            
+            alert('Webhook added successfully!\nURL: ' + url + '\nEvent: ' + event);
+            location.reload();
+        }
+
+        function testWebhook(id) {
+            alert('Sending test webhook request...');
+        }
+
+        function deleteWebhook(id) {
+            if(confirm('Are you sure you want to delete this webhook?')) {
+                alert('Webhook deleted successfully!');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

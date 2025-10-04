@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - PayMe 2D Gateway Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .stat-card.revenue .icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stat-card.transactions .icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .stat-card.users .icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .stat-card.success-rate .icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .change {
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-card .change.positive {
+            color: #43e97b;
+        }
+
+        .stat-card .change.negative {
+            color: #f5576c;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .chart-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .chart-placeholder {
+            height: 400px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .data-table {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        .data-table h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-section select,
+        .filter-section input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .filter-section select:focus,
+        .filter-section input:focus {
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-chart-line"></i> Analytics Dashboard</h1>
+        <p>Real-time insights and performance metrics</p>
+    </div>
+
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <select id="timeRange">
+                <option value="today">Today</option>
+                <option value="week" selected>Last 7 Days</option>
+                <option value="month">Last 30 Days</option>
+                <option value="year">Last Year</option>
+                <option value="custom">Custom Range</option>
+            </select>
+            <input type="date" id="startDate" placeholder="Start Date">
+            <input type="date" id="endDate" placeholder="End Date">
+            <button class="btn" onclick="applyFilter()">Apply Filter</button>
+            <button class="btn" onclick="exportData()">Export Report</button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card revenue">
+                <div class="icon"><i class="fas fa-rupee-sign"></i></div>
+                <h3>Total Revenue</h3>
+                <div class="value">₹1,24,560</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i> 12.5% from last week
+                </div>
+            </div>
+
+            <div class="stat-card transactions">
+                <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+                <h3>Total Transactions</h3>
+                <div class="value">2,847</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i> 8.3% from last week
+                </div>
+            </div>
+
+            <div class="stat-card users">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <h3>Active Users</h3>
+                <div class="value">1,234</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i> 15.2% from last week
+                </div>
+            </div>
+
+            <div class="stat-card success-rate">
+                <div class="icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Success Rate</h3>
+                <div class="value">98.5%</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i> 2.1% from last week
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="chart-container">
+            <h2><i class="fas fa-chart-area"></i> Revenue Trend</h2>
+            <div class="chart-placeholder">
+                <div style="text-align: center;">
+                    <i class="fas fa-chart-line" style="font-size: 3em; margin-bottom: 15px;"></i>
+                    <p>Chart will be rendered here using Chart.js or similar library</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Chart -->
+        <div class="chart-container">
+            <h2><i class="fas fa-chart-bar"></i> Transaction Volume</h2>
+            <div class="chart-placeholder">
+                <div style="text-align: center;">
+                    <i class="fas fa-chart-bar" style="font-size: 3em; margin-bottom: 15px;"></i>
+                    <p>Chart will be rendered here using Chart.js or similar library</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performing Plans -->
+        <div class="data-table">
+            <h2><i class="fas fa-trophy"></i> Top Performing Plans</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plan Name</th>
+                        <th>Sales</th>
+                        <th>Revenue</th>
+                        <th>Growth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lifetime Plan</td>
+                        <td>156</td>
+                        <td>₹4,67,844</td>
+                        <td style="color: #43e97b;"><i class="fas fa-arrow-up"></i> 25%</td>
+                    </tr>
+                    <tr>
+                        <td>Yearly Plan</td>
+                        <td>342</td>
+                        <td>₹1,71,000</td>
+                        <td style="color: #43e97b;"><i class="fas fa-arrow-up"></i> 18%</td>
+                    </tr>
+                    <tr>
+                        <td>Quarterly Plan</td>
+                        <td>567</td>
+                        <td>₹85,050</td>
+                        <td style="color: #43e97b;"><i class="fas fa-arrow-up"></i> 12%</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Plan</td>
+                        <td>1,782</td>
+                        <td>₹1,06,920</td>
+                        <td style="color: #43e97b;"><i class="fas fa-arrow-up"></i> 8%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+
+        <!-- Payment Methods Performance -->
+        <div class="data-table">
+            <h2><i class="fas fa-credit-card"></i> Payment Methods Performance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment Method</th>
+                        <th>Transactions</th>
+                        <th>Success Rate</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-mobile-alt"></i> UPI</td>
+                        <td>1,845</td>
+                        <td style="color: #43e97b;">99.2%</td>
+                        <td>₹78,450</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-university"></i> Bank Transfer</td>
+                        <td>687</td>
+                        <td style="color: #43e97b;">97.8%</td>
+                        <td>₹32,890</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fab fa-bitcoin"></i> Cryptocurrency</td>
+                        <td>315</td>
+                        <td style="color: #43e97b;">98.5%</td>
+                        <td>₹13,220</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function applyFilter() {
+            const timeRange = document.getElementById('timeRange').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            alert('Filter applied! Time Range: ' + timeRange);
+            // Add API call here to fetch filtered data
+        }
+
+        function exportData() {
+            alert('Exporting analytics report...');
+            // Add export functionality here
+        }
+    </script>
+</body>
+</html>

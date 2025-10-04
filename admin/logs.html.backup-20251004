@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .filter-bar { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; }
+        .filter-bar select, .filter-bar input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .btn { display: inline-block; padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .logs-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .log-entry { padding: 15px; border-left: 4px solid #e0e0e0; margin-bottom: 15px; background: #f8f9fa; border-radius: 5px; }
+        .log-entry.info { border-left-color: #2196f3; }
+        .log-entry.success { border-left-color: #43e97b; }
+        .log-entry.warning { border-left-color: #ff9800; }
+        .log-entry.error { border-left-color: #f5576c; }
+        .log-time { color: #999; font-size: 0.9em; margin-bottom: 5px; }
+        .log-message { color: #333; line-height: 1.6; }
+        .log-details { color: #666; font-size: 0.9em; margin-top: 5px; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-right: 10px; }
+        .badge.info { background: #e3f2fd; color: #2196f3; }
+        .badge.success { background: #e8f5e9; color: #43e97b; }
+        .badge.warning { background: #fff3e0; color: #ff9800; }
+        .badge.error { background: #ffebee; color: #f5576c; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-file-alt"></i> System Logs</h1>
+        <p>Monitor all system activities and events</p>
+    </div>
+
+    <div class="container">
+        <div class="filter-bar">
+            <select id="logLevel">
+                <option value="all">All Levels</option>
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+                <option value="warning">Warning</option>
+                <option value="error">Error</option>
+            </select>
+            <select id="logCategory">
+                <option value="all">All Categories</option>
+                <option value="payment">Payments</option>
+                <option value="user">Users</option>
+                <option value="system">System</option>
+                <option value="api">API</option>
+            </select>
+            <input type="date" id="startDate">
+            <input type="date" id="endDate">
+            <button class="btn" onclick="filterLogs()">Apply Filter</button>
+            <button class="btn" onclick="exportLogs()">Export Logs</button>
+            <button class="btn" onclick="clearLogs()">Clear Old Logs</button>
+        </div>
+
+        <div class="logs-container">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Recent Logs</h2>
+
+            <div class="log-entry success">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:35:42</div>
+                <span class="badge success">SUCCESS</span>
+                <span class="badge info">PAYMENT</span>
+                <div class="log-message">Payment processed successfully - Transaction ID: TXN1234567890</div>
+                <div class="log-details">User: user@example.com | Amount: ₹500 | Method: UPI</div>
+            </div>
+
+            <div class="log-entry info">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:32:15</div>
+                <span class="badge info">INFO</span>
+                <span class="badge info">USER</span>
+                <div class="log-message">New user registration completed</div>
+                <div class="log-details">Email: newuser@example.com | IP: 192.168.1.100</div>
+            </div>
+
+            <div class="log-entry success">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:28:33</div>
+                <span class="badge success">SUCCESS</span>
+                <span class="badge info">API</span>
+                <div class="log-message">Activation code generated and sent via email</div>
+                <div class="log-details">Code: ABC123XYZ | Plan: Yearly | Email sent successfully</div>
+            </div>
+
+            <div class="log-entry warning">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:25:18</div>
+                <span class="badge warning">WARNING</span>
+                <span class="badge info">SYSTEM</span>
+                <div class="log-message">High memory usage detected - 78% utilization</div>
+                <div class="log-details">Server: web-01 | Memory: 3.9GB / 5GB | Action: Monitoring</div>
+            </div>
+
+            <div class="log-entry info">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:20:45</div>
+                <span class="badge info">INFO</span>
+                <span class="badge info">PAYMENT</span>
+                <div class="log-message">Payment verification initiated</div>
+                <div class="log-details">Transaction ID: TXN9876543210 | Status: Pending verification</div>
+            </div>
+
+            <div class="log-entry error">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:15:22</div>
+                <span class="badge error">ERROR</span>
+                <span class="badge info">API</span>
+                <div class="log-message">Failed to send email - SMTP connection timeout</div>
+                <div class="log-details">Recipient: test@example.com | Error: Connection timeout after 30s | Retry scheduled</div>
+            </div>
+
+            <div class="log-entry success">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:10:08</div>
+                <span class="badge success">SUCCESS</span>
+                <span class="badge info">USER</span>
+                <div class="log-message">User login successful</div>
+                <div class="log-details">Email: admin@payme.com | IP: 192.168.1.50 | 2FA verified</div>
+            </div>
+
+            <div class="log-entry info">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 10:05:33</div>
+                <span class="badge info">INFO</span>
+                <span class="badge info">SYSTEM</span>
+                <div class="log-message">Database backup completed successfully</div>
+                <div class="log-details">Size: 245 MB | Duration: 12s | Location: /backups/2025-10-04.sql</div>
+            </div>
+
+            <div class="log-entry warning">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 09:58:17</div>
+                <span class="badge warning">WARNING</span>
+                <span class="badge info">PAYMENT</span>
+                <div class="log-message">Multiple failed payment attempts detected</div>
+                <div class="log-details">User: suspicious@example.com | Attempts: 5 | Action: Account flagged for review</div>
+            </div>
+
+            <div class="log-entry success">
+                <div class="log-time"><i class="fas fa-clock"></i> 2025-10-04 09:45:55</div>
+                <span class="badge success">SUCCESS</span>
+                <span class="badge info">SYSTEM</span>
+                <div class="log-message">System health check passed</div>
+                <div class="log-details">All services operational | Response time: 98ms | Uptime: 45 days</div>
+            </div>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function filterLogs() {
+            alert('Filtering logs...');
+        }
+        function exportLogs() {
+            alert('Exporting logs to CSV...');
+        }
+        function clearLogs() {
+            if(confirm('Are you sure you want to clear old logs?')) {
+                alert('Old logs cleared successfully!');
+            }
+        }
+    </script>
+</body>
+</html>
