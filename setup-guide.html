@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide - PayMe 2D Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .step:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .step h2 {
+            display: inline-block;
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+        }
+
+        .step p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .step ul, .step ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .step li {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .code-box {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .checklist {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .checklist h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .step {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Quick Setup Guide</h1>
+            <p>Get your PayMe 2D Gateway running in 10 minutes!</p>
+        </div>
+
+        <div class="content">
+            <!-- Step 1 -->
+            <div class="step">
+                <span class="step-number">1</span>
+                <h2>Installation</h2>
+                
+                <h3>Download the Code</h3>
+                <div class="code-box">git clone https://github.com/2lokeshrao/payme-2d-gateway.git
+cd payme-2d-gateway</div>
+
+                <h3>Create Database</h3>
+                <div class="code-box">mysql -u root -p -e "CREATE DATABASE payme_gateway;"
+mysql -u root -p payme_gateway < database.sql</div>
+
+                <h3>Configure Database Connection</h3>
+                <p>Edit <code>config/database.php</code> file:</p>
+                <div class="code-box">define('DB_HOST', 'localhost');
+define('DB_NAME', 'payme_gateway');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');</div>
+
+                <div class="success-box">
+                    <strong>✅ Installation Complete!</strong>
+                    <p>Your database is now ready. Proceed to the next step.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step">
+                <span class="step-number">2</span>
+                <h2>Admin Login</h2>
+                
+                <p>Access the admin panel to configure your gateway:</p>
+                
+                <h3>Login Details</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Admin URL</td>
+                        <td>http://your-domain.com/admin/login.html</td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td>admin</td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td>admin123</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important Security Step</strong>
+                    <p>Change the default admin password immediately after first login!</p>
+                    <ol>
+                        <li>Go to Settings → Change Password</li>
+                        <li>Enter current password: admin123</li>
+                        <li>Enter new strong password</li>
+                        <li>Save changes</li>
+                    </ol>
+                </div>
+
+                <a href="admin/login.html" class="btn">Go to Admin Panel</a>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step">
+                <span class="step-number">3</span>
+                <h2>Payment Configuration</h2>
+                
+                <p>Configure at least one payment method to start accepting payments:</p>
+
+                <h3>Option A: Bank Account</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Bank Name</td>
+                        <td>Select your bank from dropdown</td>
+                    </tr>
+                    <tr>
+                        <td>Account Type</td>
+                        <td>Savings or Current</td>
+                    </tr>
+                    <tr>
+                        <td>Account Holder</td>
+                        <td>Name as per bank records</td>
+                    </tr>
+                    <tr>
+                        <td>Account Number</td>
+                        <td>Your bank account number</td>
+                    </tr>
+                    <tr>
+                        <td>IFSC Code</td>
+                        <td>Bank branch IFSC code</td>
+                    </tr>
+                </table>
+
+                <h3>Option B: UPI Payment (Recommended)</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>UPI ID</td>
+                        <td>Your UPI ID (e.g., yourname@okhdfc)</td>
+                    </tr>
+                    <tr>
+                        <td>UPI Name</td>
+                        <td>Name registered with UPI</td>
+                    </tr>
+                    <tr>
+                        <td>UPI Provider</td>
+                        <td>Google Pay, PhonePe, Paytm, BHIM</td>
+                    </tr>
+                </table>
+
+                <div class="info-box">
+                    <strong>💡 Pro Tip:</strong>
+                    <p>UPI payments are instant and work 24/7. We recommend setting up UPI for the best customer experience.</p>
+                </div>
+
+                <a href="admin/payment-configuration.html" class="btn">Configure Payments</a>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step">
+                <span class="step-number">4</span>
+                <h2>Email Configuration</h2>
+                
+                <p>Configure email settings to send activation codes to customers:</p>
+
+                <h3>Gmail Configuration (Recommended)</h3>
+                <table>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>SMTP Host</td>
+                        <td>smtp.gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>SMTP Port</td>
+                        <td>587</td>
+                    </tr>
+                    <tr>
+                        <td>SMTP Username</td>
+                        <td>your-email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>SMTP Password</td>
+                        <td>Gmail App Password (16 characters)</td>
+                    </tr>
+                </table>
+
+                <h3>How to Get Gmail App Password</h3>
+                <ol>
+                    <li>Go to Google Account Settings</li>
+                    <li>Click "Security"</li>
+                    <li>Enable "2-Step Verification"</li>
+                    <li>Click "App Passwords"</li>
+                    <li>Select "Mail" and "Other (Custom name)"</li>
+                    <li>Enter "PayMe Gateway"</li>
+                    <li>Click "Generate"</li>
+                    <li>Copy the 16-character password</li>
+                    <li>Use this password in SMTP settings</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important:</strong>
+                    <p>Use Gmail App Password, NOT your regular Gmail password. Regular passwords won't work for SMTP.</p>
+                </div>
+
+                <a href="admin/payment-configuration.html" class="btn">Configure Email</a>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step">
+                <span class="step-number">5</span>
+                <h2>Test the System</h2>
+                
+                <p>Before going live, test the complete purchase flow:</p>
+
+                <h3>Testing Steps</h3>
+                <ol>
+                    <li>Go to the purchase page</li>
+                    <li>Select "Monthly Plan" (₹60)</li>
+                    <li>Enter your test details:
+                        <ul>
+                            <li>Name: Test User</li>
+                            <li>Email: your-email@gmail.com</li>
+                            <li>Phone: 9876543210</li>
+                        </ul>
+                    </li>
+                    <li>Select payment method (UPI recommended)</li>
+                    <li>Make a small test payment</li>
+                    <li>Enter transaction ID</li>
+                    <li>Click "Verify Payment"</li>
+                    <li>Check email for activation code</li>
+                </ol>
+
+                <div class="success-box">
+                    <strong>✅ If you received the activation code via email, your system is working perfectly!</strong>
+                </div>
+
+                <a href="purchase-code.html" class="btn">Test Purchase</a>
+            </div>
+
+            <!-- Final Checklist -->
+            <div class="checklist">
+                <h3>📋 Pre-Launch Checklist</h3>
+                <p>Make sure all items are checked before going live:</p>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="check1">
+                    <label for="check1">Database installed and configured</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check2">
+                    <label for="check2">Admin password changed from default</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check3">
+                    <label for="check3">Payment method configured (Bank/UPI/Crypto)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check4">
+                    <label for="check4">Email settings configured and tested</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check5">
+                    <label for="check5">Test purchase completed successfully</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check6">
+                    <label for="check6">Test activation code received via email</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check7">
+                    <label for="check7">SSL certificate installed (HTTPS)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check8">
+                    <label for="check8">Backup system configured</label>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="step">
+                <h2>🎉 You're Ready to Go Live!</h2>
+                
+                <p>Your PayMe 2D Gateway is now configured and ready to accept payments!</p>
+
+                <h3>Share Your Purchase Page</h3>
+                <div class="code-box">http://your-domain.com/purchase-code.html</div>
+
+                <h3>Quick Links</h3>
+                <a href="index.html" class="btn">Homepage</a>
+                <a href="purchase-code.html" class="btn">Purchase Page</a>
+                <a href="admin/login.html" class="btn">Admin Panel</a>
+                <a href="documentation.html" class="btn">Full Documentation</a>
+
+                <div class="success-box">
+                    <strong>🎊 Congratulations!</strong>
+                    <p>Your payment gateway is live. Start accepting payments with 0% commission!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
