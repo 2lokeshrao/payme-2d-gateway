@@ -1,0 +1,166 @@
+<!-- Compact Crypto Section with Emoji Icons -->
+<div id="crypto-section" class="settings-section">
+    <link rel="stylesheet" href="crypto-settings.css">
+    <h2 class="section-title">💎 Cryptocurrency Wallet Configuration</h2>
+    
+    <div class="security-note">
+        <strong>🔒 Security Note:</strong> These are your master wallet addresses for receiving crypto payments. Keep your private keys secure and never share them.
+    </div>
+
+    <div class="crypto-wallet-grid">
+        <!-- Bitcoin Wallet -->
+        <div class="crypto-wallet-card">
+            <h4>
+                <span style="font-size: 24px;">₿</span> Bitcoin (BTC)
+            </h4>
+            
+            <div class="form-group">
+                <label>Hot Wallet Address</label>
+                <input type="text" placeholder="Enter BTC hot wallet address" value="1PayMeHotBTCWallet123...">
+                <small>For daily transactions (keep ~10% of funds)</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Cold Wallet Address</label>
+                <input type="text" placeholder="Enter BTC cold wallet address" value="1PayMeColdBTCWallet456...">
+                <small>For long-term storage (hardware wallet)</small>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-item-info">
+                    <h4>Enable BTC Payments</h4>
+                    <p>Accept Bitcoin payments</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Transaction Fee (%)</label>
+                <input type="number" value="2" step="0.1" min="0" max="10">
+                <small>Your fee for BTC transactions</small>
+            </div>
+        </div>
+
+        <!-- Ethereum Wallet -->
+        <div class="crypto-wallet-card">
+            <h4>
+                <span style="font-size: 24px;">Ξ</span> Ethereum (ETH)
+            </h4>
+            
+            <div class="form-group">
+                <label>Hot Wallet Address</label>
+                <input type="text" placeholder="0x..." value="0xPayMeHotETHWallet123...">
+                <small>For daily transactions</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Cold Wallet Address</label>
+                <input type="text" placeholder="0x..." value="0xPayMeColdETHWallet456...">
+                <small>For long-term storage</small>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-item-info">
+                    <h4>Enable ETH Payments</h4>
+                    <p>Accept Ethereum payments</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Transaction Fee (%)</label>
+                <input type="number" value="2" step="0.1" min="0" max="10">
+                <small>Your fee for ETH transactions</small>
+            </div>
+        </div>
+
+        <!-- USDT Wallet -->
+        <div class="crypto-wallet-card">
+            <h4>
+                <span style="font-size: 24px;">₮</span> Tether (USDT)
+            </h4>
+            
+            <div class="form-group">
+                <label>Network</label>
+                <select>
+                    <option value="erc20">ERC-20 (Ethereum)</option>
+                    <option value="trc20">TRC-20 (Tron)</option>
+                    <option value="bep20">BEP-20 (BSC)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Hot Wallet Address</label>
+                <input type="text" placeholder="0x..." value="0xPayMeHotUSDTWallet123...">
+                <small>For daily transactions</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Cold Wallet Address</label>
+                <input type="text" placeholder="0x..." value="0xPayMeColdUSDTWallet456...">
+                <small>For long-term storage</small>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-item-info">
+                    <h4>Enable USDT Payments</h4>
+                    <p>Accept Tether payments</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Transaction Fee (%)</label>
+                <input type="number" value="1.5" step="0.1" min="0" max="10">
+                <small>Your fee for USDT transactions</small>
+            </div>
+        </div>
+
+        <!-- Binance Coin Wallet -->
+        <div class="crypto-wallet-card">
+            <h4>
+                <span style="font-size: 24px;">🔶</span> Binance Coin (BNB)
+            </h4>
+            
+            <div class="form-group">
+                <label>Hot Wallet Address</label>
+                <input type="text" placeholder="bnb..." value="bnbPayMeHotBNBWallet123...">
+                <small>For daily transactions</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Cold Wallet Address</label>
+                <input type="text" placeholder="bnb..." value="bnbPayMeColdBNBWallet456...">
+                <small>For long-term storage</small>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-item-info">
+                    <h4>Enable BNB Payments</h4>
+                    <p>Accept BNB payments</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>Transaction Fee (%)</label>
+                <input type="number" value="2" step="0.1" min="0" max="10">
+                <small>Your fee for BNB transactions</small>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-save-crypto" onclick="saveSettings('crypto')">💾 Save Crypto Settings</button>
+</div>
