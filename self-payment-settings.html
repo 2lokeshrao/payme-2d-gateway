@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Payment Settings - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .subscription-alert {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .subscription-alert.show {
+            display: block;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .settings-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group input:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-save:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #1565c0;
+        }
+
+        .verification-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .verified {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .not-verified {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .qr-upload {
+            border: 2px dashed #667eea;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .qr-upload:hover {
+            background: #f8f9fa;
+        }
+
+        .qr-preview {
+            max-width: 200px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .qr-preview img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="dashboard.html" class="brand">💳 PayMe 2D Gateway</a>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="transactions.html">💰 Transactions</a></li>
+                <li><a href="subscription.html">💎 Subscription</a></li>
+                <li><a href="self-payment-settings.html" class="active">⚙️ Self Payment</a></li>
+                <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="settings-container">
+        <h1 style="margin-bottom: 10px;">⚙️ Self Payment Settings</h1>
+        <p style="color: #666; margin-bottom: 30px;">Configure your own payment methods to receive payments directly</p>
+
+        <!-- Subscription Alert -->
+        <div class="subscription-alert" id="subscriptionAlert">
+            <h3 style="margin: 0 0 10px 0;">🔒 Subscription Required</h3>
+            <p style="margin: 0;">You need an active subscription to use self-payment features. <a href="subscription.html" style="color: white; text-decoration: underline;">Subscribe Now</a></p>
+        </div>
+
+        <!-- Bank Account Settings -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <div>
+                    <h2>🏦 Bank Account Details</h2>
+                    <span class="verification-badge not-verified" id="bankVerificationBadge">Not Verified</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="bankEnabled" onchange="toggleBankSettings()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="info-box">
+                <p>💡 Add your bank account to receive payments directly. Payments will be settled instantly to your account.</p>
+            </div>
+
+            <div id="bankSettingsForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bank Name *</label>
+                        <select id="bankName" disabled>
+                            <option value="">Select Bank</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                            <option value="SBI">State Bank of India</option>
+                            <option value="AXIS">Axis Bank</option>
+                            <option value="KOTAK">Kotak Mahindra Bank</option>
+                            <option value="PNB">Punjab National Bank</option>
+                            <option value="BOB">Bank of Baroda</option>
+                            <option value="CANARA">Canara Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Type *</label>
+                        <select id="accountType" disabled>
+                            <option value="">Select Type</option>
+                            <option value="savings">Savings Account</option>
+                            <option value="current">Current Account</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Account Holder Name *</label>
+                        <input type="text" id="accountHolderName" placeholder="As per bank records" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Number *</label>
+                        <input type="text" id="accountNumber" placeholder="Enter account number" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>IFSC Code *</label>
+                        <input type="text" id="ifscCode" placeholder="e.g., HDFC0001234" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Account Number *</label>
+                        <input type="text" id="confirmAccountNumber" placeholder="Re-enter account number" disabled>
+                    </div>
+                </div>
+
+                <button class="btn-save" onclick="saveBankDetails()" disabled id="saveBankBtn">💾 Save Bank Details</button>
+            </div>
+        </div>
+
+        <!-- UPI Settings -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <div>
+                    <h2>📱 UPI Payment Settings</h2>
+                    <span class="verification-badge not-verified" id="upiVerificationBadge">Not Verified</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="upiEnabled" onchange="toggleUpiSettings()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="info-box">
+                <p>💡 Add your UPI ID to receive instant payments via Google Pay, PhonePe, Paytm, and other UPI apps.</p>
+            </div>
+
+            <div id="upiSettingsForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>UPI ID *</label>
+                        <input type="text" id="upiId" placeholder="yourname@paytm / yourname@ybl" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>UPI Provider</label>
+                        <select id="upiProvider" disabled>
+                            <option value="">Select Provider</option>
+                            <option value="googlepay">Google Pay (@okaxis, @okicici)</option>
+                            <option value="phonepe">PhonePe (@ybl)</option>
+                            <option value="paytm">Paytm (@paytm)</option>
+                            <option value="bhim">BHIM (@upi)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>UPI QR Code (Optional)</label>
+                    <div class="qr-upload" onclick="document.getElementById('qrCodeInput').click()">
+                        <p style="margin: 0; color: #667eea;">📷 Click to upload QR Code</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">PNG, JPG up to 2MB</p>
+                    </div>
+                    <input type="file" id="qrCodeInput" accept="image/*" style="display: none;" onchange="previewQR(event)" disabled>
+                    <div class="qr-preview" id="qrPreview">
+                        <img id="qrImage" src="" alt="QR Code">
+                    </div>
+                </div>
+
+                <button class="btn-save" onclick="saveUpiDetails()" disabled id="saveUpiBtn">💾 Save UPI Details</button>
+            </div>
+        </div>
+
+        <!-- Crypto Wallet Settings -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <div>
+                    <h2>💎 Cryptocurrency Wallets</h2>
+                    <span class="verification-badge not-verified" id="cryptoVerificationBadge">Not Verified</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cryptoEnabled" onchange="toggleCryptoSettings()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="info-box">
+                <p>💡 Add your crypto wallet addresses to receive payments in Bitcoin, Ethereum, USDT, and BNB directly to your wallet.</p>
+            </div>
+
+            <div id="cryptoSettingsForm">
+                <div class="form-group">
+                    <label>
+                        <img src="images/crypto/bitcoin.png" alt="Bitcoin" style="width: 24px; vertical-align: middle; margin-right: 8px;">
+                        Bitcoin (BTC) Wallet Address
+                    </label>
+                    <input type="text" id="btcWallet" placeholder="Enter your BTC wallet address" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <img src="images/crypto/ethereum.png" alt="Ethereum" style="width: 24px; vertical-align: middle; margin-right: 8px;">
+                        Ethereum (ETH) Wallet Address
+                    </label>
+                    <input type="text" id="ethWallet" placeholder="Enter your ETH wallet address (0x...)" disabled>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <img src="images/crypto/tether.png" alt="Tether" style="width: 24px; vertical-align: middle; margin-right: 8px;">
+                            Tether (USDT) Wallet Address
+                        </label>
+                        <input type="text" id="usdtWallet" placeholder="Enter your USDT wallet address" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>USDT Network</label>
+                        <select id="usdtNetwork" disabled>
+                            <option value="">Select Network</option>
+                            <option value="ERC-20">ERC-20 (Ethereum)</option>
+                            <option value="TRC-20">TRC-20 (Tron)</option>
+                            <option value="BEP-20">BEP-20 (BSC)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <img src="images/crypto/binance.png" alt="Binance" style="width: 24px; vertical-align: middle; margin-right: 8px;">
+                        Binance Coin (BNB) Wallet Address
+                    </label>
+                    <input type="text" id="bnbWallet" placeholder="Enter your BNB wallet address (BSC)" disabled>
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p style="margin: 0; color: #856404; font-size: 14px;">
+                        ⚠️ <strong>Important:</strong> Double-check your wallet addresses. Incorrect addresses may result in permanent loss of funds.
+                    </p>
+                </div>
+
+                <button class="btn-save" onclick="saveCryptoDetails()" disabled id="saveCryptoBtn">💾 Save Crypto Wallets</button>
+            </div>
+        </div>
+
+        <!-- Settlement Settings -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2>⚡ Settlement Settings</h2>
+            </div>
+
+            <div class="form-group">
+                <label>Auto Settlement</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoSettlement" checked disabled>
+                    <span class="slider"></span>
+                </label>
+                <p style="color: #666; font-size: 14px; margin-top: 10px;">Automatically transfer payments to your configured accounts</p>
+            </div>
+
+            <div class="form-group">
+                <label>Settlement Frequency</label>
+                <select id="settlementFrequency" disabled>
+                    <option value="instant">Instant (Recommended)</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                </select>
+            </div>
+
+            <button class="btn-save" onclick="saveSettlementSettings()" disabled id="saveSettlementBtn">💾 Save Settlement Settings</button>
+        </div>
+    </div>
+
+    <script>
+        let hasActiveSubscription = false;
+
+        // Check subscription on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            checkSubscription();
+            loadSavedSettings();
+        });
+
+        function checkSubscription() {
+            // Simulate subscription check (replace with actual API call)
+            const subscription = JSON.parse(localStorage.getItem('subscription') || '{"status": "none"}');
+            
+            hasActiveSubscription = subscription.status === 'active';
+
+            if (!hasActiveSubscription) {
+                document.getElementById('subscriptionAlert').classList.add('show');
+                // Keep all settings disabled
+            } else {
+                document.getElementById('subscriptionAlert').classList.remove('show');
+            }
+        }
+
+        function toggleBankSettings() {
+            const enabled = document.getElementById('bankEnabled').checked;
+            
+            if (!hasActiveSubscription) {
+                document.getElementById('bankEnabled').checked = false;
+                alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
+                window.location.href = 'subscription.html';
+                return;
+            }
+
+            const inputs = document.querySelectorAll('#bankSettingsForm input, #bankSettingsForm select');
+            const saveBtn = document.getElementById('saveBankBtn');
+            
+            inputs.forEach(input => input.disabled = !enabled);
+            saveBtn.disabled = !enabled;
+        }
+
+        function toggleUpiSettings() {
+            const enabled = document.getElementById('upiEnabled').checked;
+            
+            if (!hasActiveSubscription) {
+                document.getElementById('upiEnabled').checked = false;
+                alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
+                window.location.href = 'subscription.html';
+                return;
+            }
+
+            const inputs = document.querySelectorAll('#upiSettingsForm input, #upiSettingsForm select');
+            const saveBtn = document.getElementById('saveUpiBtn');
+            
+            inputs.forEach(input => input.disabled = !enabled);
+            saveBtn.disabled = !enabled;
+            document.getElementById('qrCodeInput').disabled = !enabled;
+        }
+
+        function toggleCryptoSettings() {
+            const enabled = document.getElementById('cryptoEnabled').checked;
+            
+            if (!hasActiveSubscription) {
+                document.getElementById('cryptoEnabled').checked = false;
+                alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
+                window.location.href = 'subscription.html';
+                return;
+            }
+
+            const inputs = document.querySelectorAll('#cryptoSettingsForm input, #cryptoSettingsForm select');
+            const saveBtn = document.getElementById('saveCryptoBtn');
+            
+            inputs.forEach(input => input.disabled = !enabled);
+            saveBtn.disabled = !enabled;
+        }
+
+        function previewQR(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('qrImage').src = e.target.result;
+                    document.getElementById('qrPreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveBankDetails() {
+            const bankData = {
+                bankName: document.getElementById('bankName').value,
+                accountType: document.getElementById('accountType').value,
+                accountHolderName: document.getElementById('accountHolderName').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                ifscCode: document.getElementById('ifscCode').value,
+                confirmAccountNumber: document.getElementById('confirmAccountNumber').value
+            };
+
+            // Validation
+            if (!bankData.bankName || !bankData.accountType || !bankData.accountHolderName || 
+                !bankData.accountNumber || !bankData.ifscCode) {
+                alert('❌ Please fill all required fields');
+                return;
+            }
+
+            if (bankData.accountNumber !== bankData.confirmAccountNumber) {
+                alert('❌ Account numbers do not match');
+                return;
+            }
+
+            // Save to localStorage (replace with API call)
+            localStorage.setItem('bankDetails', JSON.stringify(bankData));
+            
+            alert('✅ Bank details saved successfully!\n\nYour bank account will be verified within 24 hours.');
+            document.getElementById('bankVerificationBadge').textContent = 'Pending Verification';
+            document.getElementById('bankVerificationBadge').className = 'verification-badge not-verified';
+        }
+
+        function saveUpiDetails() {
+            const upiData = {
+                upiId: document.getElementById('upiId').value,
+                upiProvider: document.getElementById('upiProvider').value,
+                qrCode: document.getElementById('qrImage').src
+            };
+
+            if (!upiData.upiId) {
+                alert('❌ Please enter your UPI ID');
+                return;
+            }
+
+            // Validate UPI ID format
+            if (!upiData.upiId.includes('@')) {
+                alert('❌ Invalid UPI ID format. Example: yourname@paytm');
+                return;
+            }
+
+            localStorage.setItem('upiDetails', JSON.stringify(upiData));
+            
+            alert('✅ UPI details saved successfully!\n\nYour UPI ID will be verified within 1 hour.');
+            document.getElementById('upiVerificationBadge').textContent = 'Pending Verification';
+            document.getElementById('upiVerificationBadge').className = 'verification-badge not-verified';
+        }
+
+        function saveCryptoDetails() {
+            const cryptoData = {
+                btcWallet: document.getElementById('btcWallet').value,
+                ethWallet: document.getElementById('ethWallet').value,
+                usdtWallet: document.getElementById('usdtWallet').value,
+                usdtNetwork: document.getElementById('usdtNetwork').value,
+                bnbWallet: document.getElementById('bnbWallet').value
+            };
+
+            // At least one wallet should be provided
+            if (!cryptoData.btcWallet && !cryptoData.ethWallet && !cryptoData.usdtWallet && !cryptoData.bnbWallet) {
+                alert('❌ Please add at least one crypto wallet address');
+                return;
+            }
+
+            // Validate Ethereum address format
+            if (cryptoData.ethWallet && !cryptoData.ethWallet.startsWith('0x')) {
+                alert('❌ Invalid Ethereum address. It should start with 0x');
+                return;
+            }
+
+            localStorage.setItem('cryptoDetails', JSON.stringify(cryptoData));
+            
+            alert('✅ Crypto wallet addresses saved successfully!\n\nYour wallets will be verified within 2 hours.');
+            document.getElementById('cryptoVerificationBadge').textContent = 'Pending Verification';
+            document.getElementById('cryptoVerificationBadge').className = 'verification-badge not-verified';
+        }
+
+        function saveSettlementSettings() {
+            const settlementData = {
+                autoSettlement: document.getElementById('autoSettlement').checked,
+                settlementFrequency: document.getElementById('settlementFrequency').value
+            };
+
+            localStorage.setItem('settlementSettings', JSON.stringify(settlementData));
+            alert('✅ Settlement settings saved successfully!');
+        }
+
+        function loadSavedSettings() {
+            // Load saved bank details
+            const bankDetails = JSON.parse(localStorage.getItem('bankDetails') || '{}');
+            if (bankDetails.bankName) {
+                document.getElementById('bankEnabled').checked = true;
+                toggleBankSettings();
+                document.getElementById('bankName').value = bankDetails.bankName;
+                document.getElementById('accountType').value = bankDetails.accountType;
+                document.getElementById('accountHolderName').value = bankDetails.accountHolderName;
+                document.getElementById('accountNumber').value = bankDetails.accountNumber;
+                document.getElementById('ifscCode').value = bankDetails.ifscCode;
+            }
+
+            // Load saved UPI details
+            const upiDetails = JSON.parse(localStorage.getItem('upiDetails') || '{}');
+            if (upiDetails.upiId) {
+                document.getElementById('upiEnabled').checked = true;
+                toggleUpiSettings();
+                document.getElementById('upiId').value = upiDetails.upiId;
+                document.getElementById('upiProvider').value = upiDetails.upiProvider;
+                if (upiDetails.qrCode) {
+                    document.getElementById('qrImage').src = upiDetails.qrCode;
+                    document.getElementById('qrPreview').style.display = 'block';
+                }
+            }
+
+            // Load saved crypto details
+            const cryptoDetails = JSON.parse(localStorage.getItem('cryptoDetails') || '{}');
+            if (cryptoDetails.btcWallet || cryptoDetails.ethWallet) {
+                document.getElementById('cryptoEnabled').checked = true;
+                toggleCryptoSettings();
+                document.getElementById('btcWallet').value = cryptoDetails.btcWallet || '';
+                document.getElementById('ethWallet').value = cryptoDetails.ethWallet || '';
+                document.getElementById('usdtWallet').value = cryptoDetails.usdtWallet || '';
+                document.getElementById('usdtNetwork').value = cryptoDetails.usdtNetwork || '';
+                document.getElementById('bnbWallet').value = cryptoDetails.bnbWallet || '';
+            }
+
+            // Load settlement settings
+            const settlementSettings = JSON.parse(localStorage.getItem('settlementSettings') || '{}');
+            if (settlementSettings.autoSettlement !== undefined) {
+                document.getElementById('autoSettlement').checked = settlementSettings.autoSettlement;
+                document.getElementById('settlementFrequency').value = settlementSettings.settlementFrequency;
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+    <script src="js/auth-check.js"></script>
+</body>
+</html>
