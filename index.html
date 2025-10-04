@@ -3,85 +3,952 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayMe 2D Gateway - Secure International Payment Processing</title>
+    <title>PayMe 2D Gateway - Complete Payment Solution for Your Business</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: #f8f9fa;
+        }
+
+        .models-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .model-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .model-card h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .model-card p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .model-steps {
+            list-style: none;
+        }
+
+        .model-steps li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            font-size: 1.05rem;
+        }
+
+        .model-steps li strong {
+            color: #667eea;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            background: #f8f9fa;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .payment-category {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .payment-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .payment-logos img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .payment-list {
+            list-style: none;
+        }
+
+        .payment-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1.05rem;
+        }
+
+        .payment-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.featured {
+            border: 3px solid #667eea;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .price-period {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1.05rem;
+        }
+
+        .pricing-features li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            background: #f8f9fa;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .use-case-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .use-case-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .use-case-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .use-case-benefits {
+            list-style: none;
+        }
+
+        .use-case-benefits li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .use-case-benefits li:before {
+            content: "→ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .cta p {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 60px 20px 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #4a5568;
+            color: #cbd5e0;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .models-container {
+                grid-template-columns: 1fr;
+            }
+
+            .price {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">PayMe 2D</a>
-            <ul class="navbar-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Sign Up</a></li>
-                <li><a href="admin/login.html">Admin</a></li>
-            </ul>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Secure Payment Processing</h1>
-            <p>Accept credit and debit card payments from customers worldwide with PayMe 2D Gateway. Fast, secure, and reliable payment processing for your business.</p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                <a href="register.html" class="btn btn-primary btn-large">Get Started</a>
-                <a href="login.html" class="btn btn-secondary btn-large">Sign In</a>
+            <h1>💳 PayMe 2D Gateway</h1>
+            <p>Complete Payment Solution for Your Business - Accept Payments Directly in Your Account</p>
+            <div class="hero-buttons">
+                <a href="register.html" class="btn btn-primary">Get Started Free</a>
+                <a href="login.html" class="btn btn-secondary">Login to Dashboard</a>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section style="padding: 80px 0;">
+    <!-- How It Works -->
+    <section class="how-it-works">
         <div class="container">
-            <h2 style="text-align: center; margin-bottom: 60px;">Why Choose PayMe 2D?</h2>
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">🔒 Secure Payments</h4>
-                    <p style="color: var(--color-text-secondary);">Bank-level encryption and security protocols to protect every transaction.</p>
+            <h2 class="section-title">🎯 How PayMe 2D Gateway Works</h2>
+            <p class="section-subtitle">We offer two powerful business models to suit your needs - whether you're an individual business owner or want to build a payment gateway empire</p>
+            
+            <div class="models-container">
+                <!-- Model 1: Self Payment Gateway -->
+                <div class="model-card">
+                    <h3>💼 Model 1: Self Payment Gateway</h3>
+                    <p><strong>Perfect for: </strong>Individual businesses, freelancers, e-commerce stores, service providers</p>
+                    <p><strong>How it works:</strong></p>
+                    <ol class="model-steps">
+                        <li><strong>Step 1:</strong> Purchase a subscription plan (Monthly ₹60, Yearly ₹500)</li>
+                        <li><strong>Step 2:</strong> Add your own bank account, UPI ID, or crypto wallet</li>
+                        <li><strong>Step 3:</strong> Create payment links or integrate our API</li>
+                        <li><strong>Step 4:</strong> Share links with your customers</li>
+                        <li><strong>Step 5:</strong> Receive payments DIRECTLY in your account - No middleman!</li>
+                    </ol>
+                    <p><strong>Key Benefits:</strong></p>
+                    <ul class="model-steps">
+                        <li>✅ 100% payment directly to YOUR account</li>
+                        <li>✅ No commission, no hidden fees</li>
+                        <li>✅ Instant settlements</li>
+                        <li>✅ Support for Bank, UPI, Crypto</li>
+                        <li>✅ Professional payment pages</li>
+                        <li>✅ Complete transaction tracking</li>
+                    </ul>
                 </div>
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">🌍 Global Reach</h4>
-                    <p style="color: var(--color-text-secondary);">Accept payments from customers worldwide in multiple currencies.</p>
-                </div>
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">⚡ Fast Processing</h4>
-                    <p style="color: var(--color-text-secondary);">Instant payment processing with real-time transaction updates.</p>
-                </div>
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">📊 Admin Dashboard</h4>
-                    <p style="color: var(--color-text-secondary);">Comprehensive admin panel to manage all transactions and users.</p>
-                </div>
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">💳 Multiple Cards</h4>
-                    <p style="color: var(--color-text-secondary);">Support for Visa, Mastercard, American Express, and more.</p>
-                </div>
-                <div class="card">
-                    <h4 style="margin-bottom: 16px;">📱 Responsive Design</h4>
-                    <p style="color: var(--color-text-secondary);">Works seamlessly on desktop, tablet, and mobile devices.</p>
+
+                <!-- Model 2: Central Gateway with Resellers -->
+                <div class="model-card">
+                    <h3>🏢 Model 2: Central Gateway Business</h3>
+                    <p><strong>Perfect for: </strong>Entrepreneurs who want to build a payment gateway business with resellers</p>
+                    <p><strong>How it works:</strong></p>
+                    <ol class="model-steps">
+                        <li><strong>Step 1:</strong> You become the Main Admin</li>
+                        <li><strong>Step 2:</strong> Create subscription plans (Monthly, Yearly, Lifetime)</li>
+                        <li><strong>Step 3:</strong> Onboard resellers with commission rates (e.g., 20%)</li>
+                        <li><strong>Step 4:</strong> Resellers generate activation codes and sell to customers</li>
+                        <li><strong>Step 5:</strong> Customers activate codes and use the gateway</li>
+                        <li><strong>Step 6:</strong> You earn 80%, resellers earn 20% commission</li>
+                    </ol>
+                    <p><strong>Key Benefits:</strong></p>
+                    <ul class="model-steps">
+                        <li>✅ Build a scalable payment gateway business</li>
+                        <li>✅ Unlimited resellers</li>
+                        <li>✅ Automated commission system</li>
+                        <li>✅ Complete admin control</li>
+                        <li>✅ Bulk activation code generation</li>
+                        <li>✅ Detailed analytics and reports</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section style="padding: 80px 0; background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%);">
-        <div class="container" style="text-align: center;">
-            <h2 style="color: white; margin-bottom: 24px;">Ready to Get Started?</h2>
-            <p style="color: rgba(255,255,255,0.9); font-size: 18px; margin-bottom: 32px;">Create your account today and start accepting payments in minutes.</p>
-            <a href="register.html" class="btn btn-large" style="background: white; color: #0066FF;">Create Account</a>
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">✨ Powerful Features</h2>
+            <p class="section-subtitle">Everything you need to accept payments and manage your business</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏦</div>
+                    <h3>Direct Bank Integration</h3>
+                    <p>Connect your bank account and receive payments directly. Supports all major Indian banks including HDFC, ICICI, SBI, Axis, and more.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>UPI Payments</h3>
+                    <p>Accept instant UPI payments from Google Pay, PhonePe, Paytm, BHIM, and all UPI apps. Instant settlements 24/7.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Cryptocurrency Support</h3>
+                    <p>Accept Bitcoin, Ethereum, USDT, and BNB. Perfect for global payments with low fees and fast settlements.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Card Payments</h3>
+                    <p>Accept Visa, Mastercard, RuPay, and American Express. Secure and PCI-DSS compliant payment processing.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Payment Links</h3>
+                    <p>Create instant payment links and share via WhatsApp, Email, or SMS. No coding required.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>API Integration</h3>
+                    <p>Powerful REST API for seamless integration with your website, app, or e-commerce platform.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track all transactions, revenue, and customer data in real-time with detailed reports and insights.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Bank-level Security</h3>
+                    <p>SSL encryption, 2FA authentication, and fraud detection to keep your payments secure.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Settlements</h3>
+                    <p>Get your money instantly in your account. No waiting for 2-3 days like traditional gateways.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multi-currency</h3>
+                    <p>Accept payments in INR, USD, EUR, and other major currencies. Perfect for global businesses.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Responsive</h3>
+                    <p>Beautiful payment pages that work perfectly on all devices - desktop, tablet, and mobile.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>No Setup Fees</h3>
+                    <p>Start accepting payments immediately. No setup fees, no hidden charges, just simple subscription pricing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Methods -->
+    <section class="payment-methods">
+        <div class="container">
+            <h2 class="section-title">💳 Supported Payment Methods</h2>
+            <p class="section-subtitle">Accept payments through multiple channels - give your customers the flexibility they need</p>
+            
+            <div class="payment-grid">
+                <div class="payment-category">
+                    <h3>💳 Card Payments</h3>
+                    <div class="payment-logos">
+                        <img src="images/visa-logo.png" alt="Visa">
+                        <img src="images/mastercard-logo.png" alt="Mastercard">
+                    </div>
+                    <ul class="payment-list">
+                        <li>Visa Credit & Debit Cards</li>
+                        <li>Mastercard</li>
+                        <li>RuPay Cards</li>
+                        <li>American Express</li>
+                    </ul>
+                </div>
+
+                <div class="payment-category">
+                    <h3>📱 UPI Payments</h3>
+                    <div class="payment-logos">
+                        <img src="images/upi-logo.png" alt="UPI">
+                        <img src="images/gpay-logo.png" alt="Google Pay">
+                        <img src="images/phonepe-logo.png" alt="PhonePe">
+                        <img src="images/paytm-logo.png" alt="Paytm">
+                    </div>
+                    <ul class="payment-list">
+                        <li>Google Pay</li>
+                        <li>PhonePe</li>
+                        <li>Paytm</li>
+                        <li>BHIM UPI</li>
+                        <li>All UPI Apps</li>
+                    </ul>
+                </div>
+
+                <div class="payment-category">
+                    <h3>🏦 Net Banking</h3>
+                    <ul class="payment-list">
+                        <li>HDFC Bank</li>
+                        <li>ICICI Bank</li>
+                        <li>State Bank of India</li>
+                        <li>Axis Bank</li>
+                        <li>Kotak Mahindra Bank</li>
+                        <li>50+ Other Banks</li>
+                    </ul>
+                </div>
+
+                <div class="payment-category">
+                    <h3>💎 Cryptocurrency</h3>
+                    <div class="payment-logos">
+                        <img src="images/bitcoin-logo.png" alt="Bitcoin">
+                        <img src="images/ethereum-logo.png" alt="Ethereum">
+                        <img src="images/usdt-logo.png" alt="USDT">
+                        <img src="images/bnb-logo.png" alt="BNB">
+                    </div>
+                    <ul class="payment-list">
+                        <li>Bitcoin (BTC)</li>
+                        <li>Ethereum (ETH)</li>
+                        <li>Tether (USDT)</li>
+                        <li>Binance Coin (BNB)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">💰 Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">No hidden fees, no commission on transactions. Just simple subscription pricing.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Monthly Plan</h3>
+                    <div class="price">₹60</div>
+                    <div class="price-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Self Bank Account Integration</li>
+                        <li>Self UPI Payment Collection</li>
+                        <li>Self Crypto Wallet Integration</li>
+                        <li>Unlimited Transactions</li>
+                        <li>Payment Link Generation</li>
+                        <li>API Access</li>
+                        <li>Real-time Analytics</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <a href="subscription.html" class="btn btn-primary">Get Started</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Quarterly Plan</h3>
+                    <div class="price">₹150</div>
+                    <div class="price-period">per 3 months (Save 17%)</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Monthly Plan</li>
+                        <li>Priority Support</li>
+                        <li>Advanced Analytics</li>
+                        <li>Custom Branding</li>
+                        <li>Webhook Integration</li>
+                        <li>Export Reports</li>
+                        <li>Multi-user Access</li>
+                        <li>Phone Support</li>
+                    </ul>
+                    <a href="subscription.html" class="btn btn-primary">Get Started</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <span class="featured-badge">Most Popular</span>
+                    <h3>Yearly Plan</h3>
+                    <div class="price">₹500</div>
+                    <div class="price-period">per year (Save 30%)</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Quarterly Plan</li>
+                        <li>24/7 Priority Support</li>
+                        <li>Dedicated Account Manager</li>
+                        <li>Custom Domain</li>
+                        <li>White Label Solution</li>
+                        <li>Advanced Fraud Protection</li>
+                        <li>Unlimited API Calls</li>
+                        <li>Free Updates & Features</li>
+                    </ul>
+                    <a href="subscription.html" class="btn btn-primary">Get Started</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Lifetime Plan</h3>
+                    <div class="price">₹2,999</div>
+                    <div class="price-period">one-time payment</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Yearly Plan</li>
+                        <li>Lifetime Access</li>
+                        <li>No Recurring Fees</li>
+                        <li>Lifetime Updates</li>
+                        <li>VIP Support</li>
+                        <li>Early Access to Features</li>
+                        <li>Reseller Opportunities</li>
+                        <li>Best Value for Money</li>
+                    </ul>
+                    <a href="subscription.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+        <div class="container">
+            <h2 class="section-title">🎯 Perfect For Every Business</h2>
+            <p class="section-subtitle">See how different businesses use PayMe 2D Gateway</p>
+            
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <h3>🛒 E-commerce Stores</h3>
+                    <p>Sell products online and accept payments directly in your account</p>
+                    <ul class="use-case-benefits">
+                        <li>Integrate with your website</li>
+                        <li>Accept all payment methods</li>
+                        <li>Instant order confirmation</li>
+                        <li>Automatic invoice generation</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>💼 Freelancers</h3>
+                    <p>Get paid for your services without any hassle</p>
+                    <ul class="use-case-benefits">
+                        <li>Create payment links instantly</li>
+                        <li>Share via WhatsApp/Email</li>
+                        <li>Track all payments</li>
+                        <li>Professional invoices</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>🏪 Small Businesses</h3>
+                    <p>Accept digital payments without expensive POS machines</p>
+                    <ul class="use-case-benefits">
+                        <li>QR code payments</li>
+                        <li>No hardware needed</li>
+                        <li>Instant settlements</li>
+                        <li>Daily sales reports</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>🎓 Educational Institutes</h3>
+                    <p>Collect fees and course payments online</p>
+                    <ul class="use-case-benefits">
+                        <li>Student-wise payment tracking</li>
+                        <li>Bulk payment links</li>
+                        <li>Automatic receipts</li>
+                        <li>Fee reminder system</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>🏥 Healthcare Providers</h3>
+                    <p>Accept consultation and treatment fees digitally</p>
+                    <ul class="use-case-benefits">
+                        <li>Patient-wise billing</li>
+                        <li>Secure payments</li>
+                        <li>Insurance integration ready</li>
+                        <li>Appointment booking payments</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>🎨 Content Creators</h3>
+                    <p>Monetize your content and accept donations</p>
+                    <ul class="use-case-benefits">
+                        <li>Accept tips and donations</li>
+                        <li>Subscription payments</li>
+                        <li>Crypto payments for global audience</li>
+                        <li>Fan engagement tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">📊 Trusted by Businesses</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10,000+</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat-item">
+                    <h3>₹50Cr+</h3>
+                    <p>Transactions Processed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>Uptime</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Support Available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start Accepting Payments?</h2>
+            <p>Join thousands of businesses already using PayMe 2D Gateway</p>
+            <div class="hero-buttons">
+                <a href="register.html" class="btn btn-primary">Create Free Account</a>
+                <a href="subscription.html" class="btn btn-secondary">View Plans</a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
-            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved.</p>
-            <p style="margin-top: 8px;">Secure payment processing for businesses worldwide.</p>
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>PayMe 2D Gateway</h3>
+                    <p>Complete payment solution for your business. Accept payments directly in your account.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="subscription.html">Pricing</a></li>
+                        <li><a href="register.html">Sign Up</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>For Business</h3>
+                    <ul>
+                        <li><a href="admin/login.html">Admin Login</a></li>
+                        <li><a href="reseller/login.html">Reseller Login</a></li>
+                        <li><a href="api-documentation.html">API Documentation</a></li>
+                        <li><a href="webhooks.html">Webhooks</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="mailto:support@payme-gateway.com">Email Support</a></li>
+                        <li><a href="tel:+919876543210">Phone Support</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 PayMe 2D Gateway. All rights reserved. | <a href="#" style="color: #cbd5e0;">Privacy Policy</a> | <a href="#" style="color: #cbd5e0;">Terms of Service</a></p>
+            </div>
         </div>
     </footer>
 </body>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Management - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .plan-list {
+            margin-top: 20px;
+        }
+
+        .plan-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-info h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .plan-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background: #f9fafb;
+            color: #333;
+            font-weight: 600;
+        }
+
+        table tr:hover {
+            background: #f9fafb;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎛️ Plan Management System</h1>
+            <p>Manage subscription plans, pricing, and features</p>
+        </div>
+
+        <div class="nav">
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="plan-management.html" class="active">💎 Plans</a>
+            <a href="reseller-management.html">👥 Resellers</a>
+            <a href="activation-codes.html">🔑 Activation Codes</a>
+            <a href="settings.html">⚙️ Settings</a>
+            <a href="../index.html">🚪 Logout</a>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="totalPlans">3</h3>
+                <p>Total Plans</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="activePlans">3</h3>
+                <p>Active Plans</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalRevenue">$0</h3>
+                <p>Total Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="activeSubscriptions">0</h3>
+                <p>Active Subscriptions</p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Create New Plan -->
+            <div class="card">
+                <h2>➕ Create New Plan</h2>
+                <form id="createPlanForm">
+                    <div class="form-group">
+                        <label>Plan Name *</label>
+                        <input type="text" id="planName" placeholder="e.g., Monthly Plan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plan Type *</label>
+                        <select id="planType" required>
+                            <option value="">Select Type</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="lifetime">Lifetime</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price (USD) *</label>
+                        <input type="number" id="planPrice" placeholder="60" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Duration (Days) *</label>
+                        <input type="number" id="planDuration" placeholder="30" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Features (One per line)</label>
+                        <textarea id="planFeatures" rows="5" placeholder="Self Bank Account Integration&#10;Self UPI Payment Collection&#10;Self Crypto Wallet Integration&#10;Unlimited Transactions"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="planStatus" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span style="margin-left: 10px;">Active</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Plan</button>
+                </form>
+            </div>
+
+            <!-- Edit Existing Plan -->
+            <div class="card">
+                <h2>✏️ Edit Plan</h2>
+                <form id="editPlanForm">
+                    <div class="form-group">
+                        <label>Select Plan *</label>
+                        <select id="editPlanSelect" required>
+                            <option value="">Choose a plan to edit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plan Name *</label>
+                        <input type="text" id="editPlanName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price (USD) *</label>
+                        <input type="number" id="editPlanPrice" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Duration (Days) *</label>
+                        <input type="number" id="editPlanDuration" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Features (One per line)</label>
+                        <textarea id="editPlanFeatures" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="editPlanStatus">
+                            <span class="slider"></span>
+                        </label>
+                        <span style="margin-left: 10px;">Active</span>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-success">Update Plan</button>
+                        <button type="button" class="btn btn-danger" onclick="deletePlan()">Delete Plan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Existing Plans List -->
+        <div class="card">
+            <h2>📋 All Plans</h2>
+            <div class="plan-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plan Name</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                            <th>Subscribers</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="plansTableBody">
+                        <tr>
+                            <td>Monthly Plan</td>
+                            <td>Monthly</td>
+                            <td>$60</td>
+                            <td>30 days</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-warning" style="padding: 5px 15px; font-size: 12px;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Quarterly Plan</td>
+                            <td>Quarterly</td>
+                            <td>$150</td>
+                            <td>90 days</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-warning" style="padding: 5px 15px; font-size: 12px;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Yearly Plan</td>
+                            <td>Yearly</td>
+                            <td>$500</td>
+                            <td>365 days</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-warning" style="padding: 5px 15px; font-size: 12px;">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load plans on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPlans();
+            loadStats();
+        });
+
+        // Create Plan Form
+        document.getElementById('createPlanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const planData = {
+                name: document.getElementById('planName').value,
+                type: document.getElementById('planType').value,
+                price: document.getElementById('planPrice').value,
+                duration: document.getElementById('planDuration').value,
+                features: document.getElementById('planFeatures').value.split('\n').filter(f => f.trim()),
+                status: document.getElementById('planStatus').checked ? 'active' : 'inactive'
+            };
+
+            fetch('/api/admin/plans.php?action=create', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(planData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Plan created successfully!');
+                    this.reset();
+                    loadPlans();
+                    loadStats();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+
+        // Edit Plan Form
+        document.getElementById('editPlanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const planId = document.getElementById('editPlanSelect').value;
+            const planData = {
+                id: planId,
+                name: document.getElementById('editPlanName').value,
+                price: document.getElementById('editPlanPrice').value,
+                duration: document.getElementById('editPlanDuration').value,
+                features: document.getElementById('editPlanFeatures').value.split('\n').filter(f => f.trim()),
+                status: document.getElementById('editPlanStatus').checked ? 'active' : 'inactive'
+            };
+
+            fetch('/api/admin/plans.php?action=update', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(planData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Plan updated successfully!');
+                    loadPlans();
+                    loadStats();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+
+        function loadPlans() {
+            fetch('/api/admin/plans.php?action=list')
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    updatePlansTable(data.plans);
+                    updateEditSelect(data.plans);
+                }
+            });
+        }
+
+        function updatePlansTable(plans) {
+            const tbody = document.getElementById('plansTableBody');
+            tbody.innerHTML = plans.map(plan => `
+                <tr>
+                    <td>${plan.name}</td>
+                    <td>${plan.type}</td>
+                    <td>$${plan.price}</td>
+                    <td>${plan.duration} days</td>
+                    <td><span class="badge badge-${plan.status === 'active' ? 'active' : 'inactive'}">${plan.status}</span></td>
+                    <td>${plan.subscribers || 0}</td>
+                    <td>
+                        <button class="btn btn-warning" style="padding: 5px 15px; font-size: 12px;" onclick="editPlan(${plan.id})">Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateEditSelect(plans) {
+            const select = document.getElementById('editPlanSelect');
+            select.innerHTML = '<option value="">Choose a plan to edit</option>' + 
+                plans.map(plan => `<option value="${plan.id}">${plan.name}</option>`).join('');
+        }
+
+        function editPlan(planId) {
+            document.getElementById('editPlanSelect').value = planId;
+            loadPlanDetails(planId);
+        }
+
+        function loadPlanDetails(planId) {
+            fetch(`/api/admin/plans.php?action=get&id=${planId}`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    const plan = data.plan;
+                    document.getElementById('editPlanName').value = plan.name;
+                    document.getElementById('editPlanPrice').value = plan.price;
+                    document.getElementById('editPlanDuration').value = plan.duration;
+                    document.getElementById('editPlanFeatures').value = plan.features.join('\n');
+                    document.getElementById('editPlanStatus').checked = plan.status === 'active';
+                }
+            });
+        }
+
+        function deletePlan() {
+            const planId = document.getElementById('editPlanSelect').value;
+            if(!planId) {
+                alert('Please select a plan first');
+                return;
+            }
+
+            if(confirm('Are you sure you want to delete this plan?')) {
+                fetch(`/api/admin/plans.php?action=delete&id=${planId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        alert('Plan deleted successfully!');
+                        document.getElementById('editPlanForm').reset();
+                        loadPlans();
+                        loadStats();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function loadStats() {
+            fetch('/api/admin/plans.php?action=stats')
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    document.getElementById('totalPlans').textContent = data.stats.total_plans;
+                    document.getElementById('activePlans').textContent = data.stats.active_plans;
+                    document.getElementById('totalRevenue').textContent = '$' + data.stats.total_revenue;
+                    document.getElementById('activeSubscriptions').textContent = data.stats.active_subscriptions;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
