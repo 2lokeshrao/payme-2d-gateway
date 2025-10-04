@@ -1,0 +1,87 @@
+/* Settings Page Mobile Responsive CSS */
+
+/* Mobile View - Single Column Layout */
+@media (max-width: 768px) {
+    .settings-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        margin-top: 20px !important;
+    }
+    
+    .settings-sidebar {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .settings-content {
+        width: 100% !important;
+        padding: 20px !important;
+    }
+    
+    .settings-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .settings-menu li {
+        width: 100% !important;
+    }
+    
+    .settings-menu a {
+        display: block !important;
+        width: 100% !important;
+        padding: 12px 15px !important;
+        font-size: 14px !important;
+    }
+    
+    .settings-section {
+        width: 100% !important;
+    }
+    
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+    
+    .form-group label {
+        font-size: 13px !important;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 14px !important;
+        padding: 10px !important;
+    }
+    
+    .btn {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Small Mobile - Extra Compact */
+@media (max-width: 480px) {
+    .settings-container {
+        gap: 15px !important;
+        margin-top: 15px !important;
+    }
+    
+    .settings-sidebar {
+        padding: 15px !important;
+    }
+    
+    .settings-content {
+        padding: 15px !important;
+    }
+    
+    .settings-menu a {
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    .section-title {
+        font-size: 18px !important;
+    }
+}
