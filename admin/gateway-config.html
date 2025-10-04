@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway Configuration - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .config-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .config-section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5em; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #667eea; outline: none; }
+        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 30px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #667eea; }
+        input:checked + .slider:before { transform: translateX(30px); }
+        .btn { display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; margin-right: 10px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: white; color: #667eea; border: 2px solid #667eea; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-cog"></i> Gateway Configuration</h1>
+        <p>Configure your payment gateway settings</p>
+    </div>
+
+    <div class="container">
+        <!-- General Settings -->
+        <div class="config-section">
+            <h2><i class="fas fa-sliders-h"></i> General Settings</h2>
+            <div class="form-group">
+                <label>Gateway Name</label>
+                <input type="text" value="PayMe 2D Gateway" placeholder="Enter gateway name">
+            </div>
+            <div class="form-group">
+                <label>Gateway URL</label>
+                <input type="url" value="https://payme-gateway.lindy.site" placeholder="https://your-domain.com">
+            </div>
+            <div class="form-group">
+                <label>Support Email</label>
+                <input type="email" value="support@payme-gateway.com" placeholder="support@example.com">
+            </div>
+            <div class="form-group">
+                <label>Currency</label>
+                <select>
+                    <option value="INR" selected>INR (₹)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Transaction Settings -->
+        <div class="config-section">
+            <h2><i class="fas fa-exchange-alt"></i> Transaction Settings</h2>
+            <div class="form-group">
+                <label>Minimum Transaction Amount</label>
+                <input type="number" value="10" placeholder="10">
+            </div>
+            <div class="form-group">
+                <label>Maximum Transaction Amount</label>
+                <input type="number" value="100000" placeholder="100000">
+            </div>
+            <div class="form-group">
+                <label>Transaction Timeout (minutes)</label>
+                <input type="number" value="30" placeholder="30">
+            </div>
+            <div class="form-group">
+                <label>Auto-verify Payments</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="config-section">
+            <h2><i class="fas fa-shield-alt"></i> Security Settings</h2>
+            <div class="form-group">
+                <label>Enable Two-Factor Authentication (2FA)</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Enable IP Whitelisting</label>
+                <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Session Timeout (minutes)</label>
+                <input type="number" value="60" placeholder="60">
+            </div>
+            <div class="form-group">
+                <label>Max Login Attempts</label>
+                <input type="number" value="5" placeholder="5">
+            </div>
+        </div>
+
+        <!-- Email Settings -->
+        <div class="config-section">
+            <h2><i class="fas fa-envelope"></i> Email Notifications</h2>
+            <div class="form-group">
+                <label>Send Payment Confirmation</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Send Activation Code Email</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Send Daily Reports</label>
+                <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- API Settings -->
+        <div class="config-section">
+            <h2><i class="fas fa-code"></i> API Settings</h2>
+            <div class="form-group">
+                <label>Enable API Access</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>API Rate Limit (requests/minute)</label>
+                <input type="number" value="100" placeholder="100">
+            </div>
+            <div class="info-box">
+                <strong>ℹ️ API Documentation:</strong> Visit <a href="../documentation.html">documentation page</a> for complete API reference.
+            </div>
+        </div>
+
+        <!-- Save Buttons -->
+        <div style="text-align: center;">
+            <button class="btn" onclick="saveConfig()"><i class="fas fa-save"></i> Save Configuration</button>
+            <button class="btn btn-secondary" onclick="resetConfig()"><i class="fas fa-undo"></i> Reset to Default</button>
+            <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function saveConfig() {
+            alert('Configuration saved successfully!');
+        }
+        function resetConfig() {
+            if(confirm('Are you sure you want to reset to default settings?')) {
+                alert('Configuration reset to default!');
+            }
+        }
+    </script>
+</body>
+</html>

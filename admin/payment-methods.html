@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Methods - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .method-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .method-card h3 { color: #667eea; margin-bottom: 20px; font-size: 1.4em; }
+        .method-status { display: inline-block; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600; margin-bottom: 15px; }
+        .status-active { background: #e8f5e9; color: #43e97b; }
+        .status-inactive { background: #ffebee; color: #f5576c; }
+        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 30px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #667eea; }
+        input:checked + .slider:before { transform: translateX(30px); }
+        .btn { display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; font-size: 0.95em; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .info-item { margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+        .info-item strong { color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-credit-card"></i> Payment Methods</h1>
+        <p>Manage available payment methods</p>
+    </div>
+
+    <div class="container">
+        <div class="methods-grid">
+            <!-- Bank Transfer -->
+            <div class="method-card">
+                <h3><i class="fas fa-university"></i> Bank Transfer</h3>
+                <span class="method-status status-active">Active</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> NEFT, RTGS, IMPS
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> Instant to 24 hours
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> ₹0 (Direct to account)
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('bank')">Configure</button>
+                </div>
+            </div>
+
+            <!-- UPI -->
+            <div class="method-card">
+                <h3><i class="fas fa-mobile-alt"></i> UPI Payments</h3>
+                <span class="method-status status-active">Active</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> Google Pay, PhonePe, Paytm, BHIM
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> Instant
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> ₹0 (Direct to UPI ID)
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('upi')">Configure</button>
+                </div>
+            </div>
+
+            <!-- Cryptocurrency -->
+            <div class="method-card">
+                <h3><i class="fab fa-bitcoin"></i> Cryptocurrency</h3>
+                <span class="method-status status-active">Active</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> BTC, ETH, USDT, BNB
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> 10-60 minutes
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> Network fees apply
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('crypto')">Configure</button>
+                </div>
+            </div>
+
+            <!-- Credit/Debit Cards -->
+            <div class="method-card">
+                <h3><i class="fas fa-credit-card"></i> Credit/Debit Cards</h3>
+                <span class="method-status status-inactive">Inactive</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> Visa, Mastercard, RuPay
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> Instant
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> 2-3% + Gateway charges
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('card')">Configure</button>
+                </div>
+            </div>
+
+            <!-- Net Banking -->
+            <div class="method-card">
+                <h3><i class="fas fa-globe"></i> Net Banking</h3>
+                <span class="method-status status-inactive">Inactive</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> All major banks
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> Instant
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> Varies by bank
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('netbanking')">Configure</button>
+                </div>
+            </div>
+
+            <!-- Wallets -->
+            <div class="method-card">
+                <h3><i class="fas fa-wallet"></i> Digital Wallets</h3>
+                <span class="method-status status-inactive">Inactive</span>
+                <div class="info-item">
+                    <strong>Supported:</strong> Paytm, Mobikwik, Freecharge
+                </div>
+                <div class="info-item">
+                    <strong>Processing Time:</strong> Instant
+                </div>
+                <div class="info-item">
+                    <strong>Transaction Fee:</strong> 1-2%
+                </div>
+                <div style="margin-top: 20px;">
+                    <label style="margin-right: 15px;">Enable:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="configureMethod('wallet')">Configure</button>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div style="text-align: center;">
+            <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function configureMethod(method) {
+            alert('Opening configuration for ' + method + ' payment method...');
+            window.location.href = 'payment-configuration.html';
+        }
+    </script>
+</body>
+</html>
