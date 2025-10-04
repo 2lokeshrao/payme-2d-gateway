@@ -6,6 +6,7 @@
     <title>Merchant Details - PayMe 2D Admin</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-nav {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -118,6 +119,18 @@
             font-size: 16px;
             font-weight: 600;
             color: #333;
+        }
+        
+        .password-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+            color: #667eea;
+            font-size: 18px;
         }
         
         .badge {
@@ -242,6 +255,50 @@
             font-weight: 700;
             color: #333;
         }
+        
+        /* Edit Form Styles */
+        .edit-form {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
     </style>
 </head>
 <body>
@@ -265,8 +322,8 @@
         <div class="container">
             <a href="merchants.html" class="back-btn">← Back to Merchants</a>
 
-            <!-- Merchant Profile -->
-            <div class="merchant-profile">
+            <!-- Merchant Profile (View Mode) -->
+            <div class="merchant-profile" id="viewMode">
                 <div class="profile-header">
                     <div class="profile-avatar">🏪</div>
                     <div class="profile-info">
@@ -304,9 +361,17 @@
                         <label>API Key</label>
                         <div class="value" id="apiKey">-</div>
                     </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-lock"></i> Current Password</label>
+                        <div class="password-field">
+                            <div class="value" id="merchantPassword">••••••••</div>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword()" id="passwordToggle"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showEditForm()"><i class="fas fa-edit"></i> Edit Merchant</button>
                     <button class="btn btn-success" onclick="approveKYC()">✅ Approve KYC</button>
                     <button class="btn btn-danger" onclick="rejectKYC()">❌ Reject KYC</button>
                     <button class="btn btn-primary" onclick="viewAPIKeys()">🔑 View API Keys</button>
@@ -315,24 +380,88 @@
                 </div>
             </div>
 
+            <!-- Edit Form (Hidden by default) -->
+            <div class="edit-form" id="editMode">
+                <h2 style="margin-bottom: 25px;"><i class="fas fa-edit"></i> Edit Merchant Details</h2>
+                
+                <form id="merchantEditForm">
+                    <div class="info-grid">
+                        <div class="form-group">
+                            <label>Business Name *</label>
+                            <input type="text" id="editName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="editEmail" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="editPhone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Business Type</label>
+                            <select id="editBusinessType">
+                                <option>E-commerce</option>
+                                <option>Retail</option>
+                                <option>Services</option>
+                                <option>Digital Products</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Website URL</label>
+                            <input type="url" id="editWebsite">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="editStatus">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Suspended">Suspended</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> New Password (Leave blank to keep current)</label>
+                            <input type="password" id="editPassword" placeholder="Enter new password">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> Confirm New Password</label>
+                            <input type="password" id="editPasswordConfirm" placeholder="Confirm new password">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
+                        <button type="button" class="btn btn-danger" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Business Statistics -->
             <h3 class="section-title">Business Statistics</h3>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Transactions</h3>
-                    <div class="value">0</div>
+                    <div class="value">1,234</div>
                 </div>
                 <div class="stat-card">
                     <h3>Successful Payments</h3>
-                    <div class="value" style="color: #28a745;">0</div>
+                    <div class="value" style="color: #28a745;">1,156</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
-                    <div class="value">$0.00</div>
+                    <div class="value">₹4,56,789</div>
                 </div>
                 <div class="stat-card">
                     <h3>Pending Settlements</h3>
-                    <div class="value">$0.00</div>
+                    <div class="value">₹12,450</div>
                 </div>
             </div>
 
@@ -381,33 +510,20 @@
                             <th>Date</th>
                         </tr>
                     </thead>
-                    <tbody id="transactionTable">
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 40px; color: #999;">
-                                No transactions yet
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Settlement History -->
-            <h3 class="section-title">Settlement History</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Settlement ID</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4" style="text-align: center; padding: 40px; color: #999;">
-                                No settlements yet
-                            </td>
+                            <td>#TXN123456</td>
+                            <td>Rajesh Kumar</td>
+                            <td>₹2,500</td>
+                            <td><span class="badge badge-success">Success</span></td>
+                            <td>Oct 4, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>#TXN123457</td>
+                            <td>Priya Sharma</td>
+                            <td>₹1,200</td>
+                            <td><span class="badge badge-success">Success</span></td>
+                            <td>Oct 3, 2025</td>
                         </tr>
                     </tbody>
                 </table>
@@ -425,38 +541,114 @@
         const urlParams = new URLSearchParams(window.location.search);
         const merchantId = urlParams.get('id');
 
+        // Sample merchant data with password
+        let merchantData = {
+            name: 'Test Business Pvt Ltd',
+            email: 'merchant@testbusiness.com',
+            businessType: 'E-commerce',
+            phone: '+91 98765 43210',
+            website: 'https://testbusiness.com',
+            status: 'Active',
+            kycStatus: 'Pending',
+            registered: 'Oct 1, 2025',
+            apiKey: 'pk_live_abc123xyz789',
+            password: 'Merchant@123'  // Current password
+        };
+
         // Load merchant data
         function loadMerchantData() {
-            // Sample data - replace with actual API call
-            const merchant = {
-                name: 'Test Business',
-                email: 'merchant@test.com',
-                businessType: 'E-commerce',
-                phone: '+91 98765 43210',
-                website: 'https://testbusiness.com',
-                status: 'Active',
-                kycStatus: 'Pending',
-                registered: 'Oct 1, 2025',
-                apiKey: 'pk_test_xxxxxxxxxxxx'
-            };
-            
-            document.getElementById('merchantId').textContent = merchantId || '1';
-            document.getElementById('merchantName').textContent = merchant.name;
-            document.getElementById('merchantEmail').textContent = merchant.email;
-            document.getElementById('businessType').textContent = merchant.businessType;
-            document.getElementById('merchantPhone').textContent = merchant.phone;
-            document.getElementById('merchantWebsite').textContent = merchant.website;
-            document.getElementById('merchantStatus').textContent = merchant.status;
-            document.getElementById('kycStatus').textContent = 'KYC ' + merchant.kycStatus;
-            document.getElementById('registeredDate').textContent = merchant.registered;
-            document.getElementById('apiKey').textContent = merchant.apiKey;
+            document.getElementById('merchantId').textContent = merchantId || 'M1001';
+            document.getElementById('merchantName').textContent = merchantData.name;
+            document.getElementById('merchantEmail').textContent = merchantData.email;
+            document.getElementById('businessType').textContent = merchantData.businessType;
+            document.getElementById('merchantPhone').textContent = merchantData.phone;
+            document.getElementById('merchantWebsite').textContent = merchantData.website;
+            document.getElementById('merchantStatus').textContent = merchantData.status;
+            document.getElementById('kycStatus').textContent = 'KYC ' + merchantData.kycStatus;
+            document.getElementById('registeredDate').textContent = merchantData.registered;
+            document.getElementById('apiKey').textContent = merchantData.apiKey;
         }
+
+        // Toggle password visibility
+        let passwordVisible = false;
+        function togglePassword() {
+            const passwordField = document.getElementById('merchantPassword');
+            const toggleIcon = document.getElementById('passwordToggle');
+            
+            if (passwordVisible) {
+                passwordField.textContent = '••••••••';
+                toggleIcon.className = 'fas fa-eye password-toggle';
+                passwordVisible = false;
+            } else {
+                passwordField.textContent = merchantData.password;
+                toggleIcon.className = 'fas fa-eye-slash password-toggle';
+                passwordVisible = true;
+            }
+        }
+
+        // Show edit form
+        function showEditForm() {
+            document.getElementById('viewMode').style.display = 'none';
+            document.getElementById('editMode').style.display = 'block';
+            
+            // Populate form with current data
+            document.getElementById('editName').value = merchantData.name;
+            document.getElementById('editEmail').value = merchantData.email;
+            document.getElementById('editPhone').value = merchantData.phone;
+            document.getElementById('editBusinessType').value = merchantData.businessType;
+            document.getElementById('editWebsite').value = merchantData.website;
+            document.getElementById('editStatus').value = merchantData.status;
+            
+            // Scroll to form
+            document.getElementById('editMode').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            document.getElementById('editMode').style.display = 'none';
+            document.getElementById('viewMode').style.display = 'block';
+            document.getElementById('merchantEditForm').reset();
+        }
+
+        // Handle form submission
+        document.getElementById('merchantEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('editPassword').value;
+            const confirmPassword = document.getElementById('editPasswordConfirm').value;
+            
+            // Check if passwords match (if provided)
+            if (newPassword && newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Update merchant data
+            merchantData.name = document.getElementById('editName').value;
+            merchantData.email = document.getElementById('editEmail').value;
+            merchantData.phone = document.getElementById('editPhone').value;
+            merchantData.businessType = document.getElementById('editBusinessType').value;
+            merchantData.website = document.getElementById('editWebsite').value;
+            merchantData.status = document.getElementById('editStatus').value;
+            
+            // Update password if provided
+            if (newPassword) {
+                merchantData.password = newPassword;
+            }
+            
+            // Reload data and switch to view mode
+            loadMerchantData();
+            cancelEdit();
+            
+            alert('Merchant details updated successfully!');
+        });
 
         function approveKYC() {
             if (confirm('Approve KYC for this merchant?')) {
                 alert('KYC approved successfully!');
                 document.getElementById('kycStatus').textContent = 'KYC Verified';
                 document.getElementById('kycStatus').className = 'badge badge-success';
+                merchantData.kycStatus = 'Verified';
             }
         }
 
@@ -477,6 +669,9 @@
 
         function suspendMerchant() {
             if (confirm('Are you sure you want to suspend this merchant?')) {
+                merchantData.status = 'Suspended';
+                document.getElementById('merchantStatus').textContent = 'Suspended';
+                document.getElementById('merchantStatus').className = 'badge badge-danger';
                 alert('Merchant suspended successfully!');
             }
         }
