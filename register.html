@@ -3,771 +3,556 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account - PayMe 2D Gateway</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sign Up - PayMe 2D Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .registration-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        .progress-bar {
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
             position: relative;
+            overflow-x: hidden;
+            padding: 20px 0;
         }
-
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--slate-6);
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             z-index: 0;
         }
-
-        .progress-line {
+        
+        .bg-animation span {
             position: absolute;
-            top: 20px;
-            left: 0;
-            height: 2px;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
-            z-index: 1;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: move 25s infinite linear;
+            bottom: -150px;
         }
-
-        .step {
+        
+        .bg-animation span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .bg-animation span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .bg-animation span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .bg-animation span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .bg-animation span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .bg-animation span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .bg-animation span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .bg-animation span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        
+        @keyframes move {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            margin: 40px;
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            color: white;
             position: relative;
-            z-index: 2;
-            flex: 1;
+            overflow: hidden;
         }
-
-        .step-circle {
+        
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+        
+        .brand {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .brand h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .brand h1 i {
+            font-size: 56px;
+        }
+        
+        .brand p {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .benefits {
+            margin-top: 40px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .benefit-item i {
+            font-size: 24px;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: var(--slate-3);
-            border: 2px solid var(--slate-6);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            color: var(--slate-11);
-            transition: all 0.3s ease;
-            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
-
-        .step.active .step-circle {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-
-        .step.completed .step-circle {
-            background: #10b981;
-            border-color: #10b981;
-            color: white;
-        }
-
-        .step-label {
-            font-size: 12px;
-            color: var(--slate-11);
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .step.active .step-label {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .form-step {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-grid.single {
-            grid-template-columns: 1fr;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .btn-secondary {
-            background: var(--slate-3);
-            color: var(--slate-12);
-            border: 1px solid var(--slate-7);
-        }
-
-        .btn-secondary:hover {
-            background: var(--slate-4);
-        }
-
-        .file-upload {
-            border: 2px dashed var(--slate-7);
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .file-upload:hover {
-            border-color: var(--primary-color);
-            background: var(--slate-2);
-        }
-
-        .file-upload input[type="file"] {
-            display: none;
-        }
-
-        .file-upload-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-            color: var(--slate-9);
-        }
-
-        .uploaded-file {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--slate-2);
-            border-radius: 8px;
-            margin-top: 12px;
-        }
-
-        .uploaded-file-name {
+        
+        .right-panel {
             flex: 1;
-            font-size: 14px;
-            color: var(--slate-12);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-
-        .remove-file {
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 20px;
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-
-        .info-box {
-            background: var(--slate-2);
-            border-left: 3px solid var(--primary-color);
-            padding: 16px;
-            border-radius: 8px;
+        
+        .signup-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
             margin-bottom: 20px;
         }
-
-        .info-box-title {
-            font-weight: 600;
-            color: var(--slate-12);
+        
+        .form-group label {
+            display: block;
             margin-bottom: 8px;
-        }
-
-        .info-box-text {
+            color: #333;
+            font-weight: 600;
             font-size: 14px;
-            color: var(--slate-11);
-            line-height: 1.6;
         }
-
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 16px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
         .checkbox-group {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
         }
-
+        
         .checkbox-group input[type="checkbox"] {
-            margin-top: 4px;
             width: 18px;
             height: 18px;
             cursor: pointer;
         }
-
-        .checkbox-label {
+        
+        .checkbox-group label {
+            color: #666;
             font-size: 14px;
-            color: var(--slate-11);
-            line-height: 1.6;
+            margin: 0;
+            font-weight: 400;
         }
-
-        .checkbox-label a {
-            color: var(--primary-color);
+        
+        .checkbox-group a {
+            color: #667eea;
             text-decoration: none;
+            font-weight: 600;
         }
-
-        .checkbox-label a:hover {
-            text-decoration: underline;
+        
+        .btn-signup {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-
-        @media (max-width: 768px) {
-            .form-grid {
+        
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-signup:active {
+            transform: translateY(0);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider span {
+            padding: 0 15px;
+        }
+        
+        .social-signup {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .social-btn {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .social-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .social-btn i {
+            font-size: 20px;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .login-link a:hover {
+            color: #764ba2;
+        }
+        
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+                margin: 20px;
+            }
+            
+            .left-panel {
+                padding: 40px;
+            }
+            
+            .right-panel {
+                padding: 40px;
+            }
+            
+            .brand h1 {
+                font-size: 36px;
+            }
+            
+            .form-row {
                 grid-template-columns: 1fr;
-            }
-
-            .progress-bar {
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-
-            .step-label {
-                font-size: 10px;
-            }
-
-            .step-circle {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">PayMe 2D</a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="login.html">Login</a>
-                <a href="register.html" class="active">Sign Up</a>
-                <a href="admin/login.html">Admin</a>
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="brand">
+                <h1><i class="fas fa-rocket"></i> PayMe 2D</h1>
+                <p>Join thousands of businesses already using our secure payment gateway</p>
+            </div>
+            
+            <div class="benefits">
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Free to Get Started</strong>
+                        <p style="font-size: 14px; opacity: 0.8; margin-top: 5px;">No setup fees or hidden charges</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <strong>Grow Your Business</strong>
+                        <p style="font-size: 14px; opacity: 0.8; margin-top: 5px;">Accept payments from anywhere</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>100% Secure</strong>
+                        <p style="font-size: 14px; opacity: 0.8; margin-top: 5px;">PCI DSS compliant platform</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <div class="registration-container">
-        <div class="card">
-            <h1 style="text-align: center; margin-bottom: 10px;">Create Your Account</h1>
-            <p style="text-align: center; color: var(--slate-11); margin-bottom: 40px;">Complete all steps to activate your payment gateway</p>
-
-            <!-- Progress Bar -->
-            <div class="progress-bar">
-                <div class="progress-line" id="progressLine"></div>
-                <div class="step active" data-step="1">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Personal Info</div>
-                </div>
-                <div class="step" data-step="2">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Business Details</div>
-                </div>
-                <div class="step" data-step="3">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Address</div>
-                </div>
-                <div class="step" data-step="4">
-                    <div class="step-circle">4</div>
-                    <div class="step-label">Bank & UPI</div>
-                </div>
-                <div class="step" data-step="5">
-                    <div class="step-circle">5</div>
-                    <div class="step-label">KYC Documents</div>
-                </div>
-                <div class="step" data-step="6">
-                    <div class="step-circle">6</div>
-                    <div class="step-label">Review & Submit</div>
-                </div>
+        
+        <div class="right-panel">
+            <div class="signup-header">
+                <h2>Create Account</h2>
+                <p>Get started with your free account</p>
             </div>
-
-            <form id="registrationForm">
-                <!-- Step 1: Personal Information -->
-                <div class="form-step active" data-step="1">
-                    <h2>Personal Information</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Tell us about yourself</p>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth *</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Gender *</label>
-                            <select id="gender" name="gender" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="password">Password *</label>
-                            <input type="password" id="password" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirmPassword">Confirm Password *</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 2: Business Details -->
-                <div class="form-step" data-step="2">
-                    <h2>Business Details</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Information about your business</p>
-
-                    <div class="form-grid single">
-                        <div class="form-group">
-                            <label for="businessType">Business Type *</label>
-                            <select id="businessType" name="businessType" required>
-                                <option value="">Select Business Type</option>
-                                <option value="individual">Individual/Sole Proprietor</option>
-                                <option value="partnership">Partnership</option>
-                                <option value="private_limited">Private Limited Company</option>
-                                <option value="public_limited">Public Limited Company</option>
-                                <option value="llp">Limited Liability Partnership (LLP)</option>
-                                <option value="ngo">NGO/Trust</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="businessName">Business/Company Name *</label>
-                            <input type="text" id="businessName" name="businessName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tradeName">Trade Name (if different)</label>
-                            <input type="text" id="tradeName" name="tradeName">
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="businessCategory">Business Category *</label>
-                            <select id="businessCategory" name="businessCategory" required>
-                                <option value="">Select Category</option>
-                                <option value="ecommerce">E-commerce</option>
-                                <option value="retail">Retail</option>
-                                <option value="services">Services</option>
-                                <option value="education">Education</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="travel">Travel & Tourism</option>
-                                <option value="food">Food & Beverage</option>
-                                <option value="technology">Technology</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="website">Website URL</label>
-                            <input type="url" id="website" name="website" placeholder="https://example.com">
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="gst">GST Number</label>
-                            <input type="text" id="gst" name="gst" placeholder="22AAAAA0000A1Z5">
-                        </div>
-                        <div class="form-group">
-                            <label for="pan">PAN Number *</label>
-                            <input type="text" id="pan" name="pan" placeholder="ABCDE1234F" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid single">
-                        <div class="form-group">
-                            <label for="businessDescription">Business Description *</label>
-                            <textarea id="businessDescription" name="businessDescription" rows="4" placeholder="Describe your business and what products/services you offer" required></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3: Address Details -->
-                <div class="form-step" data-step="3">
-                    <h2>Address Details</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Your business and registered address</p>
-
-                    <h3 style="margin-bottom: 16px; font-size: 16px;">Registered Address</h3>
-                    <div class="form-grid single">
-                        <div class="form-group">
-                            <label for="address1">Address Line 1 *</label>
-                            <input type="text" id="address1" name="address1" placeholder="Building/House No., Street Name" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid single">
-                        <div class="form-group">
-                            <label for="address2">Address Line 2</label>
-                            <input type="text" id="address2" name="address2" placeholder="Area, Landmark">
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="city">City *</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State *</label>
-                            <input type="text" id="state" name="state" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="pincode">PIN Code *</label>
-                            <input type="text" id="pincode" name="pincode" placeholder="400001" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country *</label>
-                            <select id="country" name="country" required>
-                                <option value="India">India</option>
-                                <option value="USA">United States</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="Canada">Canada</option>
-                                <option value="Australia">Australia</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="checkbox-group" style="margin-top: 24px;">
-                        <input type="checkbox" id="sameAddress" name="sameAddress">
-                        <label for="sameAddress" class="checkbox-label">Business address is same as registered address</label>
-                    </div>
-
-                    <div id="businessAddressSection" style="display: none;">
-                        <h3 style="margin: 24px 0 16px; font-size: 16px;">Business Address</h3>
-                        <div class="form-grid single">
-                            <div class="form-group">
-                                <label for="businessAddress1">Address Line 1 *</label>
-                                <input type="text" id="businessAddress1" name="businessAddress1">
-                            </div>
-                        </div>
-
-                        <div class="form-grid single">
-                            <div class="form-group">
-                                <label for="businessAddress2">Address Line 2</label>
-                                <input type="text" id="businessAddress2" name="businessAddress2">
-                            </div>
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="businessCity">City *</label>
-                                <input type="text" id="businessCity" name="businessCity">
-                            </div>
-                            <div class="form-group">
-                                <label for="businessState">State *</label>
-                                <input type="text" id="businessState" name="businessState">
-                            </div>
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="businessPincode">PIN Code *</label>
-                                <input type="text" id="businessPincode" name="businessPincode">
-                            </div>
-                            <div class="form-group">
-                                <label for="businessCountry">Country *</label>
-                                <select id="businessCountry" name="businessCountry">
-                                    <option value="India">India</option>
-                                    <option value="USA">United States</option>
-                                    <option value="UK">United Kingdom</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 4: Bank & UPI Details -->
-                <div class="form-step" data-step="4">
-                    <h2>Bank & UPI Details</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Where you'll receive your payments</p>
-
-                    <div class="info-box">
-                        <div class="info-box-title">🔒 Secure Information</div>
-                        <div class="info-box-text">Your bank details are encrypted and stored securely. We never share your financial information with third parties.</div>
-                    </div>
-
-                    <h3 style="margin-bottom: 16px; font-size: 16px;">Bank Account Details</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="accountHolderName">Account Holder Name *</label>
-                            <input type="text" id="accountHolderName" name="accountHolderName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="accountNumber">Account Number *</label>
-                            <input type="text" id="accountNumber" name="accountNumber" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="confirmAccountNumber">Confirm Account Number *</label>
-                            <input type="text" id="confirmAccountNumber" name="confirmAccountNumber" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="ifscCode">IFSC Code *</label>
-                            <input type="text" id="ifscCode" name="ifscCode" placeholder="SBIN0001234" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="bankName">Bank Name *</label>
-                            <input type="text" id="bankName" name="bankName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="branchName">Branch Name *</label>
-                            <input type="text" id="branchName" name="branchName" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="accountType">Account Type *</label>
-                            <select id="accountType" name="accountType" required>
-                                <option value="">Select Account Type</option>
-                                <option value="savings">Savings Account</option>
-                                <option value="current">Current Account</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="swiftCode">SWIFT/BIC Code (for international)</label>
-                            <input type="text" id="swiftCode" name="swiftCode">
-                        </div>
-                    </div>
-
-                    <h3 style="margin: 32px 0 16px; font-size: 16px;">UPI Details (Optional)</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="upiId">UPI ID</label>
-                            <input type="text" id="upiId" name="upiId" placeholder="yourname@upi">
-                        </div>
-                        <div class="form-group">
-                            <label for="upiProvider">UPI Provider</label>
-                            <select id="upiProvider" name="upiProvider">
-                                <option value="">Select Provider</option>
-                                <option value="googlepay">Google Pay</option>
-                                <option value="phonepe">PhonePe</option>
-                                <option value="paytm">Paytm</option>
-                                <option value="bhim">BHIM</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: KYC Documents -->
-                <div class="form-step" data-step="5">
-                    <h2>KYC Documents</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Upload required documents for verification</p>
-
-                    <div class="info-box">
-                        <div class="info-box-title">📄 Required Documents</div>
-                        <div class="info-box-text">
-                            • All documents should be clear and readable<br>
-                            • Accepted formats: PDF, JPG, PNG (Max 5MB each)<br>
-                            • Documents should be valid and not expired
-                        </div>
-                    </div>
-
-                    <h3 style="margin: 24px 0 16px; font-size: 16px;">Identity Proof *</h3>
+            
+            <form id="signupForm">
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="idProofType">Select ID Type *</label>
-                        <select id="idProofType" name="idProofType" required>
-                            <option value="">Select Document Type</option>
-                            <option value="aadhaar">Aadhaar Card</option>
-                            <option value="passport">Passport</option>
-                            <option value="driving_license">Driving License</option>
-                            <option value="voter_id">Voter ID</option>
+                        <label>First Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-briefcase"></i>
+                        <select id="accountType" required>
+                            <option value="">Select account type</option>
+                            <option value="personal">Personal</option>
+                            <option value="business">Business</option>
+                            <option value="enterprise">Enterprise</option>
                         </select>
                     </div>
-
-                    <div class="file-upload" onclick="document.getElementById('idProofFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Upload Identity Proof</div>
-                        <div style="font-size: 14px; color: var(--slate-11);">Click to browse or drag and drop</div>
-                        <input type="file" id="idProofFile" name="idProofFile" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-                    <div id="idProofPreview"></div>
-
-                    <h3 style="margin: 32px 0 16px; font-size: 16px;">Address Proof *</h3>
-                    <div class="form-group">
-                        <label for="addressProofType">Select Address Proof Type *</label>
-                        <select id="addressProofType" name="addressProofType" required>
-                            <option value="">Select Document Type</option>
-                            <option value="aadhaar">Aadhaar Card</option>
-                            <option value="utility_bill">Utility Bill</option>
-                            <option value="bank_statement">Bank Statement</option>
-                            <option value="rent_agreement">Rent Agreement</option>
-                        </select>
-                    </div>
-
-                    <div class="file-upload" onclick="document.getElementById('addressProofFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Upload Address Proof</div>
-                        <div style="font-size: 14px; color: var(--slate-11);">Click to browse or drag and drop</div>
-                        <input type="file" id="addressProofFile" name="addressProofFile" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-                    <div id="addressProofPreview"></div>
-
-                    <h3 style="margin: 32px 0 16px; font-size: 16px;">PAN Card *</h3>
-                    <div class="file-upload" onclick="document.getElementById('panCardFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Upload PAN Card</div>
-                        <div style="font-size: 14px; color: var(--slate-11);">Click to browse or drag and drop</div>
-                        <input type="file" id="panCardFile" name="panCardFile" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-                    <div id="panCardPreview"></div>
-
-                    <h3 style="margin: 32px 0 16px; font-size: 16px;">Business Registration Document</h3>
-                    <div class="form-group">
-                        <label for="businessDocType">Document Type</label>
-                        <select id="businessDocType" name="businessDocType">
-                            <option value="">Select Document Type</option>
-                            <option value="gst_certificate">GST Certificate</option>
-                            <option value="incorporation_certificate">Certificate of Incorporation</option>
-                            <option value="partnership_deed">Partnership Deed</option>
-                            <option value="shop_establishment">Shop & Establishment License</option>
-                            <option value="msme">MSME Certificate</option>
-                        </select>
-                    </div>
-
-                    <div class="file-upload" onclick="document.getElementById('businessDocFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Upload Business Document</div>
-                        <div style="font-size: 14px; color: var(--slate-11);">Click to browse or drag and drop</div>
-                        <input type="file" id="businessDocFile" name="businessDocFile" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-                    <div id="businessDocPreview"></div>
-
-                    <h3 style="margin: 32px 0 16px; font-size: 16px;">Bank Account Proof *</h3>
-                    <div class="file-upload" onclick="document.getElementById('bankProofFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Upload Cancelled Cheque / Bank Statement</div>
-                        <div style="font-size: 14px; color: var(--slate-11);">Click to browse or drag and drop</div>
-                        <input type="file" id="bankProofFile" name="bankProofFile" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-                    <div id="bankProofPreview"></div>
                 </div>
-
-                <!-- Step 6: Review & Submit -->
-                <div class="form-step" data-step="6">
-                    <h2>Review & Submit</h2>
-                    <p style="color: var(--slate-11); margin-bottom: 24px;">Please review your information before submitting</p>
-
-                    <div class="info-box" style="background: #fef3c7; border-left-color: #f59e0b;">
-                        <div class="info-box-title" style="color: #92400e;">⚠️ Important Information</div>
-                        <div class="info-box-text" style="color: #92400e;">
-                            • Your application will be reviewed within 24-48 hours<br>
-                            • You'll receive an email notification once approved<br>
-                            • Ensure all information is accurate to avoid delays<br>
-                            • You can track your application status from your dashboard
-                        </div>
-                    </div>
-
-                    <div id="reviewSummary" style="background: var(--slate-2); padding: 24px; border-radius: 12px; margin-bottom: 24px;">
-                        <!-- Summary will be populated by JavaScript -->
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="termsAccept" name="termsAccept" required>
-                        <label for="termsAccept" class="checkbox-label">
-                            I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> *
-                        </label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="dataConsent" name="dataConsent" required>
-                        <label for="dataConsent" class="checkbox-label">
-                            I consent to the collection and processing of my personal and business data for KYC verification *
-                        </label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="accuracyConfirm" name="accuracyConfirm" required>
-                        <label for="accuracyConfirm" class="checkbox-label">
-                            I confirm that all information provided is accurate and complete *
-                        </label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="marketingConsent" name="marketingConsent">
-                        <label for="marketingConsent" class="checkbox-label">
-                            I would like to receive updates, offers, and newsletters from PayMe 2D Gateway
-                        </label>
-                    </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label>I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
                 </div>
-
-                <!-- Form Actions -->
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
-                        ← Previous
-                    </button>
-                    <button type="button" class="btn btn-primary" id="nextBtn">
-                        Next →
-                    </button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
-                        Submit Application
-                    </button>
-                </div>
+                
+                <button type="submit" class="btn-signup">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
             </form>
-
-            <div id="spinner" class="spinner"></div>
-            <div id="alertMessage" class="alert"></div>
+            
+            <div class="divider">
+                <span>OR SIGN UP WITH</span>
+            </div>
+            
+            <div class="social-signup">
+                <button class="social-btn">
+                    <i class="fab fa-google" style="color: #DB4437;"></i>
+                    Google
+                </button>
+                <button class="social-btn">
+                    <i class="fab fa-facebook" style="color: #4267B2;"></i>
+                    Facebook
+                </button>
+            </div>
+            
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login Here</a>
+            </div>
         </div>
     </div>
-
-    <script src="js/register.js"></script>
+    
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const accountType = document.getElementById('accountType').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (!terms) {
+                alert('Please accept the Terms & Conditions');
+                return;
+            }
+            
+            // Demo signup - replace with actual API call
+            if (firstName && lastName && email && phone && password && accountType) {
+                alert('Account created successfully! Please login.');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 </html>
