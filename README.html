@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayMe 2D Gateway - README</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.6em;
+            margin: 30px 0 15px 0;
+        }
+
+        .section p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .section ul, .section ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section li {
+            line-height: 2;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .feature-card h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .feature-card p {
+            color: rgba(255,255,255,0.95);
+            line-height: 1.7;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 25px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 10px 5px;
+            font-size: 1.05em;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 PayMe 2D Gateway</h1>
+            <p>Complete Payment Gateway Solution for Direct Payment Collection</p>
+            <div class="badges">
+                <span class="badge">Version 1.0.0</span>
+                <span class="badge">PHP 7.4+</span>
+                <span class="badge">MySQL 5.7+</span>
+                <span class="badge">MIT License</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Overview Section -->
+            <div class="section">
+                <h2>📖 Overview</h2>
+                <p>PayMe 2D Gateway is a comprehensive payment gateway solution that enables businesses and individuals to accept payments directly into their bank accounts, UPI IDs, or cryptocurrency wallets without any middleman or commission fees.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>💰 Direct Payments</h4>
+                        <p>Payments go directly to your account. No middleman, no commission fees.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🚀 Instant Activation</h4>
+                        <p>Automated code generation and email delivery. Customers get codes instantly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔒 Secure & Reliable</h4>
+                        <p>Bank-grade security with encryption, 2FA, and fraud detection.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Real-time Analytics</h4>
+                        <p>Track all transactions, view reports, and monitor your business.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Features Section -->
+            <div class="section">
+                <h2>✨ Key Features</h2>
+                <ul>
+                    <li><strong>Direct Payment Collection</strong> - Payments go directly to your account</li>
+                    <li><strong>Multiple Payment Methods</strong> - Bank Transfer, UPI, Cryptocurrency</li>
+                    <li><strong>Automated Code Generation</strong> - Instant activation code delivery</li>
+                    <li><strong>Email Automation</strong> - Professional email templates</li>
+                    <li><strong>Reseller System</strong> - Build your own reseller network</li>
+                    <li><strong>Complete API</strong> - Integrate with any platform</li>
+                    <li><strong>Real-time Analytics</strong> - Track all transactions</li>
+                    <li><strong>Secure & Reliable</strong> - Bank-grade security</li>
+                </ul>
+            </div>
+
+            <!-- Quick Start Section -->
+            <div class="section">
+                <h2>🚀 Quick Start</h2>
+                
+                <h3>Installation</h3>
+                
+                <p><strong>Step 1: Clone the Repository</strong></p>
+                <div class="code-block">git clone https://github.com/2lokeshrao/payme-2d-gateway.git
+cd payme-2d-gateway</div>
+
+                <p><strong>Step 2: Setup Database</strong></p>
+                <div class="code-block">mysql -u root -p -e "CREATE DATABASE payme_gateway;"
+mysql -u root -p payme_gateway < database.sql</div>
+
+                <p><strong>Step 3: Configure Database Connection</strong></p>
+                <p>Edit <code>config/database.php</code>:</p>
+                <div class="code-block">define('DB_HOST', 'localhost');
+define('DB_NAME', 'payme_gateway');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');</div>
+
+                <p><strong>Step 4: Access the System</strong></p>
+                <ul>
+                    <li><strong>Homepage:</strong> http://your-domain.com</li>
+                    <li><strong>Admin Panel:</strong> http://your-domain.com/admin/login.html</li>
+                    <li><strong>User Panel:</strong> http://your-domain.com/user/login.html</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Default Admin Credentials</h4>
+                    <p><strong>Username:</strong> admin</p>
+                    <p><strong>Password:</strong> admin123</p>
+                    <p><strong>Important:</strong> Change this password immediately after first login!</p>
+                </div>
+            </div>
+
+            <!-- System Requirements Section -->
+            <div class="section">
+                <h2>⚙️ System Requirements</h2>
+                
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Minimum</th>
+                        <th>Recommended</th>
+                    </tr>
+                    <tr>
+                        <td>PHP</td>
+                        <td>7.4 or higher</td>
+                        <td>8.0 or higher</td>
+                    </tr>
+                    <tr>
+                        <td>MySQL</td>
+                        <td>5.7 or higher</td>
+                        <td>8.0 or higher</td>
+                    </tr>
+                    <tr>
+                        <td>Web Server</td>
+                        <td>Apache/Nginx</td>
+                        <td>Apache/Nginx with SSL</td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td>1 GB</td>
+                        <td>2 GB</td>
+                    </tr>
+                    <tr>
+                        <td>Storage</td>
+                        <td>10 GB</td>
+                        <td>20 GB</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Payment Methods Section -->
+            <div class="section">
+                <h2>💳 Payment Methods Supported</h2>
+                
+                <h3>🏦 Bank Transfer</h3>
+                <p>Accept payments via NEFT, RTGS, IMPS directly to your bank account.</p>
+                
+                <h3>📱 UPI Payments</h3>
+                <p>Instant payments via Google Pay, PhonePe, Paytm, BHIM - 24/7 availability.</p>
+                
+                <h3>💎 Cryptocurrency</h3>
+                <p>Accept global payments via Bitcoin (BTC), Ethereum (ETH), Tether (USDT), Binance Coin (BNB).</p>
+            </div>
+
+            <!-- Subscription Plans Section -->
+            <div class="section">
+                <h2>💰 Subscription Plans</h2>
+                
+                <table>
+                    <tr>
+                        <th>Plan</th>
+                        <th>Price</th>
+                        <th>Duration</th>
+                        <th>Savings</th>
+                    </tr>
+                    <tr>
+                        <td>Monthly Plan</td>
+                        <td>₹60</td>
+                        <td>1 month</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Quarterly Plan</td>
+                        <td>₹150</td>
+                        <td>3 months</td>
+                        <td>Save 17%</td>
+                    </tr>
+                    <tr>
+                        <td>Yearly Plan</td>
+                        <td>₹500</td>
+                        <td>12 months</td>
+                        <td>Save 30%</td>
+                    </tr>
+                    <tr>
+                        <td>Lifetime Plan</td>
+                        <td>₹2,999</td>
+                        <td>Lifetime</td>
+                        <td>Best Value</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Documentation Section -->
+            <div class="section">
+                <h2>📚 Documentation</h2>
+                
+                <div class="info-box">
+                    <h4>Complete Documentation Available</h4>
+                    <p>For detailed documentation including installation, configuration, payment setup, user guide, API documentation, and troubleshooting, please visit:</p>
+                    <div class="quick-links">
+                        <a href="documentation.html" class="btn">📖 Complete Documentation</a>
+                        <a href="setup-guide.html" class="btn">🚀 Quick Setup Guide</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="section">
+                <h2>🔒 Security Features</h2>
+                <ul>
+                    <li>SSL/TLS encryption for all communications</li>
+                    <li>Password hashing using Bcrypt</li>
+                    <li>SQL injection protection with prepared statements</li>
+                    <li>XSS and CSRF protection</li>
+                    <li>Two-factor authentication (2FA) support</li>
+                    <li>Session management and activity logging</li>
+                    <li>Fraud detection and monitoring</li>
+                </ul>
+            </div>
+
+            <!-- Support Section -->
+            <div class="section">
+                <h2>💬 Support</h2>
+                
+                <div class="success-box">
+                    <h4>Need Help?</h4>
+                    <p><strong>Email:</strong> support@payme-gateway.com</p>
+                    <p><strong>GitHub:</strong> <a href="https://github.com/2lokeshrao/payme-2d-gateway/issues" target="_blank">Create Issue</a></p>
+                    <p><strong>Website:</strong> <a href="https://payme-gateway.lindy.site" target="_blank">payme-gateway.lindy.site</a></p>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="section">
+                <h2>🔗 Quick Links</h2>
+                <div class="quick-links">
+                    <a href="index.html" class="btn">🏠 Homepage</a>
+                    <a href="purchase-code.html" class="btn">💳 Purchase Code</a>
+                    <a href="admin/login.html" class="btn">👨‍💼 Admin Panel</a>
+                    <a href="user/login.html" class="btn">👤 User Panel</a>
+                    <a href="documentation.html" class="btn">📖 Documentation</a>
+                    <a href="setup-guide.html" class="btn">🚀 Setup Guide</a>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="section" style="text-align: center; padding: 40px 0; border-top: 2px solid #e0e0e0;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">🎉 Ready to Get Started?</h3>
+                <p style="font-size: 1.2em; margin-bottom: 25px;">Start accepting payments with 0% commission today!</p>
+                <a href="purchase-code.html" class="btn" style="font-size: 1.2em; padding: 18px 40px;">Purchase Activation Code</a>
+                <p style="margin-top: 30px; color: #999;">© 2025 PayMe 2D Gateway. All rights reserved.</p>
+                <p style="color: #999;">Made with ❤️ in India</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
