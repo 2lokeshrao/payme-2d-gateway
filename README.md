@@ -1,566 +1,389 @@
-# 💳 PayMe 2D Gateway - Complete Payment & Reseller System
+# PayMe 2D Gateway
 
-A comprehensive payment gateway solution with built-in reseller management, activation code system, and self-payment features.
+**Complete Payment Gateway Solution for Direct Payment Collection**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![PHP](https://img.shields.io/badge/PHP-7.4+-purple)
-![MySQL](https://img.shields.io/badge/MySQL-5.7+-orange)
-![License](https://img.shields.io/badge/license-Proprietary-red)
-
----
-
-## 🌟 Key Features
-
-### 💼 Admin Panel
-- **Plan Management**: Create custom subscription plans with flexible pricing
-- **Reseller Management**: Onboard and manage resellers with commission tracking
-- **Activation Codes**: Generate single or bulk codes (up to 100 at once)
-- **Analytics Dashboard**: Real-time statistics and performance metrics
-- **System Configuration**: Customize settings and payment methods
-
-### 🎯 Reseller Portal
-- **Code Generation**: Create activation codes for assigned plans
-- **Sales Tracking**: Monitor sales performance and customer base
-- **Commission Dashboard**: Track earnings and pending payouts
-- **Customer Management**: View and manage customer subscriptions
-- **Limited Access**: Secure, role-based access control
-
-### 👤 User Features
-- **Subscription Activation**: Easy code-based subscription activation
-- **Self-Payment Setup**: Configure bank accounts, UPI, and crypto wallets
-- **Payment Gateway**: Accept payments via cards, UPI, net banking
-- **Transaction History**: Track all payment activities
-- **API Integration**: RESTful APIs for seamless integration
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/2lokeshrao/payme-2d-gateway)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-orange.svg)](https://mysql.com)
 
 ---
 
-## 🏗️ System Architecture
+## Overview
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     ADMIN PANEL                              │
-│  • Full System Control                                       │
-│  • Plan & Reseller Management                                │
-│  • Code Generation & Analytics                               │
-└──────────────────────┬───────────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  RESELLER PORTAL                             │
-│  • Limited Dashboard Access                                  │
-│  • Code Generation (Assigned Plans)                          │
-│  • Sales & Commission Tracking                               │
-└──────────────────────┬───────────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   END USER SYSTEM                            │
-│  • Subscription Activation                                   │
-│  • Payment Gateway Features                                  │
-│  • Self-Payment Configuration                                │
-└─────────────────────────────────────────────────────────────┘
-```
+PayMe 2D Gateway is a comprehensive payment gateway solution that enables businesses and individuals to accept payments directly into their bank accounts, UPI IDs, or cryptocurrency wallets without any middleman or commission fees.
+
+### Key Features
+
+✅ **Direct Payment Collection** - Payments go directly to your account  
+✅ **Multiple Payment Methods** - Bank Transfer, UPI, Cryptocurrency  
+✅ **Automated Code Generation** - Instant activation code delivery  
+✅ **Email Automation** - Professional email templates  
+✅ **Reseller System** - Build your own reseller network  
+✅ **Complete API** - Integrate with any platform  
+✅ **Real-time Analytics** - Track all transactions  
+✅ **Secure & Reliable** - Bank-grade security
 
 ---
 
-## 📁 Project Structure
-
-```
-payme-2d-gateway/
-├── admin/
-│   ├── dashboard.html              # Admin main dashboard
-│   ├── plan-management.html        # Subscription plan management
-│   ├── reseller-management.html    # Reseller account management
-│   └── activation-codes.html       # Code generation & tracking
-│
-├── reseller/
-│   ├── login.html                  # Reseller authentication
-│   └── dashboard.html              # Reseller control panel
-│
-├── api/
-│   ├── admin/
-│   │   ├── plans.php              # Plan CRUD operations
-│   │   ├── resellers.php          # Reseller management API
-│   │   └── activation-codes.php   # Code generation API
-│   │
-│   ├── reseller/
-│   │   ├── login.php              # Reseller authentication
-│   │   ├── stats.php              # Reseller statistics
-│   │   ├── plans.php              # Allowed plans list
-│   │   ├── generate-code.php      # Code generation
-│   │   └── codes.php              # Code history
-│   │
-│   └── config.php                 # Database configuration
-│
-├── dashboard.html                  # User main dashboard
-├── subscription.html               # Subscription management
-├── activate-subscription.html      # Code activation page
-├── self-payment-settings.html      # Payment configuration
-├── payment-methods.html            # Payment method setup
-├── transactions.html               # Transaction history
-│
-├── database_reseller_system.sql    # Complete database schema
-├── RESELLER_SYSTEM_DOCUMENTATION.md # Detailed documentation
-└── README.md                       # This file
-```
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Apache/Nginx web server
-- Composer (optional)
+## Quick Start
 
 ### Installation
 
-1. **Clone or Download the Project**
+**Step 1: Clone the Repository**
+
 ```bash
-cd /var/www/html
-git clone <repository-url> payme-gateway
-cd payme-gateway
+git clone https://github.com/2lokeshrao/payme-2d-gateway.git
+cd payme-2d-gateway
 ```
 
-2. **Create Database**
+**Step 2: Setup Database**
+
 ```bash
-mysql -u root -p
-CREATE DATABASE payme_gateway;
-USE payme_gateway;
-SOURCE database_reseller_system.sql;
+# Create database
+mysql -u root -p -e "CREATE DATABASE payme_gateway;"
+
+# Import schema
+mysql -u root -p payme_gateway < database.sql
 ```
 
-3. **Configure Database Connection**
-Edit `api/config.php`:
+**Step 3: Configure Database Connection**
+
+Edit `config/database.php`:
+
 ```php
-$host = 'localhost';
-$dbname = 'payme_gateway';
-$username = 'your_username';
-$password = 'your_password';
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'payme_gateway');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');
 ```
 
-4. **Set Permissions**
+**Step 4: Access the System**
+
+- **Homepage:** `http://your-domain.com`
+- **Admin Panel:** `http://your-domain.com/admin/login.html`
+- **User Panel:** `http://your-domain.com/user/login.html`
+
+**Default Admin Credentials:**
+- Username: `admin`
+- Password: `admin123`
+
+⚠️ **Important:** Change the default password immediately after first login!
+
+---
+
+## System Requirements
+
+### Minimum Requirements
+
+- PHP 7.4 or higher
+- MySQL 5.7 or higher
+- Apache/Nginx web server
+- 1 GB RAM
+- 10 GB Storage
+
+### Recommended Requirements
+
+- PHP 8.0 or higher
+- MySQL 8.0 or higher
+- Apache/Nginx with SSL
+- 2 GB RAM
+- 20 GB Storage
+
+---
+
+## Features
+
+### For Businesses
+
+**Self Payment Gateway**
+- Configure your own bank account
+- Configure your own UPI ID
+- Configure crypto wallets
+- Payments come directly to you
+- No commission, no middleman
+
+**Payment Methods Supported**
+- 🏦 Bank Transfer (NEFT/RTGS/IMPS)
+- 📱 UPI Payments (Google Pay, PhonePe, Paytm, BHIM)
+- 💎 Cryptocurrency (BTC, ETH, USDT, BNB)
+
+**Transaction Management**
+- Real-time transaction tracking
+- Detailed analytics and reports
+- Export transaction data
+- Download invoices
+- Payment verification
+
+### For Admins
+
+**Complete Control Panel**
+- Dashboard with analytics
+- User management
+- Subscription plan management
+- Reseller management
+- Payment configuration
+- Email configuration
+- Transaction monitoring
+
+**Reseller System**
+- Create reseller accounts
+- Set commission rates
+- Track reseller sales
+- Manage payouts
+- Generate activation codes
+- Revenue sharing
+
+### For Customers
+
+**Easy Purchase Process**
+- Select subscription plan
+- Enter details
+- Choose payment method
+- Complete payment
+- Receive activation code via email
+- Activate subscription instantly
+
+**Subscription Plans**
+- Monthly Plan: ₹60/month
+- Quarterly Plan: ₹150/3 months (Save 17%)
+- Yearly Plan: ₹500/year (Save 30%)
+- Lifetime Plan: ₹2,999 one-time (Best Value)
+
+---
+
+## Documentation
+
+### Complete Documentation
+
+For detailed documentation, please refer to:
+
+📚 **[DOCUMENTATION.md](DOCUMENTATION.md)** - Complete system documentation
+
+This includes:
+- Installation guide
+- Configuration guide
+- Admin setup guide
+- Payment configuration
+- User guide
+- Reseller system
+- API documentation
+- Security features
+- Troubleshooting
+
+### Quick Start Guide
+
+📖 **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide for getting started
+
+---
+
+## Configuration
+
+### Payment Configuration
+
+**Bank Account Setup**
+
+1. Login to Admin Panel
+2. Go to "Payment Configuration"
+3. Click "Bank Transfer" tab
+4. Enter bank details:
+   - Bank Name
+   - Account Holder Name
+   - Account Number
+   - IFSC Code
+5. Save configuration
+
+**UPI Payment Setup**
+
+1. Go to "Payment Configuration"
+2. Click "UPI Payment" tab
+3. Enter UPI details:
+   - UPI ID (e.g., yourname@okhdfc)
+   - UPI Name
+   - UPI Provider
+4. Save configuration
+
+**Cryptocurrency Setup**
+
+1. Go to "Payment Configuration"
+2. Click "Cryptocurrency" tab
+3. Enter wallet addresses:
+   - Bitcoin (BTC) wallet
+   - Ethereum (ETH) wallet
+   - Tether (USDT) wallet
+   - Binance Coin (BNB) wallet
+4. Save configuration
+
+### Email Configuration
+
+**Gmail Setup (Recommended)**
+
+1. Go to "Payment Configuration"
+2. Click "Email Settings" tab
+3. Enter SMTP details:
+   - SMTP Host: `smtp.gmail.com`
+   - SMTP Port: `587`
+   - SMTP Username: Your Gmail address
+   - SMTP Password: Gmail App Password
+4. Test email delivery
+5. Save configuration
+
+**How to Get Gmail App Password:**
+1. Go to Google Account Settings
+2. Security → 2-Step Verification
+3. App Passwords
+4. Generate password for "Mail"
+5. Use this password in SMTP settings
+
+---
+
+## API Integration
+
+### Authentication
+
+All API requests require authentication using API key.
+
 ```bash
-chmod 755 payme-gateway
-chmod 644 *.html
-chmod 644 api/*.php
+Authorization: Bearer YOUR_API_KEY
 ```
 
-5. **Create Admin Account**
-```sql
-INSERT INTO admins (username, email, password_hash, role)
-VALUES ('admin', 'admin@example.com', 
-        '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
-        'super_admin');
--- Default password: password (change immediately!)
-```
+### Create Payment Link
 
-6. **Access the System**
-- Admin Panel: `http://your-domain.com/admin/dashboard.html`
-- Reseller Portal: `http://your-domain.com/reseller/login.html`
-- User Dashboard: `http://your-domain.com/dashboard.html`
-
----
-
-## 📖 Usage Guide
-
-### For Administrators
-
-#### Creating a Subscription Plan
-1. Navigate to **Plan Management**
-2. Click **Create New Plan**
-3. Enter plan details:
-   - Name (e.g., "Monthly Pro")
-   - Type (Monthly/Quarterly/Yearly/Lifetime)
-   - Price ($60)
-   - Duration (30 days)
-   - Features (list of features)
-4. Click **Create Plan**
-
-#### Setting Up a Reseller
-1. Go to **Reseller Management**
-2. Click **Add New Reseller**
-3. Fill in reseller information:
-   - Name, Email, Phone
-   - Password (will be hashed)
-   - Commission Rate (e.g., 20%)
-   - Assign Plans (select which plans they can sell)
-4. Click **Create Reseller**
-5. Share login credentials with reseller
-
-#### Generating Activation Codes
-1. Navigate to **Activation Codes**
-2. Choose generation method:
-   - **Single Code**: For individual customers
-   - **Bulk Generation**: Up to 100 codes at once
-3. Select plan and optional reseller assignment
-4. Set validity period (default: 365 days)
-5. Click **Generate**
-6. Copy and distribute codes
-
-### For Resellers
-
-#### Logging In
-1. Visit `/reseller/login.html`
-2. Enter your email and password
-3. Access your dashboard
-
-#### Generating Codes for Customers
-1. From dashboard, select a plan (from your allowed plans)
-2. Optionally enter customer email
-3. Click **Generate Code**
-4. Code format: `PM2D-XXXX-XXXX-XXXX`
-5. Send code to customer
-
-#### Tracking Your Performance
-- **Total Sales**: Number of codes activated
-- **Active Codes**: Unused codes still valid
-- **Total Earnings**: All-time commission earned
-- **Pending Payout**: Commission awaiting payment
-
-### For End Users
-
-#### Activating a Subscription
-1. Visit `/activate-subscription.html`
-2. Enter your 16-character activation code
-3. Click **Activate Subscription**
-4. Your subscription starts immediately
-
-#### Setting Up Self-Payment
-1. Go to **Self Payment Settings**
-2. Configure your payment methods:
-   - **Bank Account**: Add bank details for direct deposits
-   - **UPI**: Add UPI ID for instant payments
-   - **Crypto Wallets**: Add BTC, ETH, USDT, BNB addresses
-3. Enable auto-settlement
-4. Save settings
-
----
-
-## 🔌 API Documentation
-
-### Admin APIs
-
-#### Plans API (`/api/admin/plans.php`)
-
-**List All Plans**
-```http
-GET /api/admin/plans.php?action=list
-```
-
-**Create Plan**
-```http
-POST /api/admin/plans.php?action=create
+```bash
+POST /api/create-payment-link.php
 Content-Type: application/json
 
 {
-  "name": "Monthly Pro",
-  "type": "monthly",
-  "price": 60,
-  "duration": 30,
-  "features": ["Feature 1", "Feature 2"],
-  "status": "active"
+  "amount": 1000,
+  "description": "Product Purchase",
+  "customer_email": "customer@example.com",
+  "payment_methods": ["upi", "bank", "crypto"]
 }
 ```
 
-#### Resellers API (`/api/admin/resellers.php`)
+### Verify Payment
 
-**Create Reseller**
-```http
-POST /api/admin/resellers.php?action=create
+```bash
+POST /api/verify-payment.php
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "phone": "+1234567890",
-  "password": "secure_password",
-  "commission_rate": 20,
-  "allowed_plans": [1, 2, 3],
-  "status": "active"
+  "payment_id": "PAY123456",
+  "transaction_id": "UPI123456789"
 }
 ```
 
-#### Activation Codes API (`/api/admin/activation-codes.php`)
-
-**Generate Single Code**
-```http
-POST /api/admin/activation-codes.php?action=generate
-Content-Type: application/json
-
-{
-  "plan_id": 1,
-  "reseller_id": 5,
-  "validity_days": 365,
-  "customer_email": "customer@example.com"
-}
-```
-
-**Generate Bulk Codes**
-```http
-POST /api/admin/activation-codes.php?action=generate-bulk
-Content-Type: application/json
-
-{
-  "plan_id": 1,
-  "reseller_id": 5,
-  "quantity": 50,
-  "validity_days": 365
-}
-```
-
-### Reseller APIs
-
-#### Login
-```http
-POST /api/reseller/login.php
-Content-Type: application/json
-
-{
-  "email": "reseller@example.com",
-  "password": "password"
-}
-```
-
-#### Generate Code
-```http
-POST /api/reseller/generate-code.php
-Content-Type: application/json
-
-{
-  "plan_id": 1,
-  "customer_email": "customer@example.com"
-}
-```
+For complete API documentation, see [DOCUMENTATION.md](DOCUMENTATION.md#api-documentation)
 
 ---
 
-## 💾 Database Schema
+## Security
 
-### Key Tables
+### Security Features
 
-- **`resellers`**: Reseller account information
-- **`activation_codes`**: All generated activation codes
-- **`reseller_earnings`**: Commission tracking
-- **`reseller_customers`**: Customer-reseller relationships
-- **`subscription_plans`**: Available subscription plans
-- **`user_subscriptions`**: Active user subscriptions
+- ✅ SSL/TLS encryption
+- ✅ Password hashing (Bcrypt)
+- ✅ SQL injection protection
+- ✅ XSS protection
+- ✅ CSRF protection
+- ✅ Two-factor authentication (2FA)
+- ✅ Session management
+- ✅ Activity logging
 
-### Stored Procedures
+### Best Practices
 
-- **`generate_activation_code()`**: Generates unique codes
-- **`activate_code()`**: Activates subscription and calculates commission
-
-### Views
-
-- **`reseller_performance`**: Reseller statistics summary
-- **`active_code_subscriptions`**: Active subscriptions from codes
-
-See `database_reseller_system.sql` for complete schema.
-
----
-
-## 🔒 Security Features
-
-- ✅ **Password Hashing**: bcrypt for secure password storage
-- ✅ **Session Management**: Secure session handling
-- ✅ **Role-Based Access**: Admin, Reseller, User permissions
-- ✅ **SQL Injection Prevention**: Prepared statements
-- ✅ **XSS Protection**: Input sanitization
-- ✅ **Unique Code Generation**: Collision-free activation codes
-- ✅ **Expiry Validation**: Automatic code expiration
-- ✅ **One-Time Use**: Codes can only be used once
+1. Use strong passwords
+2. Enable 2FA for admin accounts
+3. Regular database backups
+4. Keep software updated
+5. Monitor transactions regularly
+6. Use HTTPS (SSL certificate)
+7. Restrict admin access by IP
 
 ---
 
-## 📊 Business Model
+## Support
 
-### Revenue Streams
+### Getting Help
 
-1. **Direct Sales**: Admin sells codes directly to users
-2. **Reseller Sales**: Resellers sell codes with commission
-3. **Subscription Plans**: Recurring revenue from active subscriptions
+**Documentation:**
+- [Complete Documentation](DOCUMENTATION.md)
+- [Quick Start Guide](QUICKSTART.md)
 
-### Commission Structure
+**Support Channels:**
+- Email: support@payme-gateway.com
+- GitHub Issues: [Create Issue](https://github.com/2lokeshrao/payme-2d-gateway/issues)
 
-```
-Plan Price: $100
-Commission Rate: 20%
-Reseller Earns: $20
-Admin Keeps: $80
-```
-
-### Code-Based Activation
-
-- Users purchase activation codes
-- Codes activate specific plan subscriptions
-- Automatic time period tracking
-- Service stops when subscription expires
-- Renewal requires new activation code
+**Before Contacting Support:**
+1. Check documentation
+2. Review error messages
+3. Check browser console
+4. Try troubleshooting steps
 
 ---
 
-## 🎯 Use Cases
+## Contributing
 
-### 1. SaaS Platform
-Sell subscription-based software access through resellers worldwide.
+We welcome contributions! Please follow these steps:
 
-### 2. Payment Gateway Service
-Provide payment processing services with tiered pricing plans.
-
-### 3. Digital Products
-Distribute digital products (courses, ebooks, software) via activation codes.
-
-### 4. Membership Sites
-Manage membership access with flexible subscription plans.
-
-### 5. API Access
-Sell API access tiers with usage-based pricing.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ---
 
-## 🛠️ Customization
+## License
 
-### Changing Code Format
-
-Edit `generateUniqueCode()` function in APIs:
-```php
-$code = sprintf('CUSTOM-%04d-%04d-%04d', 
-    rand(1000, 9999), 
-    rand(1000, 9999), 
-    rand(1000, 9999)
-);
-```
-
-### Adding New Plan Types
-
-Update `subscription_plans` table and admin forms:
-```sql
-ALTER TABLE subscription_plans 
-MODIFY plan_type ENUM('monthly', 'quarterly', 'yearly', 'lifetime', 'custom', 'trial');
-```
-
-### Custom Commission Rates
-
-Set per-reseller commission rates in reseller management:
-```sql
-UPDATE resellers 
-SET commission_rate = 25.00 
-WHERE id = 1;
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📈 Analytics & Reporting
-
-### Admin Dashboard Metrics
-- Total Plans & Active Plans
-- Total Resellers & Active Resellers
-- Codes Generated & Used
-- Total Revenue & Commission Paid
-
-### Reseller Dashboard Metrics
-- Total Sales Count
-- Active Codes Available
-- Total Earnings (All-Time)
-- Pending Payout Amount
-
-### SQL Reports
-
-**Top Resellers by Revenue**
-```sql
-SELECT * FROM reseller_performance 
-ORDER BY total_earnings DESC 
-LIMIT 10;
-```
-
-**Monthly Revenue Report**
-```sql
-SELECT 
-    DATE_FORMAT(used_at, '%Y-%m') as month,
-    COUNT(*) as activations,
-    SUM(sp.price) as revenue
-FROM activation_codes ac
-JOIN subscription_plans sp ON ac.plan_id = sp.id
-WHERE ac.status = 'used'
-GROUP BY month;
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue**: Code activation fails
-**Solution**: Check code status, expiry date, and user authentication
-
-**Issue**: Reseller can't generate codes
-**Solution**: Verify plan is in reseller's `allowed_plans` list
-
-**Issue**: Commission not calculated
-**Solution**: Ensure `reseller_id` is set when code is generated
-
-**Issue**: Login fails
-**Solution**: Verify credentials and account status (active/inactive)
-
----
-
-## 📚 Documentation
-
-- **Full Documentation**: See `RESELLER_SYSTEM_DOCUMENTATION.md`
-- **Database Schema**: See `database_reseller_system.sql`
-- **API Reference**: See API Documentation section above
-
----
-
-## 🔄 Version History
+## Changelog
 
 ### Version 1.0.0 (October 4, 2025)
-- ✅ Initial release
-- ✅ Admin panel with plan management
-- ✅ Reseller portal with code generation
-- ✅ Activation code system
-- ✅ Commission tracking
-- ✅ Self-payment features
-- ✅ Complete API suite
-- ✅ Comprehensive documentation
+
+**Initial Release**
+- Complete payment gateway system
+- Admin, user, and reseller panels
+- Multiple payment methods (Bank, UPI, Crypto)
+- Automated code generation and email delivery
+- API integration
+- Complete documentation
 
 ---
 
-## 🤝 Contributing
+## Screenshots
 
-This is a proprietary system. For feature requests or bug reports, contact the development team.
+### Homepage
+![Homepage](https://payme-gateway.lindy.site/assets/images/screenshot-home.png)
 
----
+### Purchase Page
+![Purchase Page](https://payme-gateway.lindy.site/assets/images/screenshot-purchase.png)
 
-## 📞 Support
-
-- **Email**: support@payme-gateway.com
-- **Documentation**: Full docs in `RESELLER_SYSTEM_DOCUMENTATION.md`
-- **Technical Support**: Available for licensed users
-
----
-
-## 📄 License
-
-Copyright © 2025 PayMe 2D Gateway. All rights reserved.
-
-This is proprietary software. Unauthorized copying, distribution, or modification is prohibited.
+### Admin Dashboard
+![Admin Dashboard](https://payme-gateway.lindy.site/assets/images/screenshot-admin.png)
 
 ---
 
-## 🎉 Acknowledgments
+## Links
 
-Built with modern web technologies:
-- PHP for backend processing
-- MySQL for data storage
-- Vanilla JavaScript for frontend interactivity
-- Responsive CSS for beautiful UI
+- **Live Demo:** https://payme-gateway.lindy.site
+- **Documentation:** [DOCUMENTATION.md](DOCUMENTATION.md)
+- **Quick Start:** [QUICKSTART.md](QUICKSTART.md)
+- **GitHub:** https://github.com/2lokeshrao/payme-2d-gateway
 
 ---
 
-**Made with ❤️ by the PayMe 2D Gateway Team**
+## Contact
 
-**Last Updated**: October 4, 2025
+**Developer:** Lokesh Rao  
+**Email:** 2lokeshrao@gmail.com  
+**Website:** https://payme-gateway.lindy.site
+
+---
+
+**© 2025 PayMe 2D Gateway. All rights reserved.**
+
+Made with ❤️ in India
