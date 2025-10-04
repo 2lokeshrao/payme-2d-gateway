@@ -1,26 +1,5 @@
-<!-- Universal Admin Navigation Bar -->
-<nav class="admin-nav">
-    <div class="nav-content">
-        <a href="dashboard.html" class="admin-brand">
-            <i class="fas fa-shield-alt"></i>
-            PayMe 2D Admin
-        </a>
-        <button class="menu-toggle" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </button>
-        <ul class="admin-menu">
-            <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
-            <li><a href="merchants.html"><i class="fas fa-store"></i> Merchants</a></li>
-            <li><a href="transactions.html"><i class="fas fa-credit-card"></i> Transactions</a></li>
-            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
-</nav>
-
+<!-- Universal Admin Navbar with Icons -->
 <style>
-    /* Universal Admin Navigation Bar Styles */
     .admin-nav {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 15px 20px;
@@ -30,7 +9,7 @@
         z-index: 1000;
     }
     
-    .nav-content {
+    .admin-nav-container {
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
@@ -40,47 +19,45 @@
     
     .admin-brand {
         color: white;
-        font-size: 20px;
-        font-weight: 700;
+        font-size: 22px;
+        font-weight: bold;
         text-decoration: none;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
     
-    .admin-brand:hover {
-        opacity: 0.9;
-    }
-    
-    .menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        color: white;
+    .admin-brand i {
         font-size: 24px;
-        cursor: pointer;
-        padding: 5px;
     }
     
     .admin-menu {
         display: flex;
-        gap: 10px;
+        gap: 5px;
         list-style: none;
         margin: 0;
         padding: 0;
     }
     
+    .admin-menu li {
+        margin: 0;
+    }
+    
     .admin-menu a {
         color: white;
         text-decoration: none;
-        padding: 10px 16px;
-        border-radius: 6px;
+        padding: 10px 18px;
+        border-radius: 8px;
         transition: all 0.3s;
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 14px;
+        gap: 8px;
+        font-size: 15px;
         font-weight: 500;
+    }
+    
+    .admin-menu a i {
+        font-size: 18px;
     }
     
     .admin-menu a:hover {
@@ -90,56 +67,136 @@
     
     .admin-menu a.active {
         background: rgba(255,255,255,0.3);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     
-    /* Mobile Responsive */
+    .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        padding: 5px;
+    }
+    
     @media (max-width: 768px) {
-        .menu-toggle {
-            display: block;
-        }
-        
         .admin-menu {
+            display: none;
             position: fixed;
             top: 60px;
-            left: -100%;
-            width: 250px;
-            height: calc(100vh - 60px);
+            left: 0;
+            right: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             flex-direction: column;
             padding: 20px;
-            gap: 5px;
-            transition: left 0.3s;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
         }
         
         .admin-menu.active {
-            left: 0;
+            display: flex;
         }
         
         .admin-menu a {
-            width: 100%;
-            padding: 12px 16px;
+            padding: 15px 20px;
+            font-size: 16px;
+            justify-content: flex-start;
+        }
+        
+        .mobile-menu-toggle {
+            display: block;
+        }
+        
+        .admin-brand {
+            font-size: 18px;
         }
     }
 </style>
 
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<nav class="admin-nav">
+    <div class="admin-nav-container">
+        <a href="dashboard.html" class="admin-brand">
+            <i class="fas fa-shield-alt"></i>
+            <span>PayMe 2D Admin</span>
+        </a>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="admin-menu" id="adminMenu">
+            <li><a href="dashboard.html" id="nav-dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a></li>
+            <li><a href="users.html" id="nav-users">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a></li>
+            <li><a href="merchants.html" id="nav-merchants">
+                <i class="fas fa-store"></i>
+                <span>Merchants</span>
+            </a></li>
+            <li><a href="transactions.html" id="nav-transactions">
+                <i class="fas fa-credit-card"></i>
+                <span>Transactions</span>
+            </a></li>
+            <li><a href="settings.html" id="nav-settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a></li>
+            <li><a href="login.html" onclick="return confirm('Are you sure you want to logout?')">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a></li>
+        </ul>
+    </div>
+</nav>
+
 <script>
     // Toggle mobile menu
-    function toggleMenu() {
-        const menu = document.querySelector('.admin-menu');
+    function toggleMobileMenu() {
+        const menu = document.getElementById('adminMenu');
         menu.classList.toggle('active');
     }
     
-    // Set active menu item based on current page
-    document.addEventListener('DOMContentLoaded', function() {
-        const currentPage = window.location.pathname.split('/').pop();
-        const menuLinks = document.querySelectorAll('.admin-menu a');
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('adminMenu');
+        const toggle = document.querySelector('.mobile-menu-toggle');
         
-        menuLinks.forEach(link => {
-            const linkPage = link.getAttribute('href');
-            if (linkPage === currentPage) {
-                link.classList.add('active');
+        if (menu && toggle && !menu.contains(event.target) && !toggle.contains(event.target)) {
+            menu.classList.remove('active');
+        }
+    });
+    
+    // Highlight active page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+        const pageMap = {
+            'dashboard.html': 'nav-dashboard',
+            'users.html': 'nav-users',
+            'user-details.html': 'nav-users',
+            'merchants.html': 'nav-merchants',
+            'merchant-details.html': 'nav-merchants',
+            'transactions.html': 'nav-transactions',
+            'transaction-details.html': 'nav-transactions',
+            'settings.html': 'nav-settings',
+            'reports.html': 'nav-dashboard',
+            'analytics.html': 'nav-dashboard'
+        };
+        
+        const navId = pageMap[currentPage];
+        if (navId) {
+            const navLink = document.getElementById(navId);
+            if (navLink) {
+                navLink.classList.add('active');
             }
-        });
+        }
     });
 </script>
