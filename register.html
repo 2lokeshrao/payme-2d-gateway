@@ -231,6 +231,71 @@
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
         
+        /* Account Type Cards */
+        .account-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .account-type-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            background: white;
+        }
+        
+        .account-type-card:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+        
+        .account-type-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .account-type-card i {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .account-type-card h4 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .account-type-card p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .account-type-card .features {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .account-type-card .features div {
+            font-size: 11px;
+            color: #667eea;
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -372,6 +437,10 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .account-types {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -479,16 +548,42 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Account Type</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-briefcase"></i>
-                        <select id="accountType" required>
-                            <option value="">Select account type</option>
-                            <option value="personal">Personal</option>
-                            <option value="business">Business</option>
-                            <option value="enterprise">Enterprise</option>
-                        </select>
+                    <label>Choose Your Account Type</label>
+                    <div class="account-types">
+                        <div class="account-type-card" data-type="personal">
+                            <i class="fas fa-user"></i>
+                            <h4>Personal</h4>
+                            <p>For individuals and freelancers</p>
+                            <div class="features">
+                                <div><i class="fas fa-check"></i> Basic payments</div>
+                                <div><i class="fas fa-check"></i> Up to ₹50K/month</div>
+                                <div><i class="fas fa-check"></i> Standard support</div>
+                            </div>
+                        </div>
+                        
+                        <div class="account-type-card" data-type="business">
+                            <i class="fas fa-briefcase"></i>
+                            <h4>Business</h4>
+                            <p>For small to medium businesses</p>
+                            <div class="features">
+                                <div><i class="fas fa-check"></i> Advanced features</div>
+                                <div><i class="fas fa-check"></i> Up to ₹10L/month</div>
+                                <div><i class="fas fa-check"></i> Priority support</div>
+                            </div>
+                        </div>
+                        
+                        <div class="account-type-card" data-type="enterprise">
+                            <i class="fas fa-building"></i>
+                            <h4>Enterprise</h4>
+                            <p>For large organizations</p>
+                            <div class="features">
+                                <div><i class="fas fa-check"></i> All features</div>
+                                <div><i class="fas fa-check"></i> Unlimited volume</div>
+                                <div><i class="fas fa-check"></i> 24/7 dedicated support</div>
+                            </div>
+                        </div>
                     </div>
+                    <input type="hidden" id="accountType" required>
                 </div>
                 
                 <div class="checkbox-group">
@@ -524,6 +619,23 @@
     </div>
     
     <script>
+        // Account type selection
+        const accountTypeCards = document.querySelectorAll('.account-type-card');
+        const accountTypeInput = document.getElementById('accountType');
+        
+        accountTypeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                accountTypeCards.forEach(c => c.classList.remove('selected'));
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Set the hidden input value
+                accountTypeInput.value = this.dataset.type;
+            });
+        });
+        
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -537,6 +649,11 @@
             const terms = document.getElementById('terms').checked;
             
             // Validation
+            if (!accountType) {
+                alert('Please select an account type!');
+                return;
+            }
+            
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
@@ -549,6 +666,11 @@
             
             // Demo signup - replace with actual API call
             if (firstName && lastName && email && phone && password && accountType) {
+                // Store account type in localStorage
+                localStorage.setItem('accountType', accountType);
+                localStorage.setItem('userName', firstName + ' ' + lastName);
+                localStorage.setItem('userEmail', email);
+                
                 alert('Account created successfully! Please login.');
                 window.location.href = 'login.html';
             }
