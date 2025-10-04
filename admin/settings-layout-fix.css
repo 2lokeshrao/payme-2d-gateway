@@ -1,0 +1,233 @@
+/* Settings Layout Fix - Consistent Icons & Proper Right Panel */
+
+/* Settings Container - Force 2 Column Layout on Desktop */
+.settings-container {
+    display: grid !important;
+    grid-template-columns: 250px 1fr !important;
+    gap: 30px !important;
+    margin-top: 30px !important;
+    align-items: start !important;
+}
+
+/* Settings Sidebar - Fixed Width */
+.settings-sidebar {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    height: fit-content !important;
+    position: sticky !important;
+    top: 80px !important;
+}
+
+/* Settings Content - Force Right Panel */
+.settings-content {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    min-height: 500px !important;
+    width: 100% !important;
+}
+
+/* Settings Menu - Consistent Icon Sizes */
+.settings-menu {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.settings-menu li {
+    margin-bottom: 8px !important;
+}
+
+.settings-menu a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 15px !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    border-radius: 8px !important;
+    transition: all 0.3s !important;
+    font-size: 14px !important;
+}
+
+/* Menu Icons - Consistent Size */
+.settings-menu a::before {
+    font-size: 16px !important;
+    width: 20px !important;
+    text-align: center !important;
+}
+
+.settings-menu a:hover {
+    background: #f0f0f0 !important;
+}
+
+.settings-menu a.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+}
+
+/* Settings Sections - Force Display in Right Panel */
+.settings-section {
+    display: none !important;
+    width: 100% !important;
+}
+
+.settings-section.active {
+    display: block !important;
+}
+
+/* Prevent Content from Going Below */
+.settings-section > * {
+    max-width: 100% !important;
+}
+
+/* Form Groups - Proper Spacing */
+.form-group {
+    margin-bottom: 20px !important;
+}
+
+.form-group label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+    font-size: 14px !important;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100% !important;
+    padding: 10px 15px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+/* Section Titles */
+.settings-section h2 {
+    font-size: 24px !important;
+    margin-bottom: 20px !important;
+    color: #333 !important;
+}
+
+.settings-section h3 {
+    font-size: 18px !important;
+    margin-top: 30px !important;
+    margin-bottom: 15px !important;
+    color: #555 !important;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 30px !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Toggle Switches */
+.toggle-switch {
+    position: relative !important;
+    display: inline-block !important;
+    width: 50px !important;
+    height: 26px !important;
+}
+
+.toggle-switch input {
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.slider {
+    position: absolute !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: #ccc !important;
+    transition: 0.4s !important;
+    border-radius: 26px !important;
+}
+
+.slider:before {
+    position: absolute !important;
+    content: "" !important;
+    height: 20px !important;
+    width: 20px !important;
+    left: 3px !important;
+    bottom: 3px !important;
+    background-color: white !important;
+    transition: 0.4s !important;
+    border-radius: 50% !important;
+}
+
+input:checked + .slider {
+    background-color: #667eea !important;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px) !important;
+}
+
+/* Mobile Responsive - Single Column */
+@media (max-width: 768px) {
+    .settings-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .settings-sidebar {
+        position: static !important;
+        width: 100% !important;
+    }
+    
+    .settings-content {
+        padding: 20px !important;
+    }
+    
+    .settings-menu a {
+        font-size: 15px !important;
+        padding: 14px 16px !important;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .settings-container {
+        gap: 15px !important;
+        margin-top: 15px !important;
+    }
+    
+    .settings-sidebar {
+        padding: 15px !important;
+    }
+    
+    .settings-content {
+        padding: 15px !important;
+    }
+    
+    .settings-section h2 {
+        font-size: 20px !important;
+    }
+    
+    .settings-section h3 {
+        font-size: 16px !important;
+    }
+}
