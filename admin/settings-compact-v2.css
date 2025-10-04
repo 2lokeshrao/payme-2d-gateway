@@ -1,0 +1,263 @@
+/* Settings Compact Layout v2.0 - All sections compact like crypto */
+
+/* Section Title - Compact */
+.settings-section h2,
+.section-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-bottom: 15px !important;
+    color: #333 !important;
+}
+
+/* Subsection Titles - Compact */
+.settings-section h3 {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    margin: 15px 0 10px 0 !important;
+    color: #555 !important;
+}
+
+/* Form Groups - Compact Spacing */
+.form-group {
+    margin-bottom: 12px !important;
+}
+
+/* Labels - Compact */
+.form-group label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+    color: #555 !important;
+}
+
+/* Small Helper Text - Compact */
+.form-group small {
+    font-size: 11px !important;
+    color: #888 !important;
+    display: block !important;
+    margin-top: 3px !important;
+}
+
+/* Input Fields - Compact */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+    width: 100% !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+}
+
+/* Textarea - Compact Height */
+.form-group textarea {
+    min-height: 60px !important;
+    resize: vertical !important;
+}
+
+/* Toggle Switch - Compact */
+.toggle-switch {
+    width: 44px !important;
+    height: 24px !important;
+}
+
+.toggle-switch input {
+    display: none !important;
+}
+
+.toggle-switch label {
+    display: block !important;
+    width: 44px !important;
+    height: 24px !important;
+    background: #ccc !important;
+    border-radius: 12px !important;
+    position: relative !important;
+    cursor: pointer !important;
+    transition: 0.3s !important;
+}
+
+.toggle-switch label:after {
+    content: '' !important;
+    position: absolute !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: white !important;
+    border-radius: 50% !important;
+    top: 2px !important;
+    left: 2px !important;
+    transition: 0.3s !important;
+}
+
+.toggle-switch input:checked + label {
+    background: #4caf50 !important;
+}
+
+.toggle-switch input:checked + label:after {
+    left: 22px !important;
+}
+
+/* Buttons - Compact */
+.btn,
+button {
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: 0.3s !important;
+}
+
+.btn-primary {
+    background: #2196f3 !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background: #1976d2 !important;
+}
+
+/* Card/Box Styling - Compact */
+.settings-card,
+.config-card {
+    background: #f9f9f9 !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Grid Layout for Form Groups - Compact */
+.form-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+}
+
+/* Mobile - Single Column */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Checkbox/Radio - Compact */
+.form-group input[type="checkbox"],
+.form-group input[type="radio"] {
+    width: auto !important;
+    margin-right: 8px !important;
+}
+
+/* Settings Navigation - Hide all sections by default */
+.settings-section {
+    display: none !important;
+}
+
+/* Active menu item styling */
+.settings-menu li a.active {
+    background: #2196f3 !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.settings-menu li a {
+    display: block !important;
+    padding: 10px 15px !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    border-radius: 4px !important;
+    margin-bottom: 5px !important;
+    transition: all 0.3s !important;
+    font-size: 14px !important;
+}
+
+.settings-menu li a:hover {
+    background: #e3f2fd !important;
+    color: #2196f3 !important;
+}
+
+/* Settings layout - Two column */
+.settings-container {
+    display: grid !important;
+    grid-template-columns: 250px 1fr !important;
+    gap: 20px !important;
+}
+
+.settings-sidebar {
+    background: white !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    position: sticky !important;
+    top: 20px !important;
+    height: fit-content !important;
+}
+
+.settings-sidebar h3 {
+    font-size: 16px !important;
+    margin-bottom: 12px !important;
+}
+
+.settings-content {
+    background: white !important;
+    padding: 20px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Mobile - Stack vertically */
+@media (max-width: 768px) {
+    .settings-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .settings-sidebar {
+        position: static !important;
+    }
+    
+    .settings-section h2,
+    .section-title {
+        font-size: 16px !important;
+    }
+    
+    .settings-section h3 {
+        font-size: 14px !important;
+    }
+}
+
+/* Specific Fixes for Payment Gateway Section */
+#payment-section h2 {
+    font-size: 18px !important;
+}
+
+#payment-section h3 {
+    font-size: 15px !important;
+    margin-top: 15px !important;
+}
+
+/* Specific Fixes for Security Section */
+#security-section h2 {
+    font-size: 18px !important;
+}
+
+/* Specific Fixes for Email Section */
+#email-section h2 {
+    font-size: 18px !important;
+}
+
+/* Specific Fixes for Notifications Section */
+#notifications-section h2 {
+    font-size: 18px !important;
+}
+
+/* Specific Fixes for Fees Section */
+#fees-section h2 {
+    font-size: 18px !important;
+}
+
+/* Specific Fixes for API Section */
+#api-section h2 {
+    font-size: 18px !important;
+}
