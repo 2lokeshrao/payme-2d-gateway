@@ -1,250 +1,243 @@
-/* Compact Home Page CSS - Mobile-First Design */
+/* Compact Home Page CSS - Proper Responsive Design */
 
-/* Body - Compact */
+/* Desktop - Normal Professional Size (Default) */
 body {
-    font-size: 14px !important;
-    line-height: 1.5 !important;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
-/* Hero Section - Compact */
 .hero {
-    padding: 40px 15px !important;
+    padding: 80px 20px;
 }
 
 .hero h1 {
-    font-size: 1.8rem !important;
-    margin-bottom: 12px !important;
+    font-size: 3rem;
+    margin-bottom: 20px;
 }
 
 .hero p {
-    font-size: 0.95rem !important;
-    margin-bottom: 20px !important;
-}
-
-.hero-buttons {
-    gap: 10px !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
 }
 
 .btn {
-    padding: 10px 20px !important;
-    font-size: 0.9rem !important;
-    border-radius: 25px !important;
+    padding: 15px 35px;
+    font-size: 1rem;
+    border-radius: 50px;
 }
 
-/* Section Styles - Compact */
 section {
-    padding: 40px 15px !important;
+    padding: 70px 20px;
 }
 
 .section-title {
-    font-size: 1.5rem !important;
-    margin-bottom: 15px !important;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
 }
 
 .section-subtitle {
-    font-size: 0.9rem !important;
-    margin-bottom: 30px !important;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
 }
 
-/* How It Works Section - Compact */
-.how-it-works {
-    padding: 40px 15px !important;
+/* Tablet - Slightly Compact (768px - 1024px) */
+@media (max-width: 1024px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
 }
 
-.models-container {
-    gap: 20px !important;
-}
-
-.model-card {
-    padding: 20px !important;
-    margin-bottom: 20px !important;
-}
-
-.model-card h3 {
-    font-size: 1.3rem !important;
-    margin-bottom: 10px !important;
-}
-
-.model-card h4 {
-    font-size: 1rem !important;
-    margin-bottom: 8px !important;
-}
-
-.model-card p, .model-card li {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
-}
-
-.steps {
-    gap: 15px !important;
-}
-
-.step {
-    padding: 12px !important;
-    font-size: 0.85rem !important;
-}
-
-.benefits {
-    gap: 8px !important;
-}
-
-.benefits li {
-    font-size: 0.85rem !important;
-    padding: 6px 0 !important;
-}
-
-/* Features Section - Compact */
-.features {
-    padding: 40px 15px !important;
-}
-
-.features-grid {
-    gap: 15px !important;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
-}
-
-.feature-card {
-    padding: 20px !important;
-}
-
-.feature-icon {
-    font-size: 2rem !important;
-    margin-bottom: 10px !important;
-}
-
-.feature-card h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 8px !important;
-}
-
-.feature-card p {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
-}
-
-/* Payment Methods Section - Compact */
-.payment-methods {
-    padding: 40px 15px !important;
-}
-
-.payment-grid {
-    gap: 15px !important;
-}
-
-.payment-card {
-    padding: 20px !important;
-}
-
-.payment-card h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 10px !important;
-}
-
-.payment-card ul li {
-    font-size: 0.85rem !important;
-    padding: 6px 0 !important;
-}
-
-/* Pricing Section - Compact */
-.pricing {
-    padding: 40px 15px !important;
-}
-
-.pricing-grid {
-    gap: 15px !important;
-}
-
-.pricing-card {
-    padding: 25px !important;
-}
-
-.pricing-card h3 {
-    font-size: 1.3rem !important;
-    margin-bottom: 8px !important;
-}
-
-.price {
-    font-size: 2rem !important;
-    margin: 15px 0 !important;
-}
-
-.price span {
-    font-size: 0.85rem !important;
-}
-
-.pricing-card ul li {
-    font-size: 0.85rem !important;
-    padding: 8px 0 !important;
-}
-
-/* Use Cases Section - Compact */
-.use-cases {
-    padding: 40px 15px !important;
-}
-
-.use-cases-grid {
-    gap: 15px !important;
-}
-
-.use-case-card {
-    padding: 20px !important;
-}
-
-.use-case-card h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 8px !important;
-}
-
-.use-case-card p {
-    font-size: 0.85rem !important;
-}
-
-/* Stats Section - Compact */
-.stats {
-    padding: 40px 15px !important;
-}
-
-.stats-grid {
-    gap: 20px !important;
-}
-
-.stat-card h3 {
-    font-size: 2rem !important;
-    margin-bottom: 8px !important;
-}
-
-.stat-card p {
-    font-size: 0.9rem !important;
-}
-
-/* CTA Section - Compact */
-.cta {
-    padding: 40px 15px !important;
-}
-
-.cta h2 {
-    font-size: 1.8rem !important;
-    margin-bottom: 12px !important;
-}
-
-.cta p {
-    font-size: 0.95rem !important;
-    margin-bottom: 20px !important;
-}
-
-/* Footer - Compact */
-footer {
-    padding: 30px 15px !important;
-}
-
-footer p {
-    font-size: 0.85rem !important;
-}
-
-/* Mobile Optimization */
+/* Mobile - Compact Layout (max-width: 768px) */
 @media (max-width: 768px) {
+    body {
+        font-size: 14px !important;
+    }
+
+    .hero {
+        padding: 40px 15px !important;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .hero p {
+        font-size: 0.95rem !important;
+        margin-bottom: 20px !important;
+    }
+
+    .hero-buttons {
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .btn {
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        border-radius: 25px !important;
+    }
+
+    section {
+        padding: 40px 15px !important;
+    }
+
+    .section-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 15px !important;
+    }
+
+    .section-subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 30px !important;
+    }
+
+    /* Model Cards - Mobile */
+    .model-card {
+        padding: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .model-card h3 {
+        font-size: 1.3rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .model-card h4 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .model-card p, .model-card li {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Features - Mobile */
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .feature-card {
+        padding: 20px !important;
+    }
+
+    .feature-icon {
+        font-size: 2rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .feature-card h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .feature-card p {
+        font-size: 0.85rem !important;
+    }
+
+    /* Payment Methods - Mobile */
+    .payment-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .payment-card {
+        padding: 20px !important;
+    }
+
+    .payment-card h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .payment-card ul li {
+        font-size: 0.85rem !important;
+    }
+
+    /* Pricing - Mobile */
+    .pricing-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .pricing-card {
+        padding: 25px !important;
+    }
+
+    .pricing-card h3 {
+        font-size: 1.3rem !important;
+    }
+
+    .price {
+        font-size: 1.8rem !important;
+    }
+
+    .pricing-card ul li {
+        font-size: 0.85rem !important;
+    }
+
+    /* Use Cases - Mobile */
+    .use-cases-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .use-case-card {
+        padding: 20px !important;
+    }
+
+    .use-case-card h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .use-case-card p {
+        font-size: 0.85rem !important;
+    }
+
+    /* Stats - Mobile */
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .stat-card h3 {
+        font-size: 2rem !important;
+    }
+
+    .stat-card p {
+        font-size: 0.9rem !important;
+    }
+
+    /* CTA - Mobile */
+    .cta h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .cta p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Footer - Mobile */
+    footer {
+        padding: 30px 15px !important;
+    }
+
+    footer p {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Small Mobile - Extra Compact (max-width: 480px) */
+@media (max-width: 480px) {
     .hero h1 {
         font-size: 1.5rem !important;
     }
@@ -257,29 +250,8 @@ footer p {
         font-size: 1.3rem !important;
     }
     
-    .features-grid,
-    .payment-grid,
-    .pricing-grid,
-    .use-cases-grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    .price {
-        font-size: 1.8rem !important;
-    }
-}
-
-/* Desktop - Keep compact */
-@media (min-width: 769px) {
-    .hero h1 {
-        font-size: 2rem !important;
-    }
-    
-    .hero p {
-        font-size: 1rem !important;
-    }
-    
-    .section-title {
-        font-size: 1.6rem !important;
+    .btn {
+        padding: 8px 16px !important;
+        font-size: 0.85rem !important;
     }
 }
