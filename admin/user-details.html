@@ -325,6 +325,99 @@
             background: #f8f9fa;
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .btn-save {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        .btn-cancel {
+            flex: 1;
+            padding: 14px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -380,6 +473,11 @@
             
             table th, table td {
                 padding: 10px 8px;
+            }
+            
+            .modal-content {
+                margin: 20px;
+                padding: 20px;
             }
         }
         
@@ -455,19 +553,19 @@
             </div>
             
             <div class="action-buttons">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" onclick="editUser()">
                     <i class="fas fa-edit"></i> Edit User
                 </button>
-                <button class="btn btn-success">
+                <button class="btn btn-success" onclick="verifyEmail()">
                     <i class="fas fa-check-circle"></i> Verify Email
                 </button>
-                <button class="btn btn-warning">
+                <button class="btn btn-warning" onclick="resetPassword()">
                     <i class="fas fa-key"></i> Reset Password
                 </button>
-                <button class="btn btn-danger">
+                <button class="btn btn-danger" onclick="blockUser()">
                     <i class="fas fa-ban"></i> Block User
                 </button>
-                <button class="btn btn-danger">
+                <button class="btn btn-danger" onclick="deleteUser()">
                     <i class="fas fa-trash"></i> Delete User
                 </button>
             </div>
@@ -577,22 +675,126 @@
             </div>
         </div>
     </div>
+    
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit User Details</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            
+            <form id="editUserForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Country</label>
+                    <select id="editCountry" required>
+                        <option value="India">India</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="UAE">UAE</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <select id="editAccountType" required>
+                        <option value="Personal">Personal</option>
+                        <option value="Business">Business</option>
+                        <option value="Merchant">Merchant</option>
+                    </select>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">
+                        💾 Save Changes
+                    </button>
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">
+                        ❌ Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
         // Get user ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('id') || '1';
 
-        // Edit User Function
+        // Edit User Function with Modal
         function editUser() {
+            // Get current values
             const userName = document.querySelector('.profile-info h2').textContent;
             const userEmail = document.querySelector('.profile-info p').textContent;
+            const userPhone = document.querySelectorAll('.info-item .value')[1].textContent;
+            const userCountry = document.querySelectorAll('.info-item .value')[5].textContent;
+            const userAccountType = document.querySelectorAll('.info-item .value')[2].textContent;
             
-            const newName = prompt('Edit User Name:', userName);
-            if (newName && newName.trim() !== '') {
-                document.querySelector('.profile-info h2').textContent = newName;
-                alert('✅ User name updated successfully!');
-            }
+            // Populate modal fields
+            document.getElementById('editName').value = userName;
+            document.getElementById('editEmail').value = userEmail;
+            document.getElementById('editPhone').value = userPhone;
+            document.getElementById('editCountry').value = userCountry;
+            document.getElementById('editAccountType').value = userAccountType;
+            
+            // Show modal
+            document.getElementById('editUserModal').style.display = 'block';
         }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('editUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get new values
+            const newName = document.getElementById('editName').value;
+            const newEmail = document.getElementById('editEmail').value;
+            const newPhone = document.getElementById('editPhone').value;
+            const newCountry = document.getElementById('editCountry').value;
+            const newAccountType = document.getElementById('editAccountType').value;
+            
+            // Update UI
+            document.querySelector('.profile-info h2').textContent = newName;
+            document.querySelector('.profile-info p').textContent = newEmail;
+            document.querySelectorAll('.info-item .value')[1].textContent = newPhone;
+            document.querySelectorAll('.info-item .value')[5].textContent = newCountry;
+            document.querySelectorAll('.info-item .value')[2].textContent = newAccountType;
+            
+            // Update avatar initials
+            const initials = newName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            document.querySelector('.avatar').textContent = initials;
+            
+            // Close modal and show success
+            closeEditModal();
+            alert('✅ User details updated successfully!\n\n' +
+                  'Name: ' + newName + '\n' +
+                  'Email: ' + newEmail + '\n' +
+                  'Phone: ' + newPhone + '\n' +
+                  'Country: ' + newCountry + '\n' +
+                  'Account Type: ' + newAccountType);
+        });
 
         // Verify Email Function
         function verifyEmail() {
@@ -623,7 +825,7 @@
                     statusBadge.textContent = 'Active';
                     statusBadge.classList.remove('badge-danger');
                     statusBadge.classList.add('badge-success');
-                    document.querySelector('.btn-danger:nth-of-type(1)').innerHTML = '<i class="fas fa-ban"></i> Block User';
+                    document.querySelectorAll('.btn-danger')[0].innerHTML = '<i class="fas fa-ban"></i> Block User';
                     alert('✅ User unblocked successfully!');
                 }
             } else {
@@ -631,7 +833,7 @@
                     statusBadge.textContent = 'Blocked';
                     statusBadge.classList.remove('badge-success');
                     statusBadge.classList.add('badge-danger');
-                    document.querySelector('.btn-danger:nth-of-type(1)').innerHTML = '<i class="fas fa-check-circle"></i> Unblock User';
+                    document.querySelectorAll('.btn-danger')[0].innerHTML = '<i class="fas fa-check-circle"></i> Unblock User';
                     alert('⚠️ User blocked successfully!');
                 }
             }
@@ -652,15 +854,11 @@
             }
         }
 
-        // Add event listeners to buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.action-buttons .btn');
-            
-            buttons[0].onclick = editUser;        // Edit User
-            buttons[1].onclick = verifyEmail;     // Verify Email
-            buttons[2].onclick = resetPassword;   // Reset Password
-            buttons[3].onclick = blockUser;       // Block User
-            buttons[4].onclick = deleteUser;      // Delete User
+        // Close modal when clicking outside
+        document.getElementById('editUserModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
         });
     </script>
     <script src="responsive-menu.js"></script>
