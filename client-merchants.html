@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Merchants - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .nav-menu a.active {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f9fafb;
+        }
+        
+        th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-top: 1px solid #f0f0f0;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn.edit {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .action-btn.delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="client-dashboard.html" class="brand">
+                <i class="fas fa-server"></i>
+                My Gateway Instance
+            </a>
+            <ul class="nav-menu">
+                <li><a href="client-dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="client-merchants.html" class="active"><i class="fas fa-store"></i> Merchants</a></li>
+                <li><a href="client-transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="client-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="api-docs.html"><i class="fas fa-code"></i> API Docs</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-store"></i> Manage Merchants</h1>
+            <button class="btn-primary" onclick="openAddMerchantModal()">
+                <i class="fas fa-plus"></i> Add New Merchant
+            </button>
+        </div>
+
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Merchant ID</th>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="merchantsTable">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-store" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            No merchants yet. Click "Add New Merchant" to get started.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Merchant Modal -->
+    <div class="modal" id="addMerchantModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Merchant</h2>
+                <button class="close-btn" onclick="closeAddMerchantModal()">&times;</button>
+            </div>
+            <form id="addMerchantForm" onsubmit="addMerchant(event)">
+                <div class="form-group">
+                    <label>Business Name *</label>
+                    <input type="text" id="businessName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone *</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" id="website">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">
+                    <i class="fas fa-save"></i> Add Merchant
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let merchants = JSON.parse(localStorage.getItem('merchants')) || [];
+
+        function loadMerchants() {
+            const tbody = document.getElementById('merchantsTable');
+            if (merchants.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-store" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            No merchants yet. Click "Add New Merchant" to get started.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td>${merchant.id}</td>
+                    <td>${merchant.businessName}</td>
+                    <td>${merchant.email}</td>
+                    <td>${merchant.phone}</td>
+                    <td><span class="status-badge ${merchant.status}">${merchant.status}</span></td>
+                    <td>${merchant.createdDate}</td>
+                    <td>
+                        <button class="action-btn edit" onclick="editMerchant('${merchant.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn delete" onclick="deleteMerchant('${merchant.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddMerchantModal() {
+            document.getElementById('addMerchantModal').classList.add('active');
+        }
+
+        function closeAddMerchantModal() {
+            document.getElementById('addMerchantModal').classList.remove('active');
+            document.getElementById('addMerchantForm').reset();
+        }
+
+        function addMerchant(event) {
+            event.preventDefault();
+            
+            const merchant = {
+                id: 'MERCH-' + String(merchants.length + 1).padStart(3, '0'),
+                businessName: document.getElementById('businessName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                website: document.getElementById('website').value,
+                status: document.getElementById('status').value,
+                createdDate: new Date().toLocaleDateString('en-IN'),
+                password: Math.random().toString(36).slice(-8)
+            };
+
+            merchants.push(merchant);
+            localStorage.setItem('merchants', JSON.stringify(merchants));
+            
+            alert(`Merchant added successfully!\n\nMerchant ID: ${merchant.id}\nEmail: ${merchant.email}\nPassword: ${merchant.password}\n\nPlease share these credentials with the merchant.`);
+            
+            closeAddMerchantModal();
+            loadMerchants();
+        }
+
+        function editMerchant(id) {
+            alert('Edit functionality will be implemented soon!');
+        }
+
+        function deleteMerchant(id) {
+            if (confirm('Are you sure you want to delete this merchant?')) {
+                merchants = merchants.filter(m => m.id !== id);
+                localStorage.setItem('merchants', JSON.stringify(merchants));
+                loadMerchants();
+            }
+        }
+
+        window.addEventListener('load', loadMerchants);
+    </script>
+</body>
+</html>

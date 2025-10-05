@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settlements - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .nav-menu a.active {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .alert.info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .stat-box h3 {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .stat-box p {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f9fafb;
+        }
+        
+        th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-top: 1px solid #f0f0f0;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-badge.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-badge.processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -23px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 15px;
+            width: 2px;
+            height: calc(100% - 10px);
+            background: #e5e7eb;
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .timeline-content {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="merchant-dashboard.html" class="brand">
+                <i class="fas fa-store"></i>
+                Merchant Portal
+            </a>
+            <ul class="nav-menu">
+                <li><a href="merchant-dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="merchant-transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="merchant-settlements.html" class="active"><i class="fas fa-money-bill-wave"></i> Settlements</a></li>
+                <li><a href="merchant-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="api-docs.html"><i class="fas fa-code"></i> API Docs</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-money-bill-wave"></i> Settlements (T+2)</h1>
+            <p style="color: #666; font-size: 14px; margin-top: 5px;">Track your payment settlements with T+2 cycle</p>
+        </div>
+
+        <div class="alert info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Settlement Cycle:</strong> Payments are settled 2 business days after transaction date. Gateway charges (2% + ₹3) are automatically deducted.
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <h3>Pending Settlements</h3>
+                <p id="pendingAmount" style="color: #f59e0b;">₹0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Processing</h3>
+                <p id="processingAmount" style="color: #3b82f6;">₹0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Completed (This Month)</h3>
+                <p id="completedAmount" style="color: #10b981;">₹0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Settled</h3>
+                <p id="totalSettled">₹0</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-clock"></i> Settlement Timeline</h2>
+            </div>
+            <div class="timeline" id="settlementTimeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">No settlements yet</div>
+                    <div class="timeline-content">Settlements will appear here once transactions are processed.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Settlement History</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Settlement ID</th>
+                        <th>Transaction Date</th>
+                        <th>Settlement Date</th>
+                        <th>Gross Amount</th>
+                        <th>Gateway Fee</th>
+                        <th>Net Amount</th>
+                        <th>Status</th>
+                        <th>UTR Number</th>
+                    </tr>
+                </thead>
+                <tbody id="settlementsTable">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-money-bill-wave" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            No settlements yet. Complete transactions will be settled on T+2 basis.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-calculator"></i> How Settlement Works</h2>
+            </div>
+            <div style="line-height: 1.8;">
+                <p style="margin-bottom: 15px;"><strong>T+2 Settlement Cycle:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>T = Transaction Date</li>
+                    <li>T+2 = Settlement Date (2 business days after transaction)</li>
+                    <li>Weekends and holidays are excluded from business days</li>
+                </ul>
+                
+                <p style="margin-bottom: 15px;"><strong>Gateway Charges:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>2% of transaction amount + ₹3 per transaction</li>
+                    <li>Charges are automatically deducted from settlement amount</li>
+                </ul>
+                
+                <p style="margin-bottom: 15px;"><strong>Example:</strong></p>
+                <div style="background: #f9fafb; padding: 15px; border-radius: 8px; font-family: monospace;">
+                    Transaction Amount: ₹1,000<br>
+                    Gateway Fee: (₹1,000 × 2%) + ₹3 = ₹23<br>
+                    Net Settlement: ₹1,000 - ₹23 = ₹977
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let settlements = JSON.parse(localStorage.getItem('merchantSettlements')) || [];
+
+        function loadSettlements() {
+            const tbody = document.getElementById('settlementsTable');
+            
+            if (settlements.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-money-bill-wave" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            No settlements yet. Complete transactions will be settled on T+2 basis.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = settlements.map(settlement => `
+                <tr>
+                    <td>${settlement.id}</td>
+                    <td>${settlement.transactionDate}</td>
+                    <td>${settlement.settlementDate}</td>
+                    <td>₹${settlement.grossAmount}</td>
+                    <td>₹${settlement.gatewayFee}</td>
+                    <td>₹${settlement.netAmount}</td>
+                    <td><span class="status-badge ${settlement.status}">${settlement.status}</span></td>
+                    <td>${settlement.utrNumber || '-'}</td>
+                </tr>
+            `).join('');
+
+            updateStats();
+            updateTimeline();
+        }
+
+        function updateStats() {
+            const pending = settlements.filter(s => s.status === 'pending').reduce((sum, s) => sum + parseFloat(s.netAmount), 0);
+            const processing = settlements.filter(s => s.status === 'processing').reduce((sum, s) => sum + parseFloat(s.netAmount), 0);
+            
+            const currentMonth = new Date().getMonth();
+            const completed = settlements.filter(s => {
+                const date = new Date(s.settlementDate);
+                return s.status === 'completed' && date.getMonth() === currentMonth;
+            }).reduce((sum, s) => sum + parseFloat(s.netAmount), 0);
+            
+            const total = settlements.filter(s => s.status === 'completed').reduce((sum, s) => sum + parseFloat(s.netAmount), 0);
+
+            document.getElementById('pendingAmount').textContent = '₹' + pending.toFixed(2);
+            document.getElementById('processingAmount').textContent = '₹' + processing.toFixed(2);
+            document.getElementById('completedAmount').textContent = '₹' + completed.toFixed(2);
+            document.getElementById('totalSettled').textContent = '₹' + total.toFixed(2);
+        }
+
+        function updateTimeline() {
+            const timeline = document.getElementById('settlementTimeline');
+            
+            if (settlements.length === 0) {
+                timeline.innerHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-date">No settlements yet</div>
+                        <div class="timeline-content">Settlements will appear here once transactions are processed.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            timeline.innerHTML = settlements.slice(0, 5).map(settlement => `
+                <div class="timeline-item">
+                    <div class="timeline-date">${settlement.settlementDate}</div>
+                    <div class="timeline-content">
+                        <strong>${settlement.id}</strong> - ₹${settlement.netAmount} 
+                        <span class="status-badge ${settlement.status}">${settlement.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.addEventListener('load', loadSettlements);
+    </script>
+</body>
+</html>

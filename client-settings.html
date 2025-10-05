@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway Settings - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .nav-menu a.active {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn-primary {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            padding: 12px 24px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .api-key-box {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .api-key-text {
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+            word-break: break-all;
+        }
+        
+        .btn-copy {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .alert.success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="client-dashboard.html" class="brand">
+                <i class="fas fa-server"></i>
+                My Gateway Instance
+            </a>
+            <ul class="nav-menu">
+                <li><a href="client-dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="client-merchants.html"><i class="fas fa-store"></i> Merchants</a></li>
+                <li><a href="client-transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="client-settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="api-docs.html"><i class="fas fa-code"></i> API Docs</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-cog"></i> Gateway Settings</h1>
+            <p style="color: #666; font-size: 14px; margin-top: 5px;">Configure your gateway instance settings</p>
+        </div>
+
+        <div class="alert success" id="successAlert" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <div>Settings saved successfully!</div>
+        </div>
+
+        <!-- Gateway Information -->
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-info-circle"></i> Gateway Information</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Instance ID</label>
+                    <input type="text" id="instanceId" value="GW-001" readonly style="background: #f9fafb;">
+                </div>
+                <div class="form-group">
+                    <label>Plan Type</label>
+                    <input type="text" value="Pro Plan" readonly style="background: #f9fafb;">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Status</label>
+                    <input type="text" value="Active" readonly style="background: #d1fae5; color: #065f46; font-weight: 600;">
+                </div>
+                <div class="form-group">
+                    <label>Created Date</label>
+                    <input type="text" id="createdDate" readonly style="background: #f9fafb;">
+                </div>
+            </div>
+        </div>
+
+        <!-- API Keys -->
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-key"></i> API Keys</h2>
+                <button class="btn-secondary" onclick="regenerateKeys()">
+                    <i class="fas fa-sync"></i> Regenerate Keys
+                </button>
+            </div>
+            <div class="form-group">
+                <label>API Key (Public)</label>
+                <div class="api-key-box">
+                    <span class="api-key-text" id="apiKey">payme_pk_xxxxxxxxxxxxxxxxxxxxxxxx</span>
+                    <button class="btn-copy" onclick="copyToClipboard('apiKey')">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>API Secret (Private - Keep Secure)</label>
+                <div class="api-key-box">
+                    <span class="api-key-text" id="apiSecret">payme_sk_xxxxxxxxxxxxxxxxxxxxxxxx</span>
+                    <button class="btn-copy" onclick="copyToClipboard('apiSecret')">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            <p style="color: #666; font-size: 13px; margin-top: 10px;">
+                <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
+                Never share your API Secret with anyone. It provides full access to your gateway.
+            </p>
+        </div>
+
+        <!-- Business Details -->
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-building"></i> Business Details</h2>
+            </div>
+            <form id="businessForm" onsubmit="saveBusinessDetails(event)">
+                <div class="form-group">
+                    <label>Business Name *</label>
+                    <input type="text" id="businessName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" id="website">
+                </div>
+                <div class="form-group">
+                    <label>Business Address</label>
+                    <textarea id="address" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Business Details
+                </button>
+            </form>
+        </div>
+
+        <!-- Webhook Settings -->
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-webhook"></i> Webhook Settings</h2>
+            </div>
+            <form id="webhookForm" onsubmit="saveWebhookSettings(event)">
+                <div class="form-group">
+                    <label>Webhook URL</label>
+                    <input type="url" id="webhookUrl" placeholder="https://yourdomain.com/webhook">
+                </div>
+                <div class="form-group">
+                    <label>Webhook Secret</label>
+                    <input type="text" id="webhookSecret" placeholder="Your webhook secret for verification">
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Webhook Settings
+                </button>
+            </form>
+        </div>
+
+        <!-- Gateway Configuration -->
+        <div class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-sliders-h"></i> Gateway Configuration</h2>
+            </div>
+            <form id="configForm" onsubmit="saveConfiguration(event)">
+                <div class="form-group">
+                    <label>Payment Methods</label>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="checkbox" checked> UPI
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="checkbox" checked> Cards
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="checkbox" checked> Net Banking
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="checkbox" checked> Wallets
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Auto Settlement</label>
+                    <select id="autoSettlement">
+                        <option value="enabled">Enabled (Direct to Merchant)</option>
+                        <option value="disabled">Disabled (Manual)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Configuration
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function loadSettings() {
+            const instanceId = localStorage.getItem('clientInstanceId') || 'GW-001';
+            document.getElementById('instanceId').value = instanceId;
+            document.getElementById('createdDate').value = new Date().toLocaleDateString('en-IN');
+            
+            // Generate API keys if not exists
+            if (!localStorage.getItem('apiKey')) {
+                generateAPIKeys();
+            } else {
+                document.getElementById('apiKey').textContent = localStorage.getItem('apiKey');
+                document.getElementById('apiSecret').textContent = localStorage.getItem('apiSecret');
+            }
+            
+            // Load saved business details
+            const businessDetails = JSON.parse(localStorage.getItem('clientBusinessDetails') || '{}');
+            if (businessDetails.businessName) {
+                document.getElementById('businessName').value = businessDetails.businessName;
+                document.getElementById('email').value = businessDetails.email;
+                document.getElementById('phone').value = businessDetails.phone;
+                document.getElementById('website').value = businessDetails.website || '';
+                document.getElementById('address').value = businessDetails.address || '';
+            }
+        }
+
+        function generateAPIKeys() {
+            const apiKey = 'pk_demo_' + Math.random().toString(36).substr(2, 24);
+            const apiSecret = 'sk_demo_' + Math.random().toString(36).substr(2, 24);
+            
+            localStorage.setItem('apiKey', apiKey);
+            localStorage.setItem('apiSecret', apiSecret);
+            
+            document.getElementById('apiKey').textContent = apiKey;
+            document.getElementById('apiSecret').textContent = apiSecret;
+        }
+
+        function regenerateKeys() {
+            if (confirm('Are you sure? This will invalidate your current API keys and may break existing integrations.')) {
+                generateAPIKeys();
+                alert('API keys regenerated successfully!');
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
+        function saveBusinessDetails(event) {
+            event.preventDefault();
+            
+            const businessDetails = {
+                businessName: document.getElementById('businessName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                website: document.getElementById('website').value,
+                address: document.getElementById('address').value
+            };
+            
+            localStorage.setItem('clientBusinessDetails', JSON.stringify(businessDetails));
+            showSuccessAlert();
+        }
+
+        function saveWebhookSettings(event) {
+            event.preventDefault();
+            
+            const webhookSettings = {
+                url: document.getElementById('webhookUrl').value,
+                secret: document.getElementById('webhookSecret').value
+            };
+            
+            localStorage.setItem('webhookSettings', JSON.stringify(webhookSettings));
+            showSuccessAlert();
+        }
+
+        function saveConfiguration(event) {
+            event.preventDefault();
+            showSuccessAlert();
+        }
+
+        function showSuccessAlert() {
+            const alert = document.getElementById('successAlert');
+            alert.style.display = 'flex';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        window.addEventListener('load', loadSettings);
+    </script>
+</body>
+</html>
