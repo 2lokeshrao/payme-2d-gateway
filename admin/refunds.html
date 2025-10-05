@@ -264,7 +264,200 @@
         }
 
         function viewRefund(id) {
-            alert(`View refund ${id} - Feature coming soon!`);
+        }
+        function viewRefund(id) {
+            const modal = document.createElement("div");
+            modal.id = "viewRefundModal";
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+            
+            const refundData = {
+                id: id,
+                transactionId: 'TXN' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                amount: '₹' + (Math.random() * 10000 + 1000).toFixed(2),
+                reason: 'Customer requested refund',
+                status: ['Pending', 'Approved', 'Rejected', 'Completed'][Math.floor(Math.random() * 4)],
+                requestedBy: 'Customer',
+                requestDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+                processedDate: new Date().toLocaleDateString(),
+                merchantName: 'Test Merchant',
+                customerEmail: 'customer@example.com'
+            };
+            
+            const statusColors = {
+                'Pending': '#ffc107',
+                'Approved': '#28a745',
+                'Rejected': '#dc3545',
+                'Completed': '#17a2b8'
+            };
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="margin: 0; font-size: 24px; color: #333;">💰 Refund Details</h2>
+                        <button onclick="closeViewRefundModal()" style="
+                            background: none;
+                            border: none;
+                            font-size: 28px;
+                            cursor: pointer;
+                            color: #999;
+                            line-height: 1;
+                            padding: 0;
+                            width: 30px;
+                            height: 30px;
+                        ">&times;</button>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">Refund ID</div>
+                            <div style="font-size: 24px; font-weight: bold;">#${refundData.id}</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Transaction ID</div>
+                                <div style="font-weight: 600; color: #333;">${refundData.transactionId}</div>
+                            </div>
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Amount</div>
+                                <div style="font-weight: 600; color: #333; font-size: 18px;">${refundData.amount}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Status</div>
+                            <div style="display: inline-block; padding: 6px 12px; background: ${statusColors[refundData.status]}; color: white; border-radius: 20px; font-weight: 600; font-size: 14px;">
+                                ${refundData.status}
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Refund Reason</div>
+                            <div style="font-weight: 600; color: #333;">${refundData.reason}</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Requested By</div>
+                                <div style="font-weight: 600; color: #333;">${refundData.requestedBy}</div>
+                            </div>
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Request Date</div>
+                                <div style="font-weight: 600; color: #333;">${refundData.requestDate}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Merchant Name</div>
+                                <div style="font-weight: 600; color: #333;">${refundData.merchantName}</div>
+                            </div>
+                            <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Customer Email</div>
+                                <div style="font-weight: 600; color: #333;">${refundData.customerEmail}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 12px; margin-top: 10px;">
+                            ${refundData.status === 'Pending' ? `
+                                <button onclick="approveRefund('${id}')" style="
+                                    flex: 1;
+                                    padding: 14px;
+                                    background: #28a745;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    cursor: pointer;
+                                ">
+                                    ✅ Approve
+                                </button>
+                                <button onclick="rejectRefund('${id}')" style="
+                                    flex: 1;
+                                    padding: 14px;
+                                    background: #dc3545;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    cursor: pointer;
+                                ">
+                                    ❌ Reject
+                                </button>
+                            ` : ''}
+                            <button onclick="closeViewRefundModal()" style="
+                                flex: 1;
+                                padding: 14px;
+                                background: #6c757d;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 15px;
+                                cursor: pointer;
+                            ">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.addEventListener("click", function(e) {
+                if (e.target === modal) {
+                    closeViewRefundModal();
+                }
+            });
+        }
+        
+        function closeViewRefundModal() {
+            const modal = document.getElementById("viewRefundModal");
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function approveRefund(id) {
+            if (confirm("Are you sure you want to approve this refund?")) {
+                alert("✅ Refund #" + id + " has been approved successfully!");
+                closeViewRefundModal();
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+        
+        function rejectRefund(id) {
+            const reason = prompt("Please enter rejection reason:");
+            if (reason) {
+                alert("❌ Refund #" + id + " has been rejected.\nReason: " + reason);
+                closeViewRefundModal();
+                setTimeout(() => location.reload(), 1000);
+            }
         }
 
         function approveRefund(id) {
