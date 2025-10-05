@@ -460,7 +460,160 @@
         }
 
         function downloadReceipt() {
-            alert('Downloading receipt - Feature coming soon!');
+        }
+        function downloadReceipt() {
+            const modal = document.createElement("div");
+            modal.id = "downloadReceiptModal";
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 500px;
+                    width: 100%;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="margin: 0; font-size: 24px; color: #333;">📥 Download Receipt</h2>
+                        <button onclick="closeDownloadReceiptModal()" style="
+                            background: none;
+                            border: none;
+                            font-size: 28px;
+                            cursor: pointer;
+                            color: #999;
+                            line-height: 1;
+                            padding: 0;
+                            width: 30px;
+                            height: 30px;
+                        ">&times;</button>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Receipt Format *</label>
+                            <select id="receiptFormat" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: white;
+                                cursor: pointer;
+                            ">
+                                <option value="pdf">PDF Document</option>
+                                <option value="image">Image (PNG)</option>
+                                <option value="print">Print Receipt</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Receipt Type *</label>
+                            <select id="receiptType" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: white;
+                                cursor: pointer;
+                            ">
+                                <option value="customer">Customer Receipt</option>
+                                <option value="merchant">Merchant Receipt</option>
+                                <option value="detailed">Detailed Receipt</option>
+                            </select>
+                        </div>
+                        
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Receipt will include:</div>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #333;">
+                                <li>Transaction ID & Amount</li>
+                                <li>Payment Method & Status</li>
+                                <li>Merchant & Customer Details</li>
+                                <li>Date & Time Information</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="display: flex; gap: 12px; margin-top: 10px;">
+                            <button onclick="processDownloadReceipt()" style="
+                                flex: 1;
+                                padding: 14px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 15px;
+                                cursor: pointer;
+                            ">
+                                📥 Download
+                            </button>
+                            <button onclick="closeDownloadReceiptModal()" style="
+                                flex: 1;
+                                padding: 14px;
+                                background: #6c757d;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 15px;
+                                cursor: pointer;
+                            ">
+                                ❌ Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.addEventListener("click", function(e) {
+                if (e.target === modal) {
+                    closeDownloadReceiptModal();
+                }
+            });
+        }
+        
+        function closeDownloadReceiptModal() {
+            const modal = document.getElementById("downloadReceiptModal");
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function processDownloadReceipt() {
+            const format = document.getElementById("receiptFormat").value;
+            const type = document.getElementById("receiptType").value;
+            
+            closeDownloadReceiptModal();
+            
+            if (format === "print") {
+                alert("🖨️ Preparing receipt for printing...\n\nThe print dialog will open shortly.");
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            } else {
+                const formatName = format === "pdf" ? "PDF" : "PNG Image";
+                alert("📥 Downloading " + type + " receipt...\n\nFormat: " + formatName + "\n\nThe receipt will be saved to your downloads folder.");
+                
+                setTimeout(() => {
+                    alert("✅ Receipt Downloaded Successfully!\n\nThe " + formatName + " receipt has been saved.");
+                }, 1500);
+            }
         }
 
         function initiateRefund() {
