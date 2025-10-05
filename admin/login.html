@@ -4,67 +4,398 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - PayMe 2D Gateway</title>
-    <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="responsive-admin.css?v=5.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .navbar .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .navbar-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .navbar-menu a.active {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Login Container */
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+            width: 100%;
+            max-width: 480px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-icon i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .login-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #5568d3;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .demo-credentials {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .demo-credentials p {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .demo-credentials strong {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            display: block;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        .spinner.active {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+            }
+
+            .login-card {
+                padding: 30px 25px;
+            }
+
+            .login-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Modern Navbar -->
     <nav class="navbar">
         <div class="container">
-            <a href="../index.html" class="navbar-brand">PayMe 2D</a>
+            <a href="../index.html" class="navbar-brand">
+                <i class="fas fa-shield-alt"></i>
+                PayMe 2D Gateway
+            </a>
             <ul class="navbar-menu">
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="login.html">Admin Login</a></li>
+                <li><a href="../login.html">User Login</a></li>
+                <li><a href="login.html" class="active">Admin Login</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Admin Login Form -->
-    <section style="padding: 60px 0; min-height: calc(100vh - 200px);">
-        <div class="container">
-            <div style="max-width: 500px; margin: 0 auto;">
-                <div class="card">
-                    <h2 style="margin-bottom: 8px;">Admin Login</h2>
-                    <p style="color: var(--color-text-secondary); margin-bottom: 32px;">Access the admin dashboard</p>
-                    
-                    <div id="alertMessage" class="alert"></div>
-                    
-                    <form id="adminLoginForm">
-                        <div class="form-group">
-                            <label class="form-label">Username</label>
-                            <input type="text" id="username" class="form-input" placeholder="admin" required>
-                            <div class="form-error" id="usernameError">Please enter your username</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
-                            <div style="text-align: right; margin-top: 8px;"><a href="forgot-password.html" style="color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500;">Forgot Password?</a></div>
-                            <div class="form-error" id="passwordError">Please enter your password</div>
-                        </div>
-
-                        <div class="spinner" id="spinner"></div>
-
-                        <button type="submit" class="btn btn-primary btn-full btn-large">Sign In</button>
-                    </form>
-
-                    <p style="text-align: center; margin-top: 24px; color: var(--color-text-secondary); font-size: 14px;">
-                        Default credentials: admin / admin123
-                    </p>
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">
+                    <i class="fas fa-user-shield"></i>
                 </div>
+                <h2>Admin Login</h2>
+                <p>Access the admin dashboard</p>
+            </div>
+
+            <div id="alertMessage" class="alert"></div>
+
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="forgot-password.html">
+                            <i class="fas fa-key"></i> Forgot Password?
+                        </a>
+                    </div>
+                </div>
+
+                <div class="spinner" id="spinner"></div>
+
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <div class="demo-credentials">
+                <p>🔑 Demo Credentials</p>
+                <strong>Username:</strong> admin<br>
+                <strong>Password:</strong> admin123
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="../js/admin-login.js"></script>
-    <script src="responsive-menu.js"></script>
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const spinner = document.getElementById('spinner');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            // Show spinner
+            spinner.classList.add('active');
+            alertMessage.style.display = 'none';
+            
+            // Simulate login delay
+            setTimeout(() => {
+                spinner.classList.remove('active');
+                
+                // Check credentials
+                if (username === 'admin' && password === 'admin123') {
+                    // Success
+                    alertMessage.className = 'alert success';
+                    alertMessage.innerHTML = '<i class="fas fa-check-circle"></i> Login successful! Redirecting...';
+                    
+                    // Store admin session
+                    localStorage.setItem('adminToken', 'admin_' + Date.now());
+                    localStorage.setItem('adminUsername', username);
+                    
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    // Error
+                    alertMessage.className = 'alert error';
+                    alertMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid username or password!';
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
