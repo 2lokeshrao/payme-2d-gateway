@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Dashboard - PayMe 2D Gateway</title>
+    <title>Client Dashboard - PayMe 2D Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,7 +22,7 @@
         
         /* Navigation */
         .navbar {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 15px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
@@ -85,6 +85,9 @@
         /* Page Header */
         .page-header {
             margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .page-header h1 {
@@ -94,6 +97,18 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        .instance-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         /* Stats Grid */
@@ -109,7 +124,7 @@
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #10b981;
+            border-left: 4px solid #667eea;
             transition: transform 0.3s;
         }
         
@@ -125,7 +140,7 @@
             border-left-color: #3b82f6;
         }
         
-        .stat-card.settlements {
+        .stat-card.merchants {
             border-left-color: #f59e0b;
         }
         
@@ -168,7 +183,7 @@
             color: #3b82f6;
         }
         
-        .stat-card.settlements .stat-icon {
+        .stat-card.merchants .stat-icon {
             background: #fef3c7;
             color: #f59e0b;
         }
@@ -222,7 +237,7 @@
         
         .btn-primary {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -261,16 +276,16 @@
         }
         
         .quick-action:hover {
-            background: #10b981;
+            background: #667eea;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
         .quick-action-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -282,7 +297,7 @@
         
         .quick-action:hover .quick-action-icon {
             background: white;
-            color: #10b981;
+            color: #667eea;
         }
         
         .quick-action-content h3 {
@@ -306,16 +321,16 @@
             gap: 12px;
         }
         
-        .alert.warning {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            color: #92400e;
-        }
-        
         .alert.info {
             background: #dbeafe;
             border-left: 4px solid #3b82f6;
             color: #1e40af;
+        }
+        
+        .alert.success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
         }
         
         .alert i {
@@ -348,24 +363,6 @@
             font-size: 14px;
         }
         
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        
-        .status-badge.success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-badge.pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
@@ -374,6 +371,12 @@
             
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
             
             .quick-actions {
@@ -386,15 +389,15 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-content">
-            <a href="merchant-dashboard.html" class="brand">
-                <i class="fas fa-store"></i>
-                Merchant Portal
+            <a href="client-dashboard.html" class="brand">
+                <i class="fas fa-server"></i>
+                My Gateway Instance
             </a>
             <ul class="nav-menu">
-                <li><a href="merchant-dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="merchant-transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
-                <li><a href="merchant-settlements.html"><i class="fas fa-money-bill-wave"></i> Settlements</a></li>
-                <li><a href="merchant-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="client-dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="client-merchants.html"><i class="fas fa-store"></i> Merchants</a></li>
+                <li><a href="client-transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="client-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
                 <li><a href="api-docs.html"><i class="fas fa-code"></i> API Docs</a></li>
                 <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
@@ -405,24 +408,21 @@
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
-            <h1><i class="fas fa-chart-line"></i> Merchant Dashboard</h1>
-            <p style="color: #666; font-size: 14px; margin-top: 5px;">Welcome back! Monitor your payment gateway performance.</p>
-        </div>
-
-        <!-- Alert for incomplete setup -->
-        <div class="alert warning" id="setupAlert" style="display: none;">
-            <i class="fas fa-exclamation-triangle"></i>
             <div>
-                <strong>Complete Your Setup!</strong> Please add your bank account details in Settings to start receiving settlements.
-                <a href="merchant-settings.html" style="color: #92400e; text-decoration: underline; margin-left: 10px;">Go to Settings →</a>
+                <h1><i class="fas fa-chart-line"></i> Gateway Owner Dashboard</h1>
+                <p style="color: #666; font-size: 14px; margin-top: 5px;">Manage your white-label payment gateway instance.</p>
+            </div>
+            <div class="instance-badge">
+                <i class="fas fa-server"></i>
+                <span id="instanceId">Instance: GW-001</span>
             </div>
         </div>
 
-        <!-- Info Alert for T+2 -->
-        <div class="alert info">
-            <i class="fas fa-info-circle"></i>
+        <!-- Success Alert -->
+        <div class="alert success">
+            <i class="fas fa-check-circle"></i>
             <div>
-                <strong>Settlement Cycle:</strong> Your payments are settled on a T+2 basis (2 business days after transaction). Gateway charges: 2% + ₹3 per transaction.
+                <strong>Direct Payments Enabled!</strong> All customer payments go directly to your merchant's accounts. No T+2 delays, no commission deductions.
             </div>
         </div>
 
@@ -430,7 +430,7 @@
         <div class="stats-grid">
             <div class="stat-card revenue">
                 <div class="stat-header">
-                    <div class="stat-label">Total Revenue</div>
+                    <div class="stat-label">Total Revenue (All Merchants)</div>
                     <div class="stat-icon">
                         <i class="fas fa-rupee-sign"></i>
                     </div>
@@ -454,16 +454,16 @@
                 </div>
             </div>
             
-            <div class="stat-card settlements">
+            <div class="stat-card merchants">
                 <div class="stat-header">
-                    <div class="stat-label">Pending Settlements</div>
+                    <div class="stat-label">Active Merchants</div>
                     <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-store"></i>
                     </div>
                 </div>
-                <div class="stat-value">₹0</div>
+                <div class="stat-value">0</div>
                 <div class="stat-change">
-                    <i class="fas fa-info-circle"></i> T+2 settlement cycle
+                    <i class="fas fa-info-circle"></i> Using your gateway
                 </div>
             </div>
             
@@ -487,13 +487,13 @@
                 <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
             </div>
             <div class="quick-actions">
-                <a href="merchant-settings.html" class="quick-action">
+                <a href="client-merchants.html" class="quick-action">
                     <div class="quick-action-icon">
-                        <i class="fas fa-university"></i>
+                        <i class="fas fa-user-plus"></i>
                     </div>
                     <div class="quick-action-content">
-                        <h3>Bank Details</h3>
-                        <p>Add settlement account</p>
+                        <h3>Add Merchant</h3>
+                        <p>Onboard new merchants</p>
                     </div>
                 </a>
                 
@@ -507,7 +507,7 @@
                     </div>
                 </a>
                 
-                <a href="merchant-transactions.html" class="quick-action">
+                <a href="client-transactions.html" class="quick-action">
                     <div class="quick-action-icon">
                         <i class="fas fa-list"></i>
                     </div>
@@ -517,13 +517,13 @@
                     </div>
                 </a>
                 
-                <a href="merchant-settlements.html" class="quick-action">
+                <a href="client-settings.html" class="quick-action">
                     <div class="quick-action-icon">
-                        <i class="fas fa-money-check-alt"></i>
+                        <i class="fas fa-cog"></i>
                     </div>
                     <div class="quick-action-content">
-                        <h3>Settlements</h3>
-                        <p>Track payouts (T+2)</p>
+                        <h3>Settings</h3>
+                        <p>Configure gateway</p>
                     </div>
                 </a>
             </div>
@@ -533,7 +533,7 @@
         <div class="section">
             <div class="section-header">
                 <h2><i class="fas fa-history"></i> Recent Transactions</h2>
-                <a href="merchant-transactions.html" class="btn-primary">
+                <a href="client-transactions.html" class="btn-primary">
                     <i class="fas fa-eye"></i> View All
                 </a>
             </div>
@@ -542,19 +542,17 @@
                     <thead>
                         <tr>
                             <th>Transaction ID</th>
+                            <th>Merchant</th>
                             <th>Customer</th>
                             <th>Amount</th>
-                            <th>Gateway Fee</th>
-                            <th>Net Amount</th>
-                            <th>Status</th>
                             <th>Date</th>
                         </tr>
                     </thead>
-                    <tbody id="transactionsBody">
+                    <tbody>
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+                            <td colspan="5" style="text-align: center; padding: 40px; color: #999;">
                                 <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
-                                No transactions yet. Start accepting payments to see them here.
+                                No transactions yet. Add merchants to start processing payments.
                             </td>
                         </tr>
                     </tbody>
@@ -562,43 +560,37 @@
             </div>
         </div>
 
-        <!-- Merchant Info -->
+        <!-- Gateway Info -->
         <div class="section">
             <div class="section-header">
-                <h2><i class="fas fa-info-circle"></i> Merchant Information</h2>
+                <h2><i class="fas fa-info-circle"></i> Gateway Instance Information</h2>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                 <div>
-                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Merchant ID</p>
-                    <p style="font-weight: 600; font-size: 16px;" id="merchantId">MERCH-001</p>
+                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Instance ID</p>
+                    <p style="font-weight: 600; font-size: 16px;" id="instanceIdInfo">GW-001</p>
                 </div>
                 <div>
-                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Gateway Provider</p>
-                    <p style="font-weight: 600; font-size: 16px;">PayMe Gateway</p>
+                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Plan Type</p>
+                    <p style="font-weight: 600; font-size: 16px;">Pro Plan</p>
                 </div>
                 <div>
                     <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Status</p>
                     <p style="font-weight: 600; font-size: 16px; color: #10b981;">Active</p>
                 </div>
                 <div>
-                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Settlement Cycle</p>
-                    <p style="font-weight: 600; font-size: 16px; color: #f59e0b;">T+2 Days</p>
+                    <p style="color: #666; font-size: 13px; margin-bottom: 5px;">Payment Model</p>
+                    <p style="font-weight: 600; font-size: 16px; color: #10b981;">Direct (No T+2)</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Check if bank details are added
         window.addEventListener('load', function() {
-            const bankDetails = localStorage.getItem('merchantBankDetails');
-            if (!bankDetails) {
-                document.getElementById('setupAlert').style.display = 'flex';
-            }
-            
-            // Load merchant ID from localStorage (set during login)
-            const merchantId = localStorage.getItem('merchantId') || 'MERCH-001';
-            document.getElementById('merchantId').textContent = merchantId;
+            const instanceId = localStorage.getItem('clientInstanceId') || 'GW-001';
+            document.getElementById('instanceId').textContent = 'Instance: ' + instanceId;
+            document.getElementById('instanceIdInfo').textContent = instanceId;
         });
     </script>
 </body>
