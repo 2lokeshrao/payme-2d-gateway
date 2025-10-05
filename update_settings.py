@@ -1,0 +1,134 @@
+# Read the settings file
+with open('settings.html', 'r') as f:
+    content = f.read()
+
+# Find the body tag and replace the background style
+content = content.replace(
+    'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);',
+    'background: #f5f7fa;'
+)
+
+# Add navbar CSS after the existing styles (before </style>)
+navbar_css = '''
+        .dashboard-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .dashboard-nav .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dashboard-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        
+        .dashboard-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        
+        .dashboard-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dashboard-menu a.active {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+        
+        .account-type-badge {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-menu {
+                display: none;
+            }
+            
+            .dashboard-brand {
+                font-size: 18px;
+            }
+        }
+'''
+
+# Insert navbar CSS before </style>
+content = content.replace('</style>', navbar_css + '\n    </style>')
+
+# Add navbar HTML after <body>
+navbar_html = '''
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="index.html" class="dashboard-brand">
+                <i class="fas fa-shield-alt"></i>
+                PayMe 2D Gateway
+            </a>
+            <ul class="dashboard-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="transactions.html">Transactions</a></li>
+                <li><a href="api-docs.html">API Docs</a></li>
+                <li><a href="settings.html" class="active">Settings</a></li>
+                <li class="user-info">
+                    <span class="account-type-badge">
+                        <i class="fas fa-user"></i>
+                        <span>Personal</span>
+                    </span>
+                    <span>User</span>
+                    <a href="login.html" style="color: white;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+'''
+
+# Insert navbar after <body>
+content = content.replace('<body>', '<body>' + navbar_html)
+
+# Remove the old header with back button
+import re
+content = re.sub(r'<div class="header">.*?</div>', '', content, flags=re.DOTALL, count=1)
+
+# Write the updated content
+with open('settings.html', 'w') as f:
+    f.write(content)
+
+print("✅ Settings page updated with navbar")
