@@ -854,6 +854,23 @@
             }
         }
 
+        // Password Toggle Function
+        document.querySelector('.password-toggle').addEventListener('click', function() {
+            const passwordValue = document.querySelectorAll('.info-item .value')[6];
+            const icon = this;
+            
+            if (passwordValue.textContent === '••••••') {
+                passwordValue.textContent = 'PayMe@2025';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordValue.textContent = '••••••';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+
         // Close modal when clicking outside
         document.getElementById('editUserModal').addEventListener('click', function(e) {
             if (e.target === this) {
