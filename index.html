@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayMe 2D Gateway - Complete Payment Solution for Your Business</title>
+    <title>PayMe 2D Gateway - Complete Payment Solution | Merchant, Reseller & Admin Portal</title>
+    <meta name="description" content="India's leading 2D payment gateway. Start accepting payments instantly. Join as Merchant, Reseller or Admin.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -20,225 +21,576 @@
             overflow-x: hidden;
         }
 
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #667eea;
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 100px 20px 60px;
+            padding: 120px 20px 80px;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100px); }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: 36px;
+            font-size: 56px;
             font-weight: 900;
             margin-bottom: 20px;
             line-height: 1.2;
+            animation: fadeInUp 0.8s ease;
         }
 
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
+        .hero .subtitle {
+            font-size: 22px;
+            margin-bottom: 15px;
             opacity: 0.95;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        .cta-buttons {
+        .hero .description {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
         }
 
         .btn {
-            padding: 15px 35px;
+            padding: 18px 40px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
 
-        .btn-primary {
+        .btn-white {
             background: white;
             color: #667eea;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
 
-        .btn-secondary {
-            background: rgba(255,255,255,0.2);
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
             color: white;
-            border: 2px solid white;
+            border: 3px solid white;
         }
 
-        /* Features Section */
-        .features {
+        .btn-outline:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
             padding: 60px 20px;
-            background: #f8f9fa;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 900;
-            margin-bottom: 40px;
-            color: #1a1a1a;
-        }
-
-        .features-grid {
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Business Model Section */
+        .business-model {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        .section-header {
             text-align: center;
+            margin-bottom: 60px;
         }
 
-        .feature-icon {
-            font-size: 48px;
+        .section-title {
+            font-size: 42px;
+            font-weight: 900;
+            color: #1a1a1a;
             margin-bottom: 15px;
         }
 
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .model-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .model-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .model-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.3);
+        }
+
+        .model-card h3 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .model-card p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .model-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .model-features li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #444;
+            font-size: 15px;
+        }
+
+        .model-features li::before {
+            content: "✓";
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .model-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .model-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 35px 25px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
         .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #667eea;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1a1a1a;
         }
 
         .feature-card p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+        }
+
+        .step-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .step-card p {
+            font-size: 15px;
             color: #666;
             line-height: 1.6;
         }
 
         /* Pricing Preview */
         .pricing-preview {
-            padding: 60px 20px;
+            padding: 80px 20px;
             background: white;
         }
 
-        .pricing-cards {
+        .pricing-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
         }
 
-        .price-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 35px 25px;
-            border-radius: 18px;
+        .pricing-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+            transition: all 0.4s;
+            position: relative;
         }
 
-        .price-card h3 {
-            font-size: 26px;
-            margin-bottom: 10px;
+        .pricing-card.featured {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(102,126,234,0.2);
         }
 
-        .price-card .price {
-            font-size: 42px;
-            font-weight: 900;
-            margin: 15px 0;
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .price-card .duration {
-            font-size: 14px;
-            opacity: 0.9;
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .pricing-icon {
+            font-size: 48px;
             margin-bottom: 20px;
         }
 
-        .price-card ul {
-            list-style: none;
+        .pricing-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 900;
+            color: #667eea;
             margin: 20px 0;
+        }
+
+        .pricing-period {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 25px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
             text-align: left;
         }
 
-        .price-card ul li {
-            padding: 8px 0;
+        .pricing-features li {
+            padding: 10px 0;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 14px;
+            color: #666;
         }
 
-        .price-card ul li:before {
+        .pricing-features li::before {
             content: "✓";
+            color: #10b981;
             font-weight: bold;
             font-size: 18px;
         }
 
-        /* How It Works */
-        .how-it-works {
-            padding: 60px 20px;
-            background: #f8f9fa;
-        }
-
-        .steps {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .step {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 900;
-            flex-shrink: 0;
-        }
-
-        .step-content h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-
-        .step-content p {
-            color: #666;
-            line-height: 1.5;
-        }
-
         /* CTA Section */
         .cta-section {
-            padding: 60px 20px;
+            padding: 100px 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-align: center;
         }
 
         .cta-section h2 {
-            font-size: 32px;
+            font-size: 42px;
+            font-weight: 900;
             margin-bottom: 20px;
         }
 
         .cta-section p {
-            font-size: 18px;
-            margin-bottom: 30px;
+            font-size: 20px;
+            margin-bottom: 40px;
             opacity: 0.95;
         }
 
@@ -246,168 +598,446 @@
         .footer {
             background: #1a1a1a;
             color: white;
-            padding: 40px 20px;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
+            color: #999;
+            font-size: 14px;
         }
 
-        .footer p {
-            margin-bottom: 10px;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
 
-        /* Desktop Styles */
-        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .hero h1 {
-                font-size: 52px;
+                font-size: 36px;
             }
 
-            .hero p {
-                font-size: 22px;
+            .hero .subtitle {
+                font-size: 18px;
             }
 
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .section-title {
+                font-size: 32px;
             }
 
-            .pricing-cards {
-                grid-template-columns: repeat(3, 1fr);
+            .model-grid,
+            .features-grid,
+            .steps-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
             }
 
-            .btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            .pricing-card.featured {
+                transform: scale(1);
             }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-crown"></i> PayMe 2D Gateway
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#business-model">Business Model</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <a href="pricing.html" class="nav-btn">Get Started</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
-            <h1>🚀 PayMe 2D Gateway</h1>
-            <p>Complete Payment Gateway Solution - Start Your Own Payment Business Today!</p>
-            <div class="cta-buttons">
-                <a href="pricing.html" class="btn btn-primary">
-                    <i class="fas fa-crown"></i> View Pricing Plans
+            <h1>India's Most Trusted 2D Payment Gateway</h1>
+            <p class="subtitle">Accept Payments Instantly | Earn Commission | Grow Your Business</p>
+            <p class="description">Complete payment solution for merchants, resellers, and businesses. Start accepting payments in minutes with our secure and reliable gateway.</p>
+            <div class="hero-buttons">
+                <a href="pricing.html" class="btn btn-white">
+                    <i class="fas fa-rocket"></i> Start Now - From ₹5,999/month
                 </a>
-                <a href="#features" class="btn btn-secondary">
-                    <i class="fas fa-info-circle"></i> Learn More
+                <a href="#business-model" class="btn btn-outline">
+                    <i class="fas fa-play-circle"></i> How It Works
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">Active Merchants</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">₹500Cr+</div>
+                <div class="stat-label">Transactions Processed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime Guarantee</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Support Available</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Model Section -->
+    <section class="business-model" id="business-model">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Business Model</h2>
+                <p class="section-subtitle">Choose your role and start earning. Multiple ways to grow with PayMe 2D Gateway.</p>
+            </div>
+            <div class="model-grid">
+                <!-- Merchant -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3>For Merchants</h3>
+                    <p>Accept payments from your customers instantly. Perfect for online businesses, e-commerce stores, and service providers.</p>
+                    <ul class="model-features">
+                        <li>Instant Payment Collection</li>
+                        <li>Multiple Payment Methods</li>
+                        <li>Real-time Transaction Updates</li>
+                        <li>Secure & Encrypted</li>
+                        <li>Easy Integration</li>
+                        <li>24/7 Support</li>
+                    </ul>
+                    <a href="merchant-login.html" class="model-btn">
+                        <i class="fas fa-sign-in-alt"></i> Merchant Login
+                    </a>
+                </div>
+
+                <!-- Reseller -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>For Resellers</h3>
+                    <p>Become our partner and earn commission on every transaction. Build your own merchant network and grow your income.</p>
+                    <ul class="model-features">
+                        <li>Earn Commission on Every Transaction</li>
+                        <li>Manage Your Merchants</li>
+                        <li>Real-time Earnings Dashboard</li>
+                        <li>White Label Solution</li>
+                        <li>Marketing Support</li>
+                        <li>Unlimited Earning Potential</li>
+                    </ul>
+                    <a href="reseller-login.html" class="model-btn">
+                        <i class="fas fa-sign-in-alt"></i> Reseller Login
+                    </a>
+                </div>
+
+                <!-- Admin -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Admin Panel</h3>
+                    <p>Complete control over your gateway. Manage merchants, resellers, transactions, and monitor everything in real-time.</p>
+                    <ul class="model-features">
+                        <li>Complete Dashboard Control</li>
+                        <li>Merchant Management</li>
+                        <li>Reseller Management</li>
+                        <li>Transaction Monitoring</li>
+                        <li>Revenue Analytics</li>
+                        <li>System Configuration</li>
+                    </ul>
+                    <a href="admin-login.html" class="model-btn">
+                        <i class="fas fa-lock"></i> Admin Login
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2 class="section-title">💎 Why Choose PayMe 2D Gateway?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🏦</div>
-                <h3>Direct Payment Model</h3>
-                <p>Payments go directly to merchant accounts. No T+2 delays for gateway owners.</p>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose PayMe 2D Gateway?</h2>
+                <p class="section-subtitle">Everything you need to accept payments and grow your business</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">👥</div>
-                <h3>Unlimited Merchants</h3>
-                <p>Add and manage unlimited sub-merchants with their own dashboards.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Instant Settlements</h3>
+                    <p>Get your money instantly. No waiting period. Funds transferred to your account immediately.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Secure</h3>
+                    <p>Bank-grade security with SSL encryption. Your transactions are completely safe and protected.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track every transaction in real-time. Detailed reports and analytics dashboard included.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Works perfectly on all devices. Accept payments from mobile, tablet, or desktop.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Easy Integration</h3>
+                    <p>Simple API integration. Get started in minutes with our detailed documentation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer support. We're always here to help you succeed.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">💰</div>
-                <h3>Earn 2% Commission</h3>
-                <p>Charge merchants 2% + ₹3 per transaction and build passive income.</p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Get started in 4 simple steps</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Real-time Analytics</h3>
-                <p>Track all transactions, revenue, and merchant performance in real-time.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>100% Secure</h3>
-                <p>Bank-grade encryption and security for all payment data.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Instant Setup</h3>
-                <p>Get your gateway instance activated within 24 hours.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Choose Your Plan</h3>
+                    <p>Select from Monthly, Yearly, or Lifetime license based on your business needs.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Register & Pay</h3>
+                    <p>Complete registration and make payment. Get instant access to your dashboard.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Setup Gateway</h3>
+                    <p>Configure your payment gateway with our easy-to-follow setup wizard.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Start Earning</h3>
+                    <p>Begin accepting payments immediately and watch your business grow!</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Preview -->
-    <section class="pricing-preview">
-        <h2 class="section-title">💳 Flexible Pricing Options</h2>
-        <div class="pricing-cards">
-            <div class="price-card">
-                <h3>📅 Monthly License</h3>
-                <div class="price">₹5,999</div>
-                <div class="duration">per month</div>
-                <ul>
-                    <li>Unlimited Transactions</li>
-                    <li>Unlimited Merchants</li>
-                    <li>API Access</li>
-                    <li>Email Support</li>
-                </ul>
+    <section class="pricing-preview" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Simple & Transparent Pricing</h2>
+                <p class="section-subtitle">Choose the plan that fits your business. No hidden charges.</p>
             </div>
-            <div class="price-card">
-                <h3>🔥 Yearly License</h3>
-                <div class="price">₹49,999</div>
-                <div class="duration">per year (Save 30%)</div>
-                <ul>
-                    <li>Everything in Monthly</li>
-                    <li>Priority Support</li>
-                    <li>Custom Branding</li>
-                    <li>Advanced Analytics</li>
-                </ul>
-            </div>
-            <div class="price-card">
-                <h3>♾️ Lifetime License</h3>
-                <div class="price">₹2,99,999</div>
-                <div class="duration">one-time payment</div>
-                <ul>
-                    <li>Everything in Yearly</li>
-                    <li>Lifetime Access</li>
-                    <li>White Label Solution</li>
-                    <li>Free Updates Forever</li>
-                </ul>
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="pricing.html" class="btn btn-primary">
-                <i class="fas fa-arrow-right"></i> View All Plans & Features
-            </a>
-        </div>
-    </section>
+            <div class="pricing-grid">
+                <!-- Monthly -->
+                <div class="pricing-card">
+                    <div class="pricing-icon">📅</div>
+                    <h3 class="pricing-title">Monthly License</h3>
+                    <div class="pricing-price">₹5,999</div>
+                    <div class="pricing-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited Transactions</li>
+                        <li>Instant Settlements</li>
+                        <li>Unlimited Merchants</li>
+                        <li>API Access</li>
+                        <li>Real-time Analytics</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <a href="pricing.html" class="model-btn">Get Started</a>
+                </div>
 
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <h2 class="section-title">🎯 How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Choose Your Plan</h3>
-                    <p>Select between Monthly, Yearly, or Lifetime license based on your needs.</p>
+                <!-- Yearly (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">SAVE 30%</div>
+                    <div class="pricing-icon">📆</div>
+                    <h3 class="pricing-title">Yearly License</h3>
+                    <div class="pricing-price">₹49,999</div>
+                    <div class="pricing-period">per year (Save ₹21,989)</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Monthly</li>
+                        <li>Priority Support</li>
+                        <li>Custom Branding</li>
+                        <li>Advanced Analytics</li>
+                        <li>Webhook Integration</li>
+                        <li>Reseller Dashboard</li>
+                    </ul>
+                    <a href="pricing.html" class="model-btn">Get Started</a>
                 </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Complete Payment</h3>
-                    <p>Pay securely using our payment gateway. Get instant confirmation.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Get Your Gateway</h3>
-                    <p>Receive your gateway instance within 24 hours with full setup.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Add Merchants & Earn</h3>
-                    <p>Start adding merchants and earn 2% commission on every transaction!</p>
+
+                <!-- Lifetime -->
+                <div class="pricing-card">
+                    <div class="pricing-icon">♾️</div>
+                    <h3 class="pricing-title">Lifetime License</h3>
+                    <div class="pricing-price">₹2,99,999</div>
+                    <div class="pricing-period">one-time payment</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Yearly</li>
+                        <li>Lifetime Access</li>
+                        <li>White Label Solution</li>
+                        <li>Dedicated Support</li>
+                        <li>Free Updates Forever</li>
+                        <li>Custom Features</li>
+                    </ul>
+                    <a href="pricing.html" class="model-btn">Get Started</a>
                 </div>
             </div>
         </div>
@@ -415,21 +1045,122 @@
 
     <!-- CTA Section -->
     <section class="cta-section">
-        <h2>🚀 Ready to Start Your Payment Business?</h2>
-        <p>Join hundreds of successful gateway owners earning passive income!</p>
-        <a href="pricing.html" class="btn btn-primary">
-            <i class="fas fa-rocket"></i> Get Started Now
-        </a>
+        <div class="container">
+            <h2>Ready to Start Accepting Payments?</h2>
+            <p>Join 10,000+ merchants already using PayMe 2D Gateway</p>
+            <div class="hero-buttons">
+                <a href="pricing.html" class="btn btn-white">
+                    <i class="fas fa-rocket"></i> Get Started Now
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    <i class="fas fa-phone"></i> Contact Sales
+                </a>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <p><strong>PayMe 2D Gateway</strong> - Complete Payment Solution</p>
-        <p>© 2025 PayMe 2D Gateway. All rights reserved.</p>
-        <p style="margin-top: 15px;">
-            <a href="pricing.html" style="color: #667eea; text-decoration: none; margin: 0 10px;">Pricing</a> |
-            <a href="mailto:support@payme2d.com" style="color: #667eea; text-decoration: none; margin: 0 10px;">Contact</a>
-        </p>
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <h3><i class="fas fa-crown"></i> PayMe 2D Gateway</h3>
+                <p>India's most trusted payment gateway solution. Accept payments instantly and grow your business with confidence.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#business-model"><i class="fas fa-briefcase"></i> Business Model</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+                    <li><a href="pricing.html"><i class="fas fa-tag"></i> Pricing</a></li>
+                    <li><a href="#how-it-works"><i class="fas fa-question-circle"></i> How It Works</a></li>
+                </ul>
+            </div>
+
+            <!-- Login Portals -->
+            <div class="footer-section">
+                <h3>Login Portals</h3>
+                <ul class="footer-links">
+                    <li><a href="merchant-login.html"><i class="fas fa-store"></i> Merchant Login</a></li>
+                    <li><a href="reseller-login.html"><i class="fas fa-users"></i> Reseller Login</a></li>
+                    <li><a href="admin-login.html"><i class="fas fa-user-shield"></i> Admin Login</a></li>
+                    <li><a href="client-dashboard.php"><i class="fas fa-tachometer-alt"></i> Client Dashboard</a></li>
+                    <li><a href="renew-license.php"><i class="fas fa-sync-alt"></i> Renew License</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><a href="mailto:support@payme2d.com"><i class="fas fa-envelope"></i> support@payme2d.com</a></li>
+                    <li><a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Mumbai, Maharashtra, India</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> 24/7 Support Available</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 PayMe 2D Gateway. All rights reserved. | <a href="#" style="color: #667eea;">Privacy Policy</a> | <a href="#" style="color: #667eea;">Terms of Service</a> | <a href="#" style="color: #667eea;">Refund Policy</a></p>
+        </div>
     </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Scroll to top functionality
+        const scrollTop = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
 </body>
 </html>
