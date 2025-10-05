@@ -325,7 +325,7 @@
                         <span>Standard support</span>
                     </div>
                 </div>
-                <a href="#" style="color: white; text-decoration: underline; font-size: 14px; margin-top: 10px; display: inline-block;">Upgrade Plan</a>
+                <a href="#" onclick="showUpgradePlan(); return false;" style="color: white; text-decoration: underline; font-size: 14px; margin-top: 10px; display: inline-block;">Upgrade Plan</a>
             </div>
         </div>
 
@@ -366,19 +366,19 @@
 
         <h2 style="margin: 30px 0 20px 0; color: #333;">Quick Actions</h2>
         <div class="quick-actions">
-            <a href="#" class="action-btn">
+            <a href="#" class="action-btn" onclick="createPaymentLink(); return false;">
                 <i class="fas fa-plus-circle"></i>
                 <span>Create Payment Link</span>
             </a>
-            <a href="#" class="action-btn">
+            <a href="#" class="action-btn" onclick="generateAPIKey(); return false;">
                 <i class="fas fa-code"></i>
                 <span>Generate API Key</span>
             </a>
-            <a href="#" class="action-btn">
+            <a href="#" class="action-btn" onclick="viewReports(); return false;">
                 <i class="fas fa-file-invoice"></i>
                 <span>View Reports</span>
             </a>
-            <a href="#" class="action-btn">
+            <a href="settings.html" class="action-btn">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
             </a>
@@ -504,5 +504,380 @@
             `).join('');
         });
     </script>
+
+<script>
+// Create Payment Link Modal
+function createPaymentLink() {
+    const modal = document.createElement('div');
+    modal.id = 'paymentLinkModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    modal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px; color: #333;">💳 Create Payment Link</h2>
+                <button onclick="closeModal('paymentLinkModal')" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            
+            <form onsubmit="submitPaymentLink(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Amount (₹)</label>
+                    <input type="number" id="paymentAmount" required min="1" placeholder="Enter amount" 
+                           style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Customer Name</label>
+                    <input type="text" id="customerName" required placeholder="Enter customer name" 
+                           style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Customer Email</label>
+                    <input type="email" id="customerEmail" required placeholder="customer@example.com" 
+                           style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Customer Phone</label>
+                    <input type="tel" id="customerPhone" placeholder="+91 XXXXX XXXXX" 
+                           style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Description</label>
+                    <textarea id="paymentDescription" rows="3" placeholder="Payment description (optional)" 
+                              style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; resize: vertical; box-sizing: border-box;"></textarea>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Link Expiry</label>
+                    <select id="linkExpiry" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                        <option value="24">24 Hours</option>
+                        <option value="48">48 Hours</option>
+                        <option value="72">3 Days</option>
+                        <option value="168">7 Days</option>
+                        <option value="720">30 Days</option>
+                    </select>
+                </div>
+                
+                <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;">
+                    Generate Payment Link
+                </button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal('paymentLinkModal');
+    });
+}
+
+function submitPaymentLink(event) {
+    event.preventDefault();
+    
+    const amount = document.getElementById('paymentAmount').value;
+    const linkId = 'PL' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const paymentLink = 'https://payme2d.com/pay/' + linkId;
+    
+    closeModal('paymentLinkModal');
+    
+    const successModal = document.createElement('div');
+    successModal.id = 'successModal';
+    successModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    successModal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
+            <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
+            <h2 style="color: #333; margin-bottom: 15px;">Payment Link Created!</h2>
+            <p style="color: #666; margin-bottom: 20px;">Your payment link has been generated successfully.</p>
+            
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; word-break: break-all;">
+                <strong style="color: #667eea;">${paymentLink}</strong>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="copyToClipboard('${paymentLink}')" style="background: #667eea; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    📋 Copy Link
+                </button>
+                <button onclick="closeModal('successModal')" style="background: #e0e0e0; color: #333; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(successModal);
+}
+
+// Generate API Key Modal
+function generateAPIKey() {
+    const modal = document.createElement('div');
+    modal.id = 'apiKeyModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    modal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px; color: #333;">🔑 Generate API Key</h2>
+                <button onclick="closeModal('apiKeyModal')" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            
+            <form onsubmit="submitAPIKey(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">API Key Name</label>
+                    <input type="text" id="apiKeyName" required placeholder="e.g., Production API Key" 
+                           style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Environment</label>
+                    <select id="apiEnvironment" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                        <option value="test">Test Mode</option>
+                        <option value="live">Live Mode</option>
+                    </select>
+                </div>
+                
+                <div style="background: #fff3cd; padding: 12px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                    <p style="margin: 0; font-size: 13px; color: #856404;">
+                        ⚠️ <strong>Important:</strong> Store your API key securely. It will only be shown once.
+                    </p>
+                </div>
+                
+                <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;">
+                    Generate API Key
+                </button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal('apiKeyModal');
+    });
+}
+
+function submitAPIKey(event) {
+    event.preventDefault();
+    
+    const keyName = document.getElementById('apiKeyName').value;
+    const environment = document.getElementById('apiEnvironment').value;
+    
+    const apiKey = environment === 'live' ? 'pk_live_' : 'pk_test_';
+    const randomKey = apiKey + Math.random().toString(36).substr(2, 32).toUpperCase();
+    
+    closeModal('apiKeyModal');
+    
+    const successModal = document.createElement('div');
+    successModal.id = 'apiSuccessModal';
+    successModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    successModal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 60px; margin-bottom: 10px;">🔑</div>
+                <h2 style="color: #333; margin-bottom: 10px;">API Key Generated!</h2>
+                <p style="color: #666; font-size: 14px;">Copy and store this key securely. You won't be able to see it again.</p>
+            </div>
+            
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <p style="margin: 0 0 8px 0; font-size: 12px; color: #666; font-weight: 600;">API Key Name:</p>
+                <p style="margin: 0 0 15px 0; color: #333;">${keyName}</p>
+                
+                <p style="margin: 0 0 8px 0; font-size: 12px; color: #666; font-weight: 600;">API Key:</p>
+                <div style="background: white; padding: 12px; border-radius: 6px; word-break: break-all; font-family: monospace; font-size: 13px; border: 2px solid #667eea;">
+                    ${randomKey}
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="copyToClipboard('${randomKey}')" style="flex: 1; background: #667eea; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    📋 Copy Key
+                </button>
+                <button onclick="closeModal('apiSuccessModal')" style="flex: 1; background: #e0e0e0; color: #333; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(successModal);
+}
+
+// View Reports Modal
+function viewReports() {
+    const modal = document.createElement('div');
+    modal.id = 'reportsModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    modal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px; color: #333;">📊 View Reports</h2>
+                <button onclick="closeModal('reportsModal')" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                <div onclick="downloadReport('transaction')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; cursor: pointer; text-align: center; color: white; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="font-size: 40px; margin-bottom: 10px;">💳</div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Transaction Report</h3>
+                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">All transactions</p>
+                </div>
+                
+                <div onclick="downloadReport('revenue')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 10px; cursor: pointer; text-align: center; color: white; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="font-size: 40px; margin-bottom: 10px;">💰</div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Revenue Report</h3>
+                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Income analysis</p>
+                </div>
+                
+                <div onclick="downloadReport('settlement')" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; border-radius: 10px; cursor: pointer; text-align: center; color: white; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🏦</div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Settlement Report</h3>
+                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Payout details</p>
+                </div>
+                
+                <div onclick="downloadReport('refund')" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 20px; border-radius: 10px; cursor: pointer; text-align: center; color: white; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="font-size: 40px; margin-bottom: 10px;">↩️</div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Refund Report</h3>
+                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Refund history</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                <h4 style="margin: 0 0 10px 0; color: #333; font-size: 14px;">📅 Select Date Range:</h4>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="setDateRange('today')" style="flex: 1; min-width: 100px; padding: 10px; background: white; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-size: 13px;">Today</button>
+                    <button onclick="setDateRange('week')" style="flex: 1; min-width: 100px; padding: 10px; background: white; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-size: 13px;">This Week</button>
+                    <button onclick="setDateRange('month')" style="flex: 1; min-width: 100px; padding: 10px; background: white; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-size: 13px;">This Month</button>
+                    <button onclick="setDateRange('custom')" style="flex: 1; min-width: 100px; padding: 10px; background: white; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-size: 13px;">Custom</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal('reportsModal');
+    });
+}
+
+function downloadReport(type) {
+    const reportNames = {
+        'transaction': 'Transaction Report',
+        'revenue': 'Revenue Report',
+        'settlement': 'Settlement Report',
+        'refund': 'Refund Report'
+    };
+    
+    alert('📥 Downloading ' + reportNames[type] + '...\n\nYour report will be ready in a moment!');
+    closeModal('reportsModal');
+}
+
+function setDateRange(range) {
+    const rangeNames = {
+        'today': 'Today',
+        'week': 'This Week',
+        'month': 'This Month',
+        'custom': 'Custom Range'
+    };
+    
+    alert('📅 Date range set to: ' + rangeNames[range]);
+}
+
+// Upgrade Plan Modal
+function showUpgradePlan() {
+    const modal = document.createElement('div');
+    modal.id = 'upgradePlanModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 10000;';
+    
+    modal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px; color: #333;">👑 Upgrade Your Plan</h2>
+                <button onclick="closeModal('upgradePlanModal')" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px; text-align: center;">
+                    <h3 style="color: #667eea; margin: 0 0 10px 0;">Personal</h3>
+                    <div style="font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px;">Free</div>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Current Plan</p>
+                    <ul style="text-align: left; padding-left: 20px; color: #666; font-size: 14px;">
+                        <li>Basic payments</li>
+                        <li>Up to ₹50K/month</li>
+                        <li>Standard support</li>
+                    </ul>
+                </div>
+                
+                <div style="border: 3px solid #667eea; border-radius: 12px; padding: 20px; text-align: center; position: relative; background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold;">POPULAR</div>
+                    <h3 style="color: #667eea; margin: 0 0 10px 0;">Business</h3>
+                    <div style="font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px;">₹999<span style="font-size: 16px; color: #666;">/mo</span></div>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Recommended</p>
+                    <ul style="text-align: left; padding-left: 20px; color: #666; font-size: 14px; margin-bottom: 15px;">
+                        <li>All Personal features</li>
+                        <li>Up to ₹5L/month</li>
+                        <li>Priority support</li>
+                        <li>Custom branding</li>
+                    </ul>
+                    <button onclick="selectPlan('business')" style="width: 100%; background: #667eea; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        Upgrade Now
+                    </button>
+                </div>
+                
+                <div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px; text-align: center;">
+                    <h3 style="color: #764ba2; margin: 0 0 10px 0;">Enterprise</h3>
+                    <div style="font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px;">Custom</div>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">For large teams</p>
+                    <ul style="text-align: left; padding-left: 20px; color: #666; font-size: 14px; margin-bottom: 15px;">
+                        <li>All Business features</li>
+                        <li>Unlimited volume</li>
+                        <li>24/7 dedicated support</li>
+                        <li>Custom integration</li>
+                    </ul>
+                    <button onclick="selectPlan('enterprise')" style="width: 100%; background: #764ba2; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal('upgradePlanModal');
+    });
+}
+
+function selectPlan(plan) {
+    closeModal('upgradePlanModal');
+    alert('🎉 Thank you for choosing the ' + plan.charAt(0).toUpperCase() + plan.slice(1) + ' plan!\n\nOur team will contact you shortly to complete the upgrade.');
+}
+
+// Utility Functions
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('✅ Copied to clipboard!');
+        }, function() {
+            alert('❌ Failed to copy. Please copy manually.');
+        });
+    } else {
+        alert('❌ Clipboard not supported. Please copy manually:\n\n' + text);
+    }
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .api-section {
+            margin-bottom: 40px;
+        }
+
+        .api-section h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .api-section h3 {
+            color: #333;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .method.post {
+            background: #28a745;
+            color: white;
+        }
+
+        .method.get {
+            background: #007bff;
+            color: white;
+        }
+
+        .method.delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .param-table th,
+        .param-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .param-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .required {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .optional {
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .code-block {
+                font-size: 12px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 API Documentation</h1>
+            <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+
+        <!-- Getting Started -->
+        <div class="api-section">
+            <h2>🚀 Getting Started</h2>
+            <p>Welcome to PayMe 2D Gateway API documentation. This guide will help you integrate our payment gateway into your application.</p>
+            
+            <h3>Base URL</h3>
+            <div class="code-block">https://api.payme2d.com/v1</div>
+
+            <h3>Authentication</h3>
+            <p>All API requests require authentication using your API key. Include it in the request header:</p>
+            <div class="code-block">Authorization: Bearer YOUR_API_KEY</div>
+        </div>
+
+        <!-- Create Payment -->
+        <div class="api-section">
+            <h2>💳 Create Payment</h2>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/payments/create</code>
+            </div>
+
+            <h3>Request Parameters</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>amount</code></td>
+                        <td>number</td>
+                        <td><span class="required">Required</span></td>
+                        <td>Payment amount in INR</td>
+                    </tr>
+                    <tr>
+                        <td><code>currency</code></td>
+                        <td>string</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>Currency code (default: INR)</td>
+                    </tr>
+                    <tr>
+                        <td><code>customer_name</code></td>
+                        <td>string</td>
+                        <td><span class="required">Required</span></td>
+                        <td>Customer's full name</td>
+                    </tr>
+                    <tr>
+                        <td><code>customer_email</code></td>
+                        <td>string</td>
+                        <td><span class="required">Required</span></td>
+                        <td>Customer's email address</td>
+                    </tr>
+                    <tr>
+                        <td><code>customer_phone</code></td>
+                        <td>string</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>Customer's phone number</td>
+                    </tr>
+                    <tr>
+                        <td><code>description</code></td>
+                        <td>string</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>Payment description</td>
+                    </tr>
+                    <tr>
+                        <td><code>callback_url</code></td>
+                        <td>string</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>URL to redirect after payment</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Example Request</h3>
+            <div class="code-block">curl -X POST https://api.payme2d.com/v1/payments/create \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 1000,
+    "currency": "INR",
+    "customer_name": "John Doe",
+    "customer_email": "john@example.com",
+    "customer_phone": "+91 9876543210",
+    "description": "Product Purchase",
+    "callback_url": "https://yoursite.com/callback"
+  }'</div>
+
+            <h3>Example Response</h3>
+            <div class="code-block">{
+  "success": true,
+  "payment_id": "pay_abc123xyz",
+  "payment_url": "https://payme2d.com/pay/abc123xyz",
+  "amount": 1000,
+  "currency": "INR",
+  "status": "pending",
+  "created_at": "2025-10-05T10:30:00Z"
+}</div>
+        </div>
+
+        <!-- Get Payment Status -->
+        <div class="api-section">
+            <h2>🔍 Get Payment Status</h2>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/payments/{payment_id}</code>
+            </div>
+
+            <h3>Example Request</h3>
+            <div class="code-block">curl -X GET https://api.payme2d.com/v1/payments/pay_abc123xyz \
+  -H "Authorization: Bearer YOUR_API_KEY"</div>
+
+            <h3>Example Response</h3>
+            <div class="code-block">{
+  "success": true,
+  "payment_id": "pay_abc123xyz",
+  "amount": 1000,
+  "currency": "INR",
+  "status": "success",
+  "customer_name": "John Doe",
+  "customer_email": "john@example.com",
+  "created_at": "2025-10-05T10:30:00Z",
+  "completed_at": "2025-10-05T10:32:15Z"
+}</div>
+        </div>
+
+        <!-- Refund Payment -->
+        <div class="api-section">
+            <h2>↩️ Refund Payment</h2>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/payments/{payment_id}/refund</code>
+            </div>
+
+            <h3>Request Parameters</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>amount</code></td>
+                        <td>number</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>Refund amount (default: full amount)</td>
+                    </tr>
+                    <tr>
+                        <td><code>reason</code></td>
+                        <td>string</td>
+                        <td><span class="optional">Optional</span></td>
+                        <td>Reason for refund</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Example Request</h3>
+            <div class="code-block">curl -X POST https://api.payme2d.com/v1/payments/pay_abc123xyz/refund \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 1000,
+    "reason": "Customer request"
+  }'</div>
+
+            <h3>Example Response</h3>
+            <div class="code-block">{
+  "success": true,
+  "refund_id": "ref_xyz789abc",
+  "payment_id": "pay_abc123xyz",
+  "amount": 1000,
+  "status": "processing",
+  "created_at": "2025-10-05T11:00:00Z"
+}</div>
+        </div>
+
+        <!-- Webhooks -->
+        <div class="api-section">
+            <h2>🔔 Webhooks</h2>
+            <p>PayMe 2D Gateway sends webhook notifications for payment events. Configure your webhook URL in the dashboard settings.</p>
+
+            <h3>Webhook Events</h3>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li><code>payment.success</code> - Payment completed successfully</li>
+                <li><code>payment.failed</code> - Payment failed</li>
+                <li><code>refund.processed</code> - Refund processed</li>
+            </ul>
+
+            <h3>Webhook Payload Example</h3>
+            <div class="code-block">{
+  "event": "payment.success",
+  "payment_id": "pay_abc123xyz",
+  "amount": 1000,
+  "currency": "INR",
+  "customer_email": "john@example.com",
+  "timestamp": "2025-10-05T10:32:15Z"
+}</div>
+        </div>
+
+        <!-- Error Codes -->
+        <div class="api-section">
+            <h2>⚠️ Error Codes</h2>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>400</code></td>
+                        <td>Bad Request - Invalid parameters</td>
+                    </tr>
+                    <tr>
+                        <td><code>401</code></td>
+                        <td>Unauthorized - Invalid API key</td>
+                    </tr>
+                    <tr>
+                        <td><code>404</code></td>
+                        <td>Not Found - Resource not found</td>
+                    </tr>
+                    <tr>
+                        <td><code>429</code></td>
+                        <td>Too Many Requests - Rate limit exceeded</td>
+                    </tr>
+                    <tr>
+                        <td><code>500</code></td>
+                        <td>Internal Server Error</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
