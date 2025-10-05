@@ -383,6 +383,7 @@
                     
                     // Store admin session
                     localStorage.setItem('adminToken', 'admin_' + Date.now());
+                    localStorage.setItem('isAdminLoggedIn', 'true');
                     localStorage.setItem('adminUsername', username);
                     
                     // Redirect to admin dashboard
