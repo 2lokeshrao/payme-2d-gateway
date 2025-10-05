@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History - PayMe 2D Gateway</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/client-common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/client-common.css">
     <style>
         * {
             margin: 0;
@@ -28,7 +30,7 @@
         .header {
             background: white;
             border-radius: 20px;
-            padding: 30px 40px;
+            padding: 20px 40px;
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             display: flex;
@@ -37,7 +39,7 @@
         }
 
         .header-left h1 {
-            font-size: 36px;
+            font-size: 16px;
             font-weight: 800;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -47,7 +49,7 @@
         }
 
         .header-left p {
-            font-size: 17px;
+            font-size: 14px;
             color: #6b7280;
         }
 
@@ -99,7 +101,7 @@
         .stat-card {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
@@ -117,7 +119,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 16px;
             color: white;
         }
 
@@ -144,7 +146,7 @@
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 16px;
             font-weight: 800;
             color: #1f2937;
             margin-bottom: 5px;
@@ -166,7 +168,7 @@
         .filters-card {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
@@ -208,7 +210,7 @@
         .transactions-card {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
@@ -222,7 +224,7 @@
         }
 
         .transactions-header h2 {
-            font-size: 28px;
+            font-size: 16px;
             font-weight: 700;
             color: #1f2937;
         }
@@ -389,7 +391,7 @@
         .modal-content {
             background: white;
             border-radius: 20px;
-            padding: 40px;
+            padding: 24px;
             max-width: 600px;
             width: 90%;
             max-height: 90vh;
@@ -406,13 +408,13 @@
         }
 
         .modal-header h3 {
-            font-size: 28px;
+            font-size: 16px;
             font-weight: 700;
             color: #1f2937;
         }
 
         .close-modal {
-            font-size: 28px;
+            font-size: 16px;
             color: #6b7280;
             cursor: pointer;
             background: none;
@@ -840,7 +842,7 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Amount</span>
-                    <span class="detail-value"><strong style="font-size: 20px; color: #10b981;">${txn.amount}</strong></span>
+                    <span class="detail-value"><strong style="font-size: 16px; color: #10b981;">${txn.amount}</strong></span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Payment Method</span>

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation - PayMe 2D Gateway</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/client-common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/client-common.css">
     <style>
         * {
             margin: 0;
@@ -28,7 +30,7 @@
         .header {
             background: white;
             border-radius: 20px;
-            padding: 40px;
+            padding: 24px;
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
@@ -47,7 +49,7 @@
         }
 
         .header p {
-            font-size: 20px;
+            font-size: 16px;
             color: #666;
             line-height: 1.6;
         }
@@ -60,7 +62,7 @@
         .section-card {
             background: white;
             border-radius: 20px;
-            padding: 40px;
+            padding: 24px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
@@ -82,24 +84,24 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 28px;
+            font-size: 16px;
         }
 
         .section-header h2 {
-            font-size: 32px;
+            font-size: 16px;
             font-weight: 700;
             color: #1f2937;
         }
 
         .section-content h3 {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: 700;
             color: #374151;
             margin: 30px 0 15px 0;
         }
 
         .section-content p {
-            font-size: 18px;
+            font-size: 16px;
             color: #6b7280;
             line-height: 1.8;
             margin-bottom: 20px;
@@ -108,7 +110,7 @@
         .code-block {
             background: #1e293b;
             color: #e2e8f0;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             overflow-x: auto;
             margin: 20px 0;
@@ -138,7 +140,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 17px;
+            font-size: 14px;
         }
 
         .params-table th {
@@ -147,7 +149,7 @@
             padding: 18px;
             text-align: left;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .params-table td {
@@ -192,13 +194,13 @@
         .info-box {
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
             border-left: 5px solid #3b82f6;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             margin: 25px 0;
         }
 
         .info-box h4 {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #1e40af;
             margin-bottom: 12px;
@@ -208,7 +210,7 @@
         }
 
         .info-box p {
-            font-size: 17px;
+            font-size: 14px;
             color: #1e40af;
             line-height: 1.7;
         }
@@ -216,13 +218,13 @@
         .warning-box {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-left: 5px solid #f59e0b;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             margin: 25px 0;
         }
 
         .warning-box h4 {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #92400e;
             margin-bottom: 12px;
@@ -232,7 +234,7 @@
         }
 
         .warning-box p {
-            font-size: 17px;
+            font-size: 14px;
             color: #92400e;
             line-height: 1.7;
         }
@@ -240,13 +242,13 @@
         .success-box {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             border-left: 5px solid #10b981;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             margin: 25px 0;
         }
 
         .success-box h4 {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #065f46;
             margin-bottom: 12px;
@@ -256,7 +258,7 @@
         }
 
         .success-box p {
-            font-size: 17px;
+            font-size: 14px;
             color: #065f46;
             line-height: 1.7;
         }
@@ -265,7 +267,7 @@
             background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
             border: 2px solid #e5e7eb;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             margin: 25px 0;
         }
 
@@ -277,14 +279,14 @@
         }
 
         .endpoint-method {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             padding: 8px 16px;
             border-radius: 8px;
         }
 
         .endpoint-url {
-            font-size: 18px;
+            font-size: 16px;
             font-family: 'Courier New', monospace;
             color: #374151;
             font-weight: 600;
@@ -305,20 +307,20 @@
         }
 
         .error-code {
-            font-size: 28px;
+            font-size: 16px;
             font-weight: 800;
             color: #dc2626;
             margin-bottom: 10px;
         }
 
         .error-desc {
-            font-size: 17px;
+            font-size: 14px;
             color: #374151;
         }
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 36px;
+                font-size: 16px;
             }
 
             .section-header h2 {
@@ -326,7 +328,7 @@
             }
 
             .section-content h3 {
-                font-size: 20px;
+                font-size: 16px;
             }
         }
     </style>
@@ -382,7 +384,7 @@
                         <span class="endpoint-method badge badge-post">POST</span>
                         <span class="endpoint-url">/payments/create</span>
                     </div>
-                    <p style="margin: 0; font-size: 17px; color: #6b7280;">Create a new payment request for your customer</p>
+                    <p style="margin: 0; font-size: 14px; color: #6b7280;">Create a new payment request for your customer</p>
                 </div>
 
                 <h3>Request Parameters</h3>
@@ -491,7 +493,7 @@
                         <span class="endpoint-method badge badge-get">GET</span>
                         <span class="endpoint-url">/payments/{payment_id}</span>
                     </div>
-                    <p style="margin: 0; font-size: 17px; color: #6b7280;">Retrieve the current status of a payment</p>
+                    <p style="margin: 0; font-size: 14px; color: #6b7280;">Retrieve the current status of a payment</p>
                 </div>
 
                 <h3>Example Request</h3>
@@ -539,7 +541,7 @@
                         <span class="endpoint-method badge badge-post">POST</span>
                         <span class="endpoint-url">/payments/{payment_id}/refund</span>
                     </div>
-                    <p style="margin: 0; font-size: 17px; color: #6b7280;">Initiate a refund for a completed payment</p>
+                    <p style="margin: 0; font-size: 14px; color: #6b7280;">Initiate a refund for a completed payment</p>
                 </div>
 
                 <h3>Request Parameters</h3>
