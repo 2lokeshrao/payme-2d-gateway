@@ -13,7 +13,7 @@
         .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
         .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
         .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        .filters input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .filters input { padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; flex: 1; min-width: 250px; }
         .btn { padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
         .btn:hover { opacity: 0.9; }
         table { width: 100%; border-collapse: collapse; }
@@ -23,9 +23,20 @@
         .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
         .badge-active { background: #d4edda; color: #155724; }
         .badge-inactive { background: #f8d7da; color: #721c24; }
-        .action-btn { padding: 6px 12px; margin: 0 3px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; }
+        .action-btn { padding: 8px 14px; margin: 0 3px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .view-btn { background: #007bff; color: white; }
+        .view-btn:hover { background: #0056b3; }
         .revoke-btn { background: #dc3545; color: white; }
+        .revoke-btn:hover { background: #c82333; }
+        .renew-btn { background: #28a745; color: white; }
+        .renew-btn:hover { background: #218838; }
+        
+        /* Responsive table */
+        @media (max-width: 768px) {
+            table { font-size: 0.85em; }
+            th, td { padding: 10px 8px; }
+            .action-btn { padding: 6px 10px; font-size: 0.8em; margin: 2px 0; display: block; width: 100%; }
+        }
     </style>
     <link rel="stylesheet" href="responsive-admin.css?v=5.0">
 </head>
@@ -39,8 +50,8 @@
         <div class="card">
             <h2 style="margin-bottom: 20px;"><i class="fas fa-filter"></i> Search Merchant API Keys</h2>
             <div class="filters">
-                <input type="text" placeholder="Search by merchant name, email, or API key...">
-                <button class="btn"><i class="fas fa-search"></i> Search</button>
+                <input type="text" id="searchInput" placeholder="Search by merchant name, email, or API key...">
+                <button class="btn" onclick="searchAPIKeys()"><i class="fas fa-search"></i> Search</button>
             </div>
         </div>
 
@@ -67,8 +78,8 @@
                         <td>2025-10-04 10:30 AM</td>
                         <td><span class="badge badge-active">Active</span></td>
                         <td>
-                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
-                            <button class="action-btn revoke-btn"><i class="fas fa-ban"></i> Revoke</button>
+                            <button class="action-btn view-btn" onclick="viewAPIKey('M1001', 'Tech Solutions Pvt Ltd', 'pk_live_abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567', 'Active')"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn revoke-btn" onclick="revokeAPIKey('M1001', 'Tech Solutions Pvt Ltd')"><i class="fas fa-ban"></i> Revoke</button>
                         </td>
                     </tr>
                     <tr>
@@ -79,8 +90,8 @@
                         <td>2025-10-03 08:15 PM</td>
                         <td><span class="badge badge-active">Active</span></td>
                         <td>
-                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
-                            <button class="action-btn revoke-btn"><i class="fas fa-ban"></i> Revoke</button>
+                            <button class="action-btn view-btn" onclick="viewAPIKey('M1002', 'E-commerce Store', 'pk_live_def456ghi789jkl012mno345pqr678stu901vwx234yz567abc123', 'Active')"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn revoke-btn" onclick="revokeAPIKey('M1002', 'E-commerce Store')"><i class="fas fa-ban"></i> Revoke</button>
                         </td>
                     </tr>
                     <tr>
@@ -91,7 +102,8 @@
                         <td>2025-09-28 02:45 PM</td>
                         <td><span class="badge badge-inactive">Revoked</span></td>
                         <td>
-                            <button class="action-btn view-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn view-btn" onclick="viewAPIKey('M1003', 'Digital Services Inc', 'pk_live_ghi789jkl012mno345pqr678stu901vwx234yz567abc123def456', 'Revoked')"><i class="fas fa-eye"></i> View</button>
+                            <button class="action-btn renew-btn" onclick="renewAPIKey('M1003', 'Digital Services Inc')"><i class="fas fa-sync"></i> Renew</button>
                         </td>
                     </tr>
                 </tbody>
@@ -102,7 +114,177 @@
             <a href="dashboard.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
         </div>
     </div>
+    
     <script src="responsive-menu.js"></script>
     <script src="load-navbar.js"></script>
+    <script>
+        // View API Key Function
+        function viewAPIKey(merchantId, merchantName, fullAPIKey, status) {
+            const modal = document.createElement('div');
+            modal.id = 'viewAPIKeyModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 600px;
+                    width: 100%;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="margin: 0; font-size: 24px; color: #333;">🔑 API Key Details</h2>
+                        <button onclick="closeModal('viewAPIKeyModal')" style="
+                            background: none;
+                            border: none;
+                            font-size: 28px;
+                            cursor: pointer;
+                            color: #999;
+                            line-height: 1;
+                        ">&times;</button>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #666; font-size: 14px;">Merchant ID</label>
+                            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px; font-family: monospace;">#${merchantId}</div>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #666; font-size: 14px;">Merchant Name</label>
+                            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px;">${merchantName}</div>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #666; font-size: 14px;">Full API Key</label>
+                            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px; font-family: monospace; word-break: break-all; font-size: 13px;">${fullAPIKey}</div>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #666; font-size: 14px;">Status</label>
+                            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <span style="padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; background: ${status === 'Active' ? '#d4edda' : '#f8d7da'}; color: ${status === 'Active' ? '#155724' : '#721c24'};">${status}</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="copyAPIKey('${fullAPIKey}')" style="
+                            padding: 14px;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            font-size: 15px;
+                            cursor: pointer;
+                            margin-top: 10px;
+                        ">
+                            📋 Copy API Key
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal('viewAPIKeyModal');
+            });
+        }
+        
+        // Revoke API Key Function
+        function revokeAPIKey(merchantId, merchantName) {
+            if (confirm(`⚠️ Are you sure you want to revoke API key for ${merchantName}?\n\nThis action cannot be undone and will immediately disable their API access.`)) {
+                // Simulate API call
+                console.log('Revoking API key for merchant:', merchantId);
+                
+                alert(`✅ API Key Revoked Successfully!\n\nMerchant: ${merchantName}\nMerchant ID: #${merchantId}\n\nThe API key has been revoked and is no longer valid.`);
+                
+                // In real application, you would:
+                // 1. Send revoke request to API
+                // 2. Update the table row status
+                // 3. Reload the page or update UI
+                location.reload();
+            }
+        }
+        
+        // Renew API Key Function
+        function renewAPIKey(merchantId, merchantName) {
+            if (confirm(`🔄 Renew API Key for ${merchantName}?\n\nThis will generate a new API key and invalidate the old one.`)) {
+                // Generate new API key
+                const newAPIKey = 'pk_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                
+                console.log('Renewing API key for merchant:', merchantId);
+                
+                alert(`✅ New API Key Generated!\n\nMerchant: ${merchantName}\nMerchant ID: #${merchantId}\n\nNew API Key: ${newAPIKey}\n\nPlease save this key securely. It won't be shown again.`);
+                
+                // In real application, you would:
+                // 1. Send renew request to API
+                // 2. Get new API key from response
+                // 3. Update the table
+                location.reload();
+            }
+        }
+        
+        // Copy API Key Function
+        function copyAPIKey(apiKey) {
+            navigator.clipboard.writeText(apiKey).then(() => {
+                alert('✅ API Key copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('❌ Failed to copy API key. Please copy manually.');
+            });
+        }
+        
+        // Close Modal Function
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // Search API Keys Function
+        function searchAPIKeys() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            if (searchTerm) {
+                alert(`🔍 Searching for: "${searchTerm}"`);
+            }
+        }
+        
+        // Allow search on Enter key
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchAPIKeys();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
