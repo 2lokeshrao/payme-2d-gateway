@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Payment - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .processing-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-icon.success {
+            color: #10b981;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .status-icon.failed {
+            color: #ef4444;
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .status-message {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #333;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: -1;
+        }
+
+        .step:first-child::before {
+            display: none;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="processing-container">
+        <div class="spinner" id="spinner"></div>
+        <div class="status-icon" id="statusIcon"></div>
+
+        <h1 id="statusTitle">Verifying Payment...</h1>
+        <p class="status-message" id="statusMessage">
+            Please wait while we verify your payment. This may take a few seconds.
+        </p>
+
+        <div class="progress-steps" id="progressSteps">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Initiated</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Verifying</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmed</div>
+            </div>
+        </div>
+
+        <div class="order-details" id="orderDetails">
+            <div class="detail-row">
+                <span class="detail-label">Order ID:</span>
+                <span class="detail-value" id="orderId">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Plan:</span>
+                <span class="detail-value" id="plan">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Amount:</span>
+                <span class="detail-value" id="amount">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Method:</span>
+                <span class="detail-value" id="paymentMethod">-</span>
+            </div>
+        </div>
+
+        <div class="btn-container" id="btnContainer">
+            <button class="btn btn-primary" onclick="goToDashboard()">
+                <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+            </button>
+            <button class="btn btn-secondary" onclick="retryPayment()">
+                <i class="fas fa-redo"></i> Retry Payment
+            </button>
+        </div>
+    </div>
+
+    <script src="payment-verification-api.js"></script>
+    <script>
+        let orderData = {};
+        const verificationAPI = new PaymentVerificationAPI();
+
+        window.onload = async function() {
+            // Get payment data from localStorage
+            const paymentData = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+            orderData = paymentData;
+
+            // Display order details
+            document.getElementById('orderId').textContent = paymentData.orderId || '-';
+            document.getElementById('plan').textContent = paymentData.plan || '-';
+            document.getElementById('amount').textContent = '₹' + (paymentData.price || 0).toLocaleString('en-IN');
+            document.getElementById('paymentMethod').textContent = getPaymentMethodName(paymentData.paymentMethod);
+
+            // Start verification process
+            await verifyPayment(paymentData);
+        };
+
+        async function verifyPayment(paymentData) {
+            // Update progress
+            updateProgress(2);
+
+            let verificationResult;
+
+            try {
+                // Call appropriate verification method based on payment type
+                switch(paymentData.paymentMethod) {
+                    case 'upi':
+                        verificationResult = await verificationAPI.verifyUPIPayment(
+                            paymentData.orderId,
+                            paymentData.upiTransactionId,
+                            paymentData.price
+                        );
+                        break;
+                    case 'card':
+                        verificationResult = await verificationAPI.verifyCardPayment(
+                            paymentData.orderId,
+                            paymentData.cardLast4,
+                            paymentData.price
+                        );
+                        break;
+                    case 'netbanking':
+                        verificationResult = await verificationAPI.verifyNetBankingPayment(
+                            paymentData.orderId,
+                            paymentData.bankName,
+                            paymentData.price
+                        );
+                        break;
+                    case 'crypto':
+                        verificationResult = await verificationAPI.verifyCryptoPayment(
+                            paymentData.orderId,
+                            paymentData.cryptoCurrency,
+                            paymentData.walletAddress,
+                            paymentData.price
+                        );
+                        break;
+                    default:
+                        throw new Error('Unknown payment method');
+                }
+
+                // Handle verification result
+                if (verificationResult.success) {
+                    await handleSuccessfulPayment(verificationResult, paymentData);
+                } else {
+                    handleFailedPayment(verificationResult);
+                }
+
+            } catch (error) {
+                console.error('Verification error:', error);
+                handleFailedPayment({ message: 'Verification failed. Please try again.' });
+            }
+        }
+
+        async function handleSuccessfulPayment(verificationResult, paymentData) {
+            updateProgress(3);
+
+            // Hide spinner, show success icon
+            document.getElementById('spinner').style.display = 'none';
+            const statusIcon = document.getElementById('statusIcon');
+            statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            statusIcon.className = 'status-icon success';
+            statusIcon.style.display = 'block';
+
+            // Update status
+            document.getElementById('statusTitle').textContent = '✅ Payment Successful!';
+            document.getElementById('statusMessage').textContent = 
+                'Your payment has been verified successfully. Generating your gateway credentials...';
+
+            // Generate and send credentials via email
+            setTimeout(async () => {
+                const credentials = await verificationAPI.sendSuccessEmail(paymentData);
+
+                // Save to localStorage
+                const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+                payments.push({
+                    ...paymentData,
+                    ...verificationResult,
+                    credentials: credentials,
+                    status: 'verified'
+                });
+                localStorage.setItem('payments', JSON.stringify(payments));
+
+                // Save gateway instance
+                const instances = JSON.parse(localStorage.getItem('gatewayInstances') || '[]');
+                instances.push({
+                    ...credentials,
+                    ...paymentData,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('gatewayInstances', JSON.stringify(instances));
+
+                // Update message
+                document.getElementById('statusMessage').innerHTML = 
+                    `<strong>🎉 All Done!</strong><br>
+                    Your gateway credentials have been sent to <strong>${paymentData.email}</strong><br>
+                    Check your inbox for login details.`;
+
+                // Show dashboard button
+                document.getElementById('btnContainer').style.display = 'block';
+                document.querySelector('.btn-secondary').style.display = 'none';
+            }, 2000);
+        }
+
+        function handleFailedPayment(verificationResult) {
+            // Hide spinner, show failed icon
+            document.getElementById('spinner').style.display = 'none';
+            const statusIcon = document.getElementById('statusIcon');
+            statusIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+            statusIcon.className = 'status-icon failed';
+            statusIcon.style.display = 'block';
+
+            // Update status
+            document.getElementById('statusTitle').textContent = '❌ Payment Failed';
+            document.getElementById('statusMessage').textContent = 
+                verificationResult.message || 'We could not verify your payment. Please try again or contact support.';
+
+            // Show retry button
+            document.getElementById('btnContainer').style.display = 'block';
+            document.querySelector('.btn-primary').style.display = 'none';
+        }
+
+        function updateProgress(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((stepEl, index) => {
+                if (index < step - 1) {
+                    stepEl.classList.add('completed');
+                    stepEl.classList.remove('active');
+                } else if (index === step - 1) {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        function getPaymentMethodName(method) {
+            const methods = {
+                'upi': 'UPI Payment',
+                'card': 'Credit/Debit Card',
+                'netbanking': 'Net Banking',
+                'crypto': 'Cryptocurrency'
+            };
+            return methods[method] || method;
+        }
+
+        function goToDashboard() {
+            window.location.href = 'client-dashboard.html';
+        }
+
+        function retryPayment() {
+            window.location.href = 'payment-gateway.html';
+        }
+    </script>
+</body>
+</html>
