@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Payment - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .payment-body {
+            padding: 30px;
+        }
+
+        .amount-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .amount-display h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .amount-display .amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .crypto-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .crypto-option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .crypto-option:hover {
+            border-color: #f59e0b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .crypto-option.selected {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .crypto-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .crypto-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .crypto-symbol {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .wallet-address {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .wallet-address.active {
+            display: block;
+        }
+
+        .wallet-address label {
+            font-weight: 600;
+            color: #666;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .address-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .address-box input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .btn-copy {
+            padding: 10px 15px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-verify:hover {
+            opacity: 0.9;
+        }
+
+        .note {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>₿ Cryptocurrency Payment</h1>
+            <p>Pay with your favorite crypto</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="amount-display">
+                <h3>Amount to Pay</h3>
+                <div class="amount" id="amount">₹0</div>
+            </div>
+
+            <h4 style="margin-bottom: 15px; color: #333;">Select Cryptocurrency</h4>
+            <div class="crypto-options">
+                <div class="crypto-option" onclick="selectCrypto('Bitcoin', 'BTC', 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')">
+                    <div class="crypto-icon">₿</div>
+                    <div class="crypto-name">Bitcoin</div>
+                    <div class="crypto-symbol">BTC</div>
+                </div>
+                <div class="crypto-option" onclick="selectCrypto('Ethereum', 'ETH', '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb')">
+                    <div class="crypto-icon">Ξ</div>
+                    <div class="crypto-name">Ethereum</div>
+                    <div class="crypto-symbol">ETH</div>
+                </div>
+                <div class="crypto-option" onclick="selectCrypto('USDT', 'USDT', 'TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS')">
+                    <div class="crypto-icon">₮</div>
+                    <div class="crypto-name">Tether</div>
+                    <div class="crypto-symbol">USDT</div>
+                </div>
+                <div class="crypto-option" onclick="selectCrypto('USDC', 'USDC', '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb')">
+                    <div class="crypto-icon">💵</div>
+                    <div class="crypto-name">USD Coin</div>
+                    <div class="crypto-symbol">USDC</div>
+                </div>
+            </div>
+
+            <div class="wallet-address" id="walletAddress">
+                <label>Wallet Address</label>
+                <div class="address-box">
+                    <input type="text" id="addressInput" readonly>
+                    <button class="btn-copy" onclick="copyAddress()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="qr-placeholder">
+                    <div style="text-align: center;">
+                        <i class="fas fa-qrcode" style="font-size: 60px; margin-bottom: 10px;"></i>
+                        <p>QR Code</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-verify" onclick="verifyPayment()">
+                <i class="fas fa-check-circle"></i> I have sent crypto, Verify
+            </button>
+
+            <div class="note">
+                <strong>Note:</strong> After sending crypto to the address above, click "I have sent crypto" button. Our team will verify the transaction and activate your gateway.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orderData = {};
+        let selectedCrypto = null;
+
+        window.onload = function() {
+            const paymentData = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+            orderData = paymentData;
+            document.getElementById('amount').textContent = '₹' + (paymentData.price || 0).toLocaleString('en-IN');
+        };
+
+        function selectCrypto(name, symbol, address) {
+            // Remove previous selection
+            document.querySelectorAll('.crypto-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked crypto
+            event.target.closest('.crypto-option').classList.add('selected');
+            selectedCrypto = { name, symbol, address };
+            
+            // Show wallet address
+            document.getElementById('walletAddress').classList.add('active');
+            document.getElementById('addressInput').value = address;
+        }
+
+        function copyAddress() {
+            const addressInput = document.getElementById('addressInput');
+            addressInput.select();
+            document.execCommand('copy');
+            alert('Wallet address copied!');
+        }
+
+        function verifyPayment() {
+            if (!selectedCrypto) {
+                alert('Please select a cryptocurrency first');
+                return;
+            }
+            
+            // Update payment status
+            orderData.status = 'verification_pending';
+            orderData.paidAt = new Date().toISOString();
+            orderData.cryptoCurrency = selectedCrypto.symbol;
+            
+            // Save to localStorage
+            const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+            payments.push(orderData);
+            localStorage.setItem('payments', JSON.stringify(payments));
+            
+            // Redirect to success page
+            window.location.href = `payment-success.html?orderId=${orderData.orderId}`;
+        }
+    </script>
+</body>
+</html>

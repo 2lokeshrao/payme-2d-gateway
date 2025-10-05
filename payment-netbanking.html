@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Banking - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .payment-body {
+            padding: 30px;
+        }
+
+        .amount-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .amount-display h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .amount-display .amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .bank-option {
+            padding: 20px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .bank-option:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .bank-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .bank-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .bank-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-proceed {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-proceed:hover {
+            opacity: 0.9;
+        }
+
+        .btn-proceed:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>🏦 Net Banking</h1>
+            <p>Select your bank to proceed</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="amount-display">
+                <h3>Amount to Pay</h3>
+                <div class="amount" id="amount">₹0</div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="searchBank" placeholder="🔍 Search your bank...">
+            </div>
+
+            <h4 style="margin-bottom: 15px; color: #333;">Popular Banks</h4>
+            <div class="bank-grid" id="bankGrid">
+                <div class="bank-option" onclick="selectBank('SBI')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">State Bank of India</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('HDFC')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">HDFC Bank</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('ICICI')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">ICICI Bank</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('Axis')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Axis Bank</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('Kotak')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Kotak Mahindra</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('PNB')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Punjab National Bank</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('BOB')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Bank of Baroda</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('Canara')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Canara Bank</div>
+                </div>
+                <div class="bank-option" onclick="selectBank('Union')">
+                    <div class="bank-icon">🏦</div>
+                    <div class="bank-name">Union Bank</div>
+                </div>
+            </div>
+
+            <button class="btn-proceed" id="proceedBtn" disabled onclick="proceedToBank()">
+                <i class="fas fa-arrow-right"></i> Proceed to Bank
+            </button>
+
+            <div class="note">
+                You will be redirected to your bank's secure login page
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orderData = {};
+        let selectedBank = null;
+
+        window.onload = function() {
+            const paymentData = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+            orderData = paymentData;
+            document.getElementById('amount').textContent = '₹' + (paymentData.price || 0).toLocaleString('en-IN');
+        };
+
+        function selectBank(bankName) {
+            // Remove previous selection
+            document.querySelectorAll('.bank-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked bank
+            event.target.closest('.bank-option').classList.add('selected');
+            selectedBank = bankName;
+            
+            // Enable proceed button
+            document.getElementById('proceedBtn').disabled = false;
+        }
+
+        function proceedToBank() {
+            if (!selectedBank) return;
+            
+            // Update payment status
+            orderData.status = 'verification_pending';
+            orderData.paidAt = new Date().toISOString();
+            orderData.bankName = selectedBank;
+            
+            // Save to localStorage
+            const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+            payments.push(orderData);
+            localStorage.setItem('payments', JSON.stringify(payments));
+            
+            // Simulate bank redirect
+            alert(`Redirecting to ${selectedBank} Net Banking...\n\nAfter completing payment on bank website, you will be redirected back.`);
+            
+            // Redirect to success page
+            setTimeout(() => {
+                window.location.href = `payment-success.html?orderId=${orderData.orderId}`;
+            }, 1000);
+        }
+
+        // Search functionality
+        document.getElementById('searchBank').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.bank-option').forEach(bank => {
+                const bankName = bank.querySelector('.bank-name').textContent.toLowerCase();
+                if (bankName.includes(searchTerm)) {
+                    bank.style.display = 'block';
+                } else {
+                    bank.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

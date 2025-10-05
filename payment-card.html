@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Payment - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .payment-body {
+            padding: 30px;
+        }
+
+        .amount-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .amount-display h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .amount-display .amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .card-icon {
+            font-size: 30px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+
+        .security-note {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .security-note i {
+            color: #667eea;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>💳 Card Payment</h1>
+            <p>Secure payment with Credit/Debit Card</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="amount-display">
+                <h3>Amount to Pay</h3>
+                <div class="amount" id="amount">₹0</div>
+            </div>
+
+            <form id="cardForm" onsubmit="processPayment(event)">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <div class="card-icons">
+                        <span class="card-icon">💳</span>
+                        <span class="card-icon">🏦</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="Name on card" required>
+                </div>
+
+                <div class="card-row">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" id="cvv" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-pay">
+                    <i class="fas fa-lock"></i> Pay Securely
+                </button>
+            </form>
+
+            <div class="security-note">
+                <i class="fas fa-shield-alt"></i>
+                <strong>Secure Payment:</strong> Your card details are encrypted and secure. We never store your card information.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orderData = {};
+
+        window.onload = function() {
+            const paymentData = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+            orderData = paymentData;
+            document.getElementById('amount').textContent = '₹' + (paymentData.price || 0).toLocaleString('en-IN');
+        };
+
+        // Format card number
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Format expiry date
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        function processPayment(event) {
+            event.preventDefault();
+            
+            // Update payment status
+            orderData.status = 'verification_pending';
+            orderData.paidAt = new Date().toISOString();
+            orderData.cardLast4 = document.getElementById('cardNumber').value.slice(-4);
+            
+            // Save to localStorage
+            const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+            payments.push(orderData);
+            localStorage.setItem('payments', JSON.stringify(payments));
+            
+            // Redirect to success page
+            window.location.href = `payment-success.html?orderId=${orderData.orderId}`;
+        }
+    </script>
+</body>
+</html>
