@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settlements - Merchant Dashboard</title>
+    <title>Settlements - PayMe 2D Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -20,7 +20,7 @@
         }
         
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px 40px;
             display: flex;
@@ -104,23 +104,23 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         
+        .stat-card.instant {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
         .stat-card.pending {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
         }
         
-        .stat-card.completed {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            color: white;
-        }
-        
-        .stat-card.processing {
+        .stat-card.commission {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
         }
         
         .stat-card.total {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
         }
         
@@ -140,6 +140,11 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+        }
+        
+        .stat-card:not(.instant):not(.pending):not(.commission):not(.total) .stat-icon {
+            background: #f0f0f0;
+            color: #667eea;
         }
         
         .stat-label {
@@ -189,14 +194,14 @@
             font-weight: 600;
         }
         
+        .badge-instant {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
         .badge-pending {
             background: #fff3e0;
             color: #e65100;
-        }
-        
-        .badge-completed {
-            background: #e8f5e9;
-            color: #2e7d32;
         }
         
         table {
@@ -233,39 +238,19 @@
             font-weight: 600;
         }
         
+        .status-instant {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
         .status-pending {
             background: #fff3e0;
             color: #e65100;
         }
         
-        .status-processing {
+        .status-completed {
             background: #e3f2fd;
             color: #1565c0;
-        }
-        
-        .status-completed {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .warning-box {
-            background: #fff3e0;
-            border-left: 4px solid #ff9800;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .warning-box h4 {
-            color: #e65100;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        
-        .warning-box p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
         }
         
         .info-box {
@@ -310,9 +295,9 @@
 </head>
 <body>
     <div class="header">
-        <h1><i class="fas fa-money-check-alt"></i> Merchant Settlements</h1>
+        <h1><i class="fas fa-wallet"></i> Client Settlements</h1>
         <div class="header-actions">
-            <a href="merchant-dashboard.html" class="btn btn-secondary">
+            <a href="client-dashboard.html" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
@@ -320,28 +305,36 @@
     
     <div class="container">
         <div class="page-title">
-            <h2>Settlement Schedule</h2>
-            <p>Track your pending and completed settlements</p>
-        </div>
-        
-        <div class="warning-box">
-            <h4><i class="fas fa-exclamation-triangle"></i> Settlement Policy - T+2 Days</h4>
-            <p><strong>Important:</strong> All settlements are processed on a T+2 basis (2 business days after transaction). This means:</p>
-            <p>• Transaction on Monday → Settlement on Wednesday</p>
-            <p>• Transaction on Friday → Settlement on Tuesday (next week)</p>
-            <p>• Gateway fee of 2% is deducted from each transaction</p>
+            <h2>Settlement Management</h2>
+            <p>Track your instant settlements and pending merchant payouts</p>
         </div>
         
         <div class="info-box">
-            <h4><i class="fas fa-info-circle"></i> How It Works</h4>
-            <p>When a customer makes a payment, the gateway provider receives the full amount instantly. After T+2 days, you receive 98% of the transaction amount (2% gateway fee deducted).</p>
+            <h4><i class="fas fa-info-circle"></i> How Settlements Work</h4>
+            <p><strong>For You (Gateway Owner):</strong> You receive payments INSTANTLY when customers make purchases through your gateway. The full amount is credited to your account immediately.</p>
+            <p><strong>For Merchants:</strong> Merchants receive their settlements after T+2 days (2 business days). You deduct your commission (2%) and transfer the remaining amount to merchants.</p>
         </div>
         
         <div class="stats-grid">
+            <div class="stat-card instant">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-label">Instant Settlements (Today)</div>
+                        <div class="stat-value">₹2,45,680</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i> Received instantly in your account
+                </div>
+            </div>
+            
             <div class="stat-card pending">
                 <div class="stat-header">
                     <div>
-                        <div class="stat-label">Pending Settlements</div>
+                        <div class="stat-label">Pending Merchant Payouts</div>
                         <div class="stat-value">₹1,85,420</div>
                     </div>
                     <div class="stat-icon">
@@ -349,119 +342,104 @@
                     </div>
                 </div>
                 <div class="stat-change">
-                    <i class="fas fa-calendar"></i> Due in next 2 days
+                    <i class="fas fa-calendar"></i> Due in T+2 days
                 </div>
             </div>
             
-            <div class="stat-card processing">
+            <div class="stat-card commission">
                 <div class="stat-header">
                     <div>
-                        <div class="stat-label">Processing Today</div>
-                        <div class="stat-value">₹98,560</div>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="fas fa-sync"></i>
-                    </div>
-                </div>
-                <div class="stat-change">
-                    <i class="fas fa-check"></i> Will be credited today
-                </div>
-            </div>
-            
-            <div class="stat-card completed">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">Completed (This Month)</div>
-                        <div class="stat-value">₹12,45,890</div>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-                <div class="stat-change">
-                    <i class="fas fa-arrow-up"></i> +18% from last month
-                </div>
-            </div>
-            
-            <div class="stat-card total">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">Gateway Fees Paid</div>
-                        <div class="stat-value">₹25,426</div>
+                        <div class="stat-label">Your Commission (2%)</div>
+                        <div class="stat-value">₹4,914</div>
                     </div>
                     <div class="stat-icon">
                         <i class="fas fa-percentage"></i>
                     </div>
                 </div>
                 <div class="stat-change">
-                    <i class="fas fa-info-circle"></i> 2% of total transactions
+                    <i class="fas fa-check-circle"></i> Earned from today's transactions
+                </div>
+            </div>
+            
+            <div class="stat-card total">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-label">Total Settled (This Month)</div>
+                        <div class="stat-value">₹45,67,890</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i> +23% from last month
                 </div>
             </div>
         </div>
         
         <div class="content-card">
             <div class="card-header">
-                <h3><i class="fas fa-clock"></i> Pending Settlements (T+2 Days)</h3>
-                <span class="badge badge-pending">PENDING</span>
+                <h3><i class="fas fa-bolt"></i> Instant Settlements (Received Today)</h3>
+                <span class="badge badge-instant">INSTANT</span>
             </div>
             
-            <table id="pendingSettlementsTable">
+            <table id="instantSettlementsTable">
                 <thead>
                     <tr>
                         <th>Transaction ID</th>
-                        <th>Transaction Date</th>
-                        <th>Transaction Amount</th>
-                        <th>Gateway Fee (2%)</th>
-                        <th>Settlement Amount</th>
-                        <th>Expected Date</th>
+                        <th>Merchant</th>
+                        <th>Amount Received</th>
+                        <th>Your Commission (2%)</th>
+                        <th>Merchant Payout (T+2)</th>
+                        <th>Time</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>#TXN-2025-001</td>
-                        <td>Oct 3, 2025</td>
-                        <td>₹10,000</td>
-                        <td style="color: #e65100;">-₹200</td>
-                        <td><strong>₹9,800</strong></td>
-                        <td><strong>Oct 5, 2025</strong></td>
-                        <td><span class="status-badge status-pending">Due Today</span></td>
+                        <td>TechStore India</td>
+                        <td><strong>₹10,000</strong></td>
+                        <td><strong style="color: #2e7d32;">₹200</strong></td>
+                        <td>₹9,800</td>
+                        <td>2:15 PM</td>
+                        <td><span class="status-badge status-instant">Received Instantly</span></td>
                     </tr>
                     <tr>
                         <td>#TXN-2025-002</td>
-                        <td>Oct 3, 2025</td>
-                        <td>₹25,500</td>
-                        <td style="color: #e65100;">-₹510</td>
-                        <td><strong>₹24,990</strong></td>
-                        <td><strong>Oct 5, 2025</strong></td>
-                        <td><span class="status-badge status-pending">Due Today</span></td>
+                        <td>Fashion Hub</td>
+                        <td><strong>₹25,500</strong></td>
+                        <td><strong style="color: #2e7d32;">₹510</strong></td>
+                        <td>₹24,990</td>
+                        <td>1:45 PM</td>
+                        <td><span class="status-badge status-instant">Received Instantly</span></td>
                     </tr>
                     <tr>
                         <td>#TXN-2025-003</td>
-                        <td>Oct 4, 2025</td>
-                        <td>₹5,680</td>
-                        <td style="color: #e65100;">-₹114</td>
-                        <td><strong>₹5,566</strong></td>
-                        <td>Oct 6, 2025</td>
-                        <td><span class="status-badge status-processing">Processing</span></td>
+                        <td>BookWorld</td>
+                        <td><strong>₹5,680</strong></td>
+                        <td><strong style="color: #2e7d32;">₹114</strong></td>
+                        <td>₹5,566</td>
+                        <td>12:30 PM</td>
+                        <td><span class="status-badge status-instant">Received Instantly</span></td>
                     </tr>
                     <tr>
                         <td>#TXN-2025-004</td>
-                        <td>Oct 4, 2025</td>
-                        <td>₹45,000</td>
-                        <td style="color: #e65100;">-₹900</td>
-                        <td><strong>₹44,100</strong></td>
-                        <td>Oct 6, 2025</td>
-                        <td><span class="status-badge status-processing">Processing</span></td>
+                        <td>GadgetZone</td>
+                        <td><strong>₹45,000</strong></td>
+                        <td><strong style="color: #2e7d32;">₹900</strong></td>
+                        <td>₹44,100</td>
+                        <td>11:20 AM</td>
+                        <td><span class="status-badge status-instant">Received Instantly</span></td>
                     </tr>
                     <tr>
                         <td>#TXN-2025-005</td>
-                        <td>Oct 5, 2025</td>
-                        <td>₹8,500</td>
-                        <td style="color: #e65100;">-₹170</td>
-                        <td><strong>₹8,330</strong></td>
-                        <td>Oct 7, 2025</td>
-                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td>FoodMart</td>
+                        <td><strong>₹8,500</strong></td>
+                        <td><strong style="color: #2e7d32;">₹170</strong></td>
+                        <td>₹8,330</td>
+                        <td>10:05 AM</td>
+                        <td><span class="status-badge status-instant">Received Instantly</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -469,58 +447,53 @@
         
         <div class="content-card">
             <div class="card-header">
-                <h3><i class="fas fa-check-circle"></i> Completed Settlements</h3>
-                <span class="badge badge-completed">COMPLETED</span>
+                <h3><i class="fas fa-clock"></i> Pending Merchant Payouts (T+2 Days)</h3>
+                <span class="badge badge-pending">PENDING</span>
             </div>
             
-            <table id="completedSettlementsTable">
+            <table id="pendingPayoutsTable">
                 <thead>
                     <tr>
                         <th>Transaction ID</th>
+                        <th>Merchant</th>
                         <th>Transaction Date</th>
-                        <th>Settlement Date</th>
-                        <th>Transaction Amount</th>
-                        <th>Gateway Fee (2%)</th>
-                        <th>Settled Amount</th>
+                        <th>Payout Amount</th>
+                        <th>Expected Payout Date</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>#TXN-2024-998</td>
-                        <td>Oct 1, 2025</td>
+                        <td>TechStore India</td>
                         <td>Oct 3, 2025</td>
-                        <td>₹20,000</td>
-                        <td style="color: #e65100;">-₹400</td>
-                        <td><strong>₹19,600</strong></td>
-                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>₹19,600</td>
+                        <td><strong>Oct 5, 2025</strong></td>
+                        <td><span class="status-badge status-pending">Due Today</span></td>
                     </tr>
                     <tr>
                         <td>#TXN-2024-999</td>
-                        <td>Oct 1, 2025</td>
+                        <td>Fashion Hub</td>
                         <td>Oct 3, 2025</td>
-                        <td>₹35,000</td>
-                        <td style="color: #e65100;">-₹700</td>
-                        <td><strong>₹34,300</strong></td>
-                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>₹34,300</td>
+                        <td><strong>Oct 5, 2025</strong></td>
+                        <td><span class="status-badge status-pending">Due Today</span></td>
                     </tr>
                     <tr>
-                        <td>#TXN-2024-997</td>
-                        <td>Sep 30, 2025</td>
-                        <td>Oct 2, 2025</td>
-                        <td>₹13,000</td>
-                        <td style="color: #e65100;">-₹260</td>
-                        <td><strong>₹12,740</strong></td>
-                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>#TXN-2025-000</td>
+                        <td>BookWorld</td>
+                        <td>Oct 4, 2025</td>
+                        <td>₹12,740</td>
+                        <td>Oct 6, 2025</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
                     </tr>
                     <tr>
-                        <td>#TXN-2024-996</td>
-                        <td>Sep 30, 2025</td>
-                        <td>Oct 2, 2025</td>
-                        <td>₹58,000</td>
-                        <td style="color: #e65100;">-₹1,160</td>
-                        <td><strong>₹56,840</strong></td>
-                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>#TXN-2025-001</td>
+                        <td>GadgetZone</td>
+                        <td>Oct 4, 2025</td>
+                        <td>₹56,880</td>
+                        <td>Oct 6, 2025</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
                     </tr>
                 </tbody>
             </table>
