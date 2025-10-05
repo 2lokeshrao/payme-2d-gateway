@@ -31,7 +31,7 @@
         }
         
         .nav-content {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -77,7 +77,7 @@
         
         /* Main Content */
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -122,6 +122,10 @@
             border-left-color: #667eea;
         }
         
+        .stat-card.clients {
+            border-left-color: #8b5cf6;
+        }
+        
         .stat-card.merchants {
             border-left-color: #f093fb;
         }
@@ -161,6 +165,54 @@
         .stat-card .change.negative {
             color: #ff6b6b;
         }
+
+        /* Tabs */
+        .tabs-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
         
         /* Section */
         .section {
@@ -187,6 +239,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
         }
         
         /* Gateway Instances Table */
@@ -218,6 +296,10 @@
             color: #333;
             font-size: 14px;
         }
+
+        tr:hover {
+            background: #f9fafb;
+        }
         
         .status-badge {
             display: inline-block;
@@ -235,6 +317,16 @@
         .status-badge.inactive {
             background: #fee2e2;
             color: #991b1b;
+        }
+
+        .relationship-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #ede9fe;
+            color: #6d28d9;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
         }
         
         .action-btn {
@@ -488,6 +580,14 @@
             th, td {
                 padding: 8px;
             }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .tabs {
+                flex-wrap: nowrap;
+            }
         }
     </style>
 </head>
@@ -526,12 +626,20 @@
                     <i class="fas fa-arrow-up"></i> +12% from last month
                 </div>
             </div>
+
+            <div class="stat-card clients">
+                <div class="label">Total Clients</div>
+                <div class="value" id="totalClients">2</div>
+                <div class="change">
+                    <i class="fas fa-arrow-up"></i> Active clients
+                </div>
+            </div>
             
             <div class="stat-card merchants">
-                <div class="label">Gateway Instances</div>
-                <div class="value" id="totalInstances">5</div>
+                <div class="label">Total Merchants</div>
+                <div class="value" id="totalMerchants">0</div>
                 <div class="change">
-                    <i class="fas fa-arrow-up"></i> +2 this month
+                    <i class="fas fa-store"></i> Registered merchants
                 </div>
             </div>
             
@@ -552,95 +660,194 @@
             </div>
         </div>
 
-        <!-- Gateway Instances Section -->
-        <div class="section">
-            <div class="section-header">
-                <h2><i class="fas fa-server"></i> Gateway Instances</h2>
-                <button class="btn-create" onclick="openCreateModal()">
-                    <i class="fas fa-plus"></i> Create New Instance
+        <!-- Tabs Container -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('gateway')">
+                    <i class="fas fa-server"></i> Gateway Instances
+                </button>
+                <button class="tab-btn" onclick="switchTab('clients')">
+                    <i class="fas fa-users"></i> All Clients
+                </button>
+                <button class="tab-btn" onclick="switchTab('merchants')">
+                    <i class="fas fa-store"></i> All Merchants
+                </button>
+                <button class="tab-btn" onclick="switchTab('relationships')">
+                    <i class="fas fa-link"></i> Client-Merchant Relationships
                 </button>
             </div>
-            <div class="instances-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Instance ID</th>
-                            <th>Client Name</th>
-                            <th>Email</th>
-                            <th>Plan</th>
-                            <th>Created Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="instancesTableBody">
-                        <tr>
-                            <td>GW-001</td>
-                            <td>Tech Solutions Pvt Ltd</td>
-                            <td>contact@techsolutions.com</td>
-                            <td>Pro</td>
-                            <td>2025-09-15</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>
-                                <button class="action-btn btn-view" onclick="viewInstance('GW-001')">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>GW-002</td>
-                            <td>E-Commerce Hub</td>
-                            <td>admin@ecommercehub.com</td>
-                            <td>Enterprise</td>
-                            <td>2025-09-20</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>
-                                <button class="action-btn btn-view" onclick="viewInstance('GW-002')">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>GW-003</td>
-                            <td>Digital Services Inc</td>
-                            <td>info@digitalservices.com</td>
-                            <td>Basic</td>
-                            <td>2025-09-25</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>
-                                <button class="action-btn btn-view" onclick="viewInstance('GW-003')">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>GW-004</td>
-                            <td>Online Retail Store</td>
-                            <td>support@onlineretail.com</td>
-                            <td>Pro</td>
-                            <td>2025-10-01</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>
-                                <button class="action-btn btn-view" onclick="viewInstance('GW-004')">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>GW-005</td>
-                            <td>Payment Pro</td>
-                            <td>hello@paymentpro.com</td>
-                            <td>Enterprise</td>
-                            <td>2025-10-03</td>
-                            <td><span class="status-badge inactive">Inactive</span></td>
-                            <td>
-                                <button class="action-btn btn-view" onclick="viewInstance('GW-005')">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <!-- Gateway Instances Tab -->
+            <div class="tab-content active" id="gateway-tab">
+                <div class="section-header">
+                    <h2><i class="fas fa-server"></i> Gateway Instances</h2>
+                    <button class="btn-create" onclick="openCreateModal()">
+                        <i class="fas fa-plus"></i> Create New Instance
+                    </button>
+                </div>
+                <div class="instances-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Instance ID</th>
+                                <th>Client Name</th>
+                                <th>Email</th>
+                                <th>Plan</th>
+                                <th>Created Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instancesTableBody">
+                            <tr>
+                                <td><strong>GW-001</strong></td>
+                                <td>Tech Solutions Pvt Ltd</td>
+                                <td>contact@techsolutions.com</td>
+                                <td>Pro</td>
+                                <td>2025-09-15</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" onclick="viewInstance('GW-001')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>GW-002</strong></td>
+                                <td>E-Commerce Hub</td>
+                                <td>admin@ecommercehub.com</td>
+                                <td>Enterprise</td>
+                                <td>2025-09-20</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" onclick="viewInstance('GW-002')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Clients Tab -->
+            <div class="tab-content" id="clients-tab">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> All Clients</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search clients..." onkeyup="searchTable('clientsTable', this.value)">
+                    </div>
+                </div>
+                <div class="instances-table">
+                    <table id="clientsTable">
+                        <thead>
+                            <tr>
+                                <th>Client ID</th>
+                                <th>Business Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Merchants</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <tr>
+                                <td><strong>CLIENT_12345</strong></td>
+                                <td>PayMe Gateway Solutions</td>
+                                <td>contact@paymesolutions.com</td>
+                                <td>+91 9876543210</td>
+                                <td><span style="font-weight: 700; color: #7c3aed;" id="client-12345-merchants">0</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" onclick="viewClient('CLIENT_12345')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>CLIENT_67890</strong></td>
+                                <td>Digital Payment Hub</td>
+                                <td>info@digitalpayment.com</td>
+                                <td>+91 9876543211</td>
+                                <td><span style="font-weight: 700; color: #7c3aed;" id="client-67890-merchants">0</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="action-btn btn-view" onclick="viewClient('CLIENT_67890')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Merchants Tab -->
+            <div class="tab-content" id="merchants-tab">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> All Merchants</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search merchants..." onkeyup="searchTable('merchantsTable', this.value)">
+                    </div>
+                </div>
+                <div class="instances-table">
+                    <table id="merchantsTable">
+                        <thead>
+                            <tr>
+                                <th>Merchant ID</th>
+                                <th>Business Name</th>
+                                <th>Type</th>
+                                <th>Email</th>
+                                <th>Client</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merchantsTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                    No merchants registered yet
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Relationships Tab -->
+            <div class="tab-content" id="relationships-tab">
+                <div class="section-header">
+                    <h2><i class="fas fa-link"></i> Client-Merchant Relationships</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search relationships..." onkeyup="searchTable('relationshipsTable', this.value)">
+                    </div>
+                </div>
+                <div class="instances-table">
+                    <table id="relationshipsTable">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Client ID</th>
+                                <th>Merchant</th>
+                                <th>Merchant ID</th>
+                                <th>Business Type</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="relationshipsTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                    No relationships found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -660,7 +867,7 @@
                     </div>
                 </a>
                 
-                <a href="merchants.html" class="quick-link">
+                <a href="../client-merchants.html" class="quick-link">
                     <div class="quick-link-icon">
                         <i class="fas fa-store"></i>
                     </div>
@@ -781,6 +988,118 @@
     </div>
 
     <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Search Table
+        function searchTable(tableId, searchTerm) {
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (let row of rows) {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        // Load Merchants Data
+        function loadMerchants() {
+            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            const merchantsTableBody = document.getElementById('merchantsTableBody');
+            const relationshipsTableBody = document.getElementById('relationshipsTableBody');
+
+            // Update stats
+            document.getElementById('totalMerchants').textContent = merchants.length;
+
+            // Update client merchant count
+            const clientMerchantCount = {};
+            merchants.forEach(m => {
+                clientMerchantCount[m.clientId] = (clientMerchantCount[m.clientId] || 0) + 1;
+            });
+
+            Object.keys(clientMerchantCount).forEach(clientId => {
+                const elem = document.getElementById(`client-${clientId.toLowerCase()}-merchants`);
+                if (elem) {
+                    elem.textContent = clientMerchantCount[clientId];
+                }
+            });
+
+            // Populate merchants table
+            if (merchants.length === 0) {
+                merchantsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No merchants registered yet</td></tr>';
+                relationshipsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No relationships found</td></tr>';
+                return;
+            }
+
+            merchantsTableBody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td><strong>${merchant.merchantId}</strong></td>
+                    <td>${merchant.businessName}</td>
+                    <td>${merchant.businessType.charAt(0).toUpperCase() + merchant.businessType.slice(1)}</td>
+                    <td>${merchant.email}</td>
+                    <td><span class="relationship-badge">${merchant.clientName}</span></td>
+                    <td><span class="status-badge ${merchant.status}">${merchant.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+                    <td>
+                        <button class="action-btn btn-view" onclick='viewMerchant(${JSON.stringify(merchant)})'>
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Populate relationships table
+            relationshipsTableBody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td><strong>${merchant.clientName}</strong></td>
+                    <td>${merchant.clientId}</td>
+                    <td><strong>${merchant.businessName}</strong></td>
+                    <td>${merchant.merchantId}</td>
+                    <td>${merchant.businessType.charAt(0).toUpperCase() + merchant.businessType.slice(1)}</td>
+                    <td>${new Date(merchant.registrationDate).toLocaleDateString('en-IN')}</td>
+                    <td>
+                        <button class="action-btn btn-view" onclick='viewRelationship(${JSON.stringify(merchant)})'>
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewClient(clientId) {
+            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            const clientMerchants = merchants.filter(m => m.clientId === clientId);
+            
+            alert(`Client Details:\n\nClient ID: ${clientId}\nTotal Merchants: ${clientMerchants.length}\n\nMerchants:\n${clientMerchants.map(m => `- ${m.businessName} (${m.merchantId})`).join('\n') || 'No merchants yet'}`);
+        }
+
+        function viewMerchant(merchant) {
+            alert(`Merchant Details:\n\nMerchant ID: ${merchant.merchantId}\nBusiness: ${merchant.businessName}\nType: ${merchant.businessType}\nEmail: ${merchant.email}\nPhone: ${merchant.phone}\n\nClient: ${merchant.clientName}\nClient ID: ${merchant.clientId}\n\nBank: ${merchant.bankName}\nAccount: ${merchant.accountNumber}\nIFSC: ${merchant.ifscCode}\n\nAPI Key: ${merchant.apiKey}`);
+        }
+
+        function viewRelationship(merchant) {
+            alert(`Relationship Details:\n\nClient: ${merchant.clientName}\nClient ID: ${merchant.clientId}\n\nMerchant: ${merchant.businessName}\nMerchant ID: ${merchant.merchantId}\n\nRegistration Date: ${new Date(merchant.registrationDate).toLocaleString('en-IN')}\nStatus: ${merchant.status}\n\nAPI Key: ${merchant.apiKey}`);
+        }
+
         function openCreateModal() {
             document.getElementById('createModal').classList.add('active');
         }
@@ -839,11 +1158,13 @@
             alert('Viewing instance: ' + id + '\n\nThis will show detailed information about the gateway instance including:\n- Client details\n- Transaction history\n- Revenue statistics\n- API usage\n- Settings');
         }
 
-        // Load instances count
+        // Load data on page load
         window.addEventListener('load', function() {
+            loadMerchants();
+            
             const instances = JSON.parse(localStorage.getItem('gatewayInstances') || '[]');
             if (instances.length > 0) {
-                document.getElementById('totalInstances').textContent = 5 + instances.length;
+                // Update instance count if needed
             }
         });
     </script>
