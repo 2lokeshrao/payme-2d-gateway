@@ -217,7 +217,7 @@
             <ul class="nav-menu">
                 <li><a href="dashboard.html">📊 Dashboard</a></li>
                 <li><a href="transactions.html">💰 Transactions</a></li>
-                <li><a href="subscription.html">💎 Subscription</a></li>
+                <li><a href="pricing.html">💎 Subscription</a></li>
                 <li><a href="self-payment-settings.html" class="active">⚙️ Self Payment</a></li>
                 <li><a href="#" onclick="logout()">🚪 Logout</a></li>
             </ul>
@@ -232,7 +232,7 @@
         <!-- Subscription Alert -->
         <div class="subscription-alert" id="subscriptionAlert">
             <h3 style="margin: 0 0 10px 0;">🔒 Subscription Required</h3>
-            <p style="margin: 0;">You need an active subscription to use self-payment features. <a href="subscription.html" style="color: white; text-decoration: underline;">Subscribe Now</a></p>
+            <p style="margin: 0;">You need an active subscription to use self-payment features. <a href="pricing.html" style="color: white; text-decoration: underline;">Subscribe Now</a></p>
         </div>
 
         <!-- Bank Account Settings -->
@@ -483,7 +483,7 @@
             if (!hasActiveSubscription) {
                 document.getElementById('bankEnabled').checked = false;
                 alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
-                window.location.href = 'subscription.html';
+                window.location.href = 'pricing.html';
                 return;
             }
 
@@ -500,7 +500,7 @@
             if (!hasActiveSubscription) {
                 document.getElementById('upiEnabled').checked = false;
                 alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
-                window.location.href = 'subscription.html';
+                window.location.href = 'pricing.html';
                 return;
             }
 
@@ -518,7 +518,7 @@
             if (!hasActiveSubscription) {
                 document.getElementById('cryptoEnabled').checked = false;
                 alert('⚠️ Subscription Required\n\nYou need an active subscription to use self-payment features.\n\nPlease subscribe to continue.');
-                window.location.href = 'subscription.html';
+                window.location.href = 'pricing.html';
                 return;
             }
 
