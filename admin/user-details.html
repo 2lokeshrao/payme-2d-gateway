@@ -577,6 +577,92 @@
             </div>
         </div>
     </div>
+    <script>
+        // Get user ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id') || '1';
+
+        // Edit User Function
+        function editUser() {
+            const userName = document.querySelector('.profile-info h2').textContent;
+            const userEmail = document.querySelector('.profile-info p').textContent;
+            
+            const newName = prompt('Edit User Name:', userName);
+            if (newName && newName.trim() !== '') {
+                document.querySelector('.profile-info h2').textContent = newName;
+                alert('✅ User name updated successfully!');
+            }
+        }
+
+        // Verify Email Function
+        function verifyEmail() {
+            const emailBadge = document.querySelector('.badge-warning');
+            if (confirm('Are you sure you want to verify this user\'s email?')) {
+                emailBadge.textContent = 'Email Verified';
+                emailBadge.classList.remove('badge-warning');
+                emailBadge.classList.add('badge-success');
+                alert('✅ Email verified successfully!');
+            }
+        }
+
+        // Reset Password Function
+        function resetPassword() {
+            if (confirm('Are you sure you want to reset this user\'s password? A new password will be sent to their email.')) {
+                const newPassword = 'PayMe' + Math.floor(Math.random() * 10000);
+                alert('✅ Password reset successfully!\n\nNew temporary password: ' + newPassword + '\n\nPassword has been sent to user\'s email.');
+            }
+        }
+
+        // Block User Function
+        function blockUser() {
+            const statusBadge = document.querySelector('.badge-success');
+            const isBlocked = statusBadge.textContent === 'Blocked';
+            
+            if (isBlocked) {
+                if (confirm('Are you sure you want to unblock this user?')) {
+                    statusBadge.textContent = 'Active';
+                    statusBadge.classList.remove('badge-danger');
+                    statusBadge.classList.add('badge-success');
+                    document.querySelector('.btn-danger:nth-of-type(1)').innerHTML = '<i class="fas fa-ban"></i> Block User';
+                    alert('✅ User unblocked successfully!');
+                }
+            } else {
+                if (confirm('Are you sure you want to block this user? They will not be able to login or make transactions.')) {
+                    statusBadge.textContent = 'Blocked';
+                    statusBadge.classList.remove('badge-success');
+                    statusBadge.classList.add('badge-danger');
+                    document.querySelector('.btn-danger:nth-of-type(1)').innerHTML = '<i class="fas fa-check-circle"></i> Unblock User';
+                    alert('⚠️ User blocked successfully!');
+                }
+            }
+        }
+
+        // Delete User Function
+        function deleteUser() {
+            const userName = document.querySelector('.profile-info h2').textContent;
+            const confirmation = prompt('⚠️ WARNING: This action cannot be undone!\n\nType "DELETE" to confirm deletion of user: ' + userName);
+            
+            if (confirmation === 'DELETE') {
+                alert('✅ User deleted successfully! Redirecting to users page...');
+                setTimeout(() => {
+                    window.location.href = 'users.html';
+                }, 1500);
+            } else if (confirmation !== null) {
+                alert('❌ Deletion cancelled. Please type "DELETE" exactly to confirm.');
+            }
+        }
+
+        // Add event listeners to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.action-buttons .btn');
+            
+            buttons[0].onclick = editUser;        // Edit User
+            buttons[1].onclick = verifyEmail;     // Verify Email
+            buttons[2].onclick = resetPassword;   // Reset Password
+            buttons[3].onclick = blockUser;       // Block User
+            buttons[4].onclick = deleteUser;      // Delete User
+        });
+    </script>
     <script src="responsive-menu.js"></script>
     <script src="load-navbar.js"></script>
 </body>

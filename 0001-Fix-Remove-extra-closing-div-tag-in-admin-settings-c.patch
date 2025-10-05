@@ -1,0 +1,25 @@
+From 34ced9875bda63f5d1862ee921f95ef7fbce95b2 Mon Sep 17 00:00:00 2001
+From: Inspire with AI <23inspirewithai@gmail.com>
+Date: Sun, 5 Oct 2025 07:04:12 +0530
+Subject: [PATCH] Fix: Remove extra closing div tag in admin settings causing
+ layout issues
+
+---
+ admin/settings.html | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/admin/settings.html b/admin/settings.html
+index 0ac378f..fea72e2 100644
+--- a/admin/settings.html
++++ b/admin/settings.html
+@@ -578,7 +578,6 @@
+ 
+     <button class="btn-save-crypto" onclick="saveSettings('crypto')">💾 Save Crypto Settings</button>
+ </div>
+-                </div>
+ 
+                 <!-- Security Settings -->
+                 <div id="security-section" class="settings-section">
+-- 
+2.34.1
+
