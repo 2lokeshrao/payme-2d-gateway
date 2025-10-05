@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - PayMe 2D Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 17px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .stat-label {
+            font-size: 17px;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .tabs {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            background: #f3f4f6;
+            color: #6b7280;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .tab:hover {
+            background: #e5e7eb;
+        }
+
+        .tab.active:hover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .content-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .search-box {
+            position: relative;
+            width: 350px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+
+        th {
+            padding: 18px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 18px;
+            font-size: 16px;
+            color: #4b5563;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            margin-right: 5px;
+        }
+
+        .action-btn.view {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .action-btn.view:hover {
+            background: #bfdbfe;
+        }
+
+        .action-btn.edit {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .action-btn.edit:hover {
+            background: #fde68a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .relationship-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #ede9fe;
+            color: #6d28d9;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1><i class="fas fa-shield-alt"></i> Admin Panel</h1>
+                <p>Complete system overview and management</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700; color: #1f2937;">Super Admin</div>
+                <div style="font-size: 14px; color: #6b7280;">admin@payme2d.com</div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-label">Total Clients</div>
+                <div class="stat-value" id="totalClients">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="stat-label">Total Merchants</div>
+                <div class="stat-value" id="totalMerchants">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">₹5,67,890</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-label">Total Transactions</div>
+                <div class="stat-value">2,456</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('clients')">
+                <i class="fas fa-users"></i> Clients
+            </button>
+            <button class="tab" onclick="switchTab('merchants')">
+                <i class="fas fa-store"></i> Merchants
+            </button>
+            <button class="tab" onclick="switchTab('relationships')">
+                <i class="fas fa-link"></i> Client-Merchant Relationships
+            </button>
+        </div>
+
+        <!-- Clients Tab -->
+        <div class="content-card tab-content active" id="clients-tab">
+            <div class="content-header">
+                <h2><i class="fas fa-users"></i> All Clients</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search clients..." onkeyup="searchTable('clientsTable', this.value)">
+                </div>
+            </div>
+
+            <table id="clientsTable">
+                <thead>
+                    <tr>
+                        <th>Client ID</th>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Merchants</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                    <!-- Sample Data -->
+                    <tr>
+                        <td><strong>CLIENT_12345</strong></td>
+                        <td>PayMe Gateway Solutions</td>
+                        <td>contact@paymesolutions.com</td>
+                        <td>+91 9876543210</td>
+                        <td><span style="font-weight: 700; color: #7c3aed;" id="client-12345-merchants">0</span></td>
+                        <td><span class="status-badge active">Active</span></td>
+                        <td>
+                            <button class="action-btn view" onclick="viewClient('CLIENT_12345')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="action-btn edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>CLIENT_67890</strong></td>
+                        <td>Digital Payment Hub</td>
+                        <td>info@digitalpayment.com</td>
+                        <td>+91 9876543211</td>
+                        <td><span style="font-weight: 700; color: #7c3aed;">0</span></td>
+                        <td><span class="status-badge active">Active</span></td>
+                        <td>
+                            <button class="action-btn view" onclick="viewClient('CLIENT_67890')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="action-btn edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Merchants Tab -->
+        <div class="content-card tab-content" id="merchants-tab">
+            <div class="content-header">
+                <h2><i class="fas fa-store"></i> All Merchants</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search merchants..." onkeyup="searchTable('merchantsTable', this.value)">
+                </div>
+            </div>
+
+            <table id="merchantsTable">
+                <thead>
+                    <tr>
+                        <th>Merchant ID</th>
+                        <th>Business Name</th>
+                        <th>Type</th>
+                        <th>Email</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="merchantsTableBody">
+                    <!-- Will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Relationships Tab -->
+        <div class="content-card tab-content" id="relationships-tab">
+            <div class="content-header">
+                <h2><i class="fas fa-link"></i> Client-Merchant Relationships</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search relationships..." onkeyup="searchTable('relationshipsTable', this.value)">
+                </div>
+            </div>
+
+            <table id="relationshipsTable">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Client ID</th>
+                        <th>Merchant</th>
+                        <th>Merchant ID</th>
+                        <th>Business Type</th>
+                        <th>Registration Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="relationshipsTableBody">
+                    <!-- Will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked button
+            event.target.closest('.tab').classList.add('active');
+        }
+
+        function searchTable(tableId, searchTerm) {
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (let row of rows) {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        function loadMerchants() {
+            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            const merchantsTableBody = document.getElementById('merchantsTableBody');
+            const relationshipsTableBody = document.getElementById('relationshipsTableBody');
+
+            // Update stats
+            document.getElementById('totalMerchants').textContent = merchants.length;
+
+            // Update client merchant count
+            const clientMerchantCount = {};
+            merchants.forEach(m => {
+                clientMerchantCount[m.clientId] = (clientMerchantCount[m.clientId] || 0) + 1;
+            });
+
+            Object.keys(clientMerchantCount).forEach(clientId => {
+                const elem = document.getElementById(`client-${clientId.toLowerCase()}-merchants`);
+                if (elem) {
+                    elem.textContent = clientMerchantCount[clientId];
+                }
+            });
+
+            // Populate merchants table
+            if (merchants.length === 0) {
+                merchantsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No merchants registered yet</td></tr>';
+                relationshipsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No relationships found</td></tr>';
+                return;
+            }
+
+            merchantsTableBody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td><strong>${merchant.merchantId}</strong></td>
+                    <td>${merchant.businessName}</td>
+                    <td>${merchant.businessType.charAt(0).toUpperCase() + merchant.businessType.slice(1)}</td>
+                    <td>${merchant.email}</td>
+                    <td><span class="relationship-badge">${merchant.clientName}</span></td>
+                    <td><span class="status-badge ${merchant.status}">${merchant.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+                    <td>
+                        <button class="action-btn view" onclick='viewMerchant(${JSON.stringify(merchant)})'>
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="action-btn edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Populate relationships table
+            relationshipsTableBody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td><strong>${merchant.clientName}</strong></td>
+                    <td>${merchant.clientId}</td>
+                    <td><strong>${merchant.businessName}</strong></td>
+                    <td>${merchant.merchantId}</td>
+                    <td>${merchant.businessType.charAt(0).toUpperCase() + merchant.businessType.slice(1)}</td>
+                    <td>${new Date(merchant.registrationDate).toLocaleDateString('en-IN')}</td>
+                    <td>
+                        <button class="action-btn view" onclick='viewRelationship(${JSON.stringify(merchant)})'>
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewClient(clientId) {
+            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            const clientMerchants = merchants.filter(m => m.clientId === clientId);
+            
+            alert(`Client Details:\n\nClient ID: ${clientId}\nTotal Merchants: ${clientMerchants.length}\n\nMerchants:\n${clientMerchants.map(m => `- ${m.businessName} (${m.merchantId})`).join('\n')}`);
+        }
+
+        function viewMerchant(merchant) {
+            alert(`Merchant Details:\n\nMerchant ID: ${merchant.merchantId}\nBusiness: ${merchant.businessName}\nType: ${merchant.businessType}\nEmail: ${merchant.email}\nPhone: ${merchant.phone}\n\nClient: ${merchant.clientName}\nClient ID: ${merchant.clientId}\n\nBank: ${merchant.bankName}\nAccount: ${merchant.accountNumber}\nIFSC: ${merchant.ifscCode}\n\nAPI Key: ${merchant.apiKey}`);
+        }
+
+        function viewRelationship(merchant) {
+            alert(`Relationship Details:\n\nClient: ${merchant.clientName}\nClient ID: ${merchant.clientId}\n\nMerchant: ${merchant.businessName}\nMerchant ID: ${merchant.merchantId}\n\nRegistration Date: ${new Date(merchant.registrationDate).toLocaleString('en-IN')}\nStatus: ${merchant.status}\n\nAPI Key: ${merchant.apiKey}`);
+        }
+
+        // Load data on page load
+        loadMerchants();
+
+        // Update client count
+        document.getElementById('totalClients').textContent = '2'; // Sample data
+    </script>
+</body>
+</html>
