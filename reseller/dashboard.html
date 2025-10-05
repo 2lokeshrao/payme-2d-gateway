@@ -711,13 +711,59 @@
         }
 
         // Request payout
+
+        // Request Payout - Open modal
         function requestPayout() {
+            // Get current reseller data
+            const resellerData = JSON.parse(localStorage.getItem('currentReseller') || '{}');
             const pendingAmount = document.getElementById('pendingPayment').textContent;
-            if(confirm(`💰 Request payout of ${pendingAmount}?\n\nPayment will be processed within 3-5 business days.`)) {
-                alert('✅ Payout request submitted successfully!\n\nYou will receive payment in your registered account.');
-            }
+            
+            // Update modal with current data
+            document.getElementById('payoutAmount').textContent = pendingAmount;
+            document.getElementById('payoutBankInfo').innerHTML = `<strong>Bank:</strong> ${resellerData.bankName || 'State Bank of India'}`;
+            
+            // Mask account number
+            const maskedAccount = '****' + (resellerData.accountNumber || '0123').slice(-4);
+            document.getElementById('payoutAccountInfo').innerHTML = `<strong>Account:</strong> ${maskedAccount}`;
+            
+            // Show modal
+            document.getElementById('payoutModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
+        // Close payout modal
+        function closePayoutModal() {
+            document.getElementById('payoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Confirm payout request
+        function confirmPayout() {
+            const pendingAmount = document.getElementById('payoutAmount').textContent;
+            
+            // Create new payout request
+            const payoutRequest = {
+                id: 'PAY-' + Math.floor(Math.random() * 10000),
+                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                amount: pendingAmount,
+                status: 'Processing',
+                method: 'Bank Transfer'
+            };
+            
+            // Save to localStorage
+            let payoutHistory = JSON.parse(localStorage.getItem('payoutHistory') || '[]');
+            payoutHistory.unshift(payoutRequest);
+            localStorage.setItem('payoutHistory', JSON.stringify(payoutHistory));
+            
+            // Close modal
+            closePayoutModal();
+            
+            // Show success message
+            alert(`✅ Payout request submitted successfully!\n\nAmount: ${pendingAmount}\nRequest ID: ${payoutRequest.id}\n\nYou will receive payment in your registered account within 3-5 business days.`);
+            
+            // Reset pending payment to 0
+            document.getElementById('pendingPayment').textContent = '₹0';
+        }
         // Download receipt
         function downloadReceipt(paymentId) {
             alert(`📄 Downloading receipt for ${paymentId}...`);
@@ -815,16 +861,304 @@
             alert('🎨 Downloading banner images...');
         }
 
+        window.onload = loadResellerData;
+        // Download marketing materials
+        function downloadBanners() {
+            // Create sample banner content
+            const bannerContent = `
+PayMe 2D Gateway - Marketing Banners
+=====================================
+
+Banner 1: 728x90 (Leaderboard)
+- Headline: "Start Your Own Payment Gateway Business Today!"
+- CTA: "Get Started Now"
+- Colors: Purple gradient (#667eea to #764ba2)
+
+Banner 2: 300x250 (Medium Rectangle)
+- Headline: "Earn 20% Commission on Every Sale"
+- CTA: "Join as Reseller"
+- Colors: Purple gradient
+
+Banner 3: 160x600 (Wide Skyscraper)
+- Headline: "PayMe 2D Gateway - Trusted by 1000+ Merchants"
+- CTA: "Learn More"
+- Colors: Purple gradient
+
+Banner 4: 320x50 (Mobile Banner)
+- Headline: "Payment Gateway Made Easy"
+- CTA: "Start Now"
+- Colors: Purple gradient
+
+Download these banners from: https://payme2d.com/marketing/banners/
+Your Referral Code: AFF-12345
+`;
+            
+            // Create and download file
+            const blob = new Blob([bannerContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PayMe-Banner-Images.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('🎨 Banner images guide downloaded successfully!\n\nCheck your downloads folder for "PayMe-Banner-Images.txt"');
+        }
+
         function downloadTemplates() {
-            alert('📧 Downloading email templates...');
+            // Create sample email template
+            const templateContent = `
+PayMe 2D Gateway - Email Templates
+===================================
+
+Template 1: Introduction Email
+-------------------------------
+Subject: Start Your Own Payment Gateway Business - Earn 20% Commission!
+
+Hi [Name],
+
+I wanted to share an exciting opportunity with you!
+
+PayMe 2D Gateway is a complete payment gateway solution that allows you to:
+✅ Accept payments from customers
+✅ Manage transactions easily
+✅ Get instant settlements
+✅ 24/7 customer support
+
+As a reseller, you can earn 20% commission on every sale!
+
+Get started today: [Your Referral Link]
+
+Best regards,
+[Your Name]
+
+---
+
+Template 2: Follow-up Email
+---------------------------
+Subject: Quick Question About Payment Gateway?
+
+Hi [Name],
+
+I noticed you were interested in payment gateway solutions.
+
+PayMe 2D Gateway offers:
+• Monthly Plan: ₹99/month
+• Yearly Plan: ₹999/year (Save 17%)
+• Lifetime Plan: ₹4,999 (One-time payment)
+
+All plans include unlimited transactions and premium support.
+
+Ready to get started? [Your Referral Link]
+
+Questions? Just reply to this email!
+
+Best,
+[Your Name]
+
+---
+
+Template 3: Special Offer Email
+-------------------------------
+Subject: 🎉 Limited Time Offer - Save 20% on PayMe 2D Gateway!
+
+Hi [Name],
+
+Great news! For a limited time, get 20% OFF on all PayMe 2D Gateway plans!
+
+Use code: SAVE20
+
+This offer expires in 48 hours, so don't miss out!
+
+Get your discount now: [Your Referral Link]
+
+Cheers,
+[Your Name]
+
+---
+
+Your Referral Link: [Add your unique link here]
+Your Affiliate ID: AFF-12345
+`;
+            
+            // Create and download file
+            const blob = new Blob([templateContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PayMe-Email-Templates.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('📧 Email templates downloaded successfully!\n\nCheck your downloads folder for "PayMe-Email-Templates.txt"');
         }
 
         function downloadSocialMedia() {
-            alert('📱 Downloading social media content...');
-        }
+            // Create sample social media content
+            const socialContent = `
+PayMe 2D Gateway - Social Media Content
+========================================
 
-        // Load data on page load
-        window.onload = loadResellerData;
+Facebook Posts
+--------------
+
+Post 1:
+🚀 Start your own payment gateway business today!
+
+With PayMe 2D Gateway, you can:
+✅ Accept payments instantly
+✅ Manage all transactions in one place
+✅ Get 24/7 support
+✅ Earn as a reseller (20% commission!)
+
+Get started now: [Your Referral Link]
+
+#PaymentGateway #Business #Entrepreneur #PayMe2D
+
+---
+
+Post 2:
+💰 Want to earn passive income?
+
+Become a PayMe 2D Gateway reseller and earn 20% commission on every sale!
+
+No investment required. Just share your unique link and start earning!
+
+Join now: [Your Referral Link]
+
+#PassiveIncome #AffiliateMarketing #PaymentGateway
+
+---
+
+Instagram Posts
+---------------
+
+Post 1:
+🎯 Payment Gateway Made Simple!
+
+PayMe 2D Gateway offers:
+• Easy integration
+• Instant settlements
+• Secure transactions
+• Affordable pricing
+
+Start today! Link in bio 👆
+
+#PayMe2D #PaymentGateway #Business #Startup
+
+---
+
+Post 2:
+💸 Earn While You Sleep!
+
+Join our reseller program:
+✨ 20% commission per sale
+✨ No investment needed
+✨ Lifetime earnings
+✨ Marketing support
+
+DM for details or check link in bio!
+
+#AffiliateMarketing #PassiveIncome #SideHustle
+
+---
+
+Twitter/X Posts
+---------------
+
+Post 1:
+🚀 Looking for a reliable payment gateway?
+
+PayMe 2D Gateway:
+✅ Easy setup
+✅ Secure payments
+✅ 24/7 support
+✅ Affordable plans
+
+Get started: [Your Referral Link]
+
+#PaymentGateway #Fintech
+
+---
+
+Post 2:
+💰 Earn 20% commission as a PayMe 2D Gateway reseller!
+
+No investment. Just share & earn.
+
+Join now: [Your Referral Link]
+
+#AffiliateProgram #PassiveIncome
+
+---
+
+LinkedIn Posts
+--------------
+
+Post 1:
+Excited to share PayMe 2D Gateway - a comprehensive payment gateway solution for businesses of all sizes!
+
+Key Features:
+• Seamless integration
+• Real-time transaction monitoring
+• Multiple payment methods
+• Competitive pricing
+• Excellent customer support
+
+Perfect for startups, SMEs, and enterprises looking to streamline their payment processes.
+
+Learn more: [Your Referral Link]
+
+#PaymentGateway #Fintech #BusinessSolutions #PayMe2D
+
+---
+
+Post 2:
+Looking for a lucrative partnership opportunity?
+
+PayMe 2D Gateway's reseller program offers:
+• 20% commission on every sale
+• Comprehensive marketing materials
+• Dedicated support team
+• Recurring income potential
+
+Ideal for digital marketers, business consultants, and entrepreneurs.
+
+Interested? Let's connect!
+
+#Partnership #AffiliateMarketing #BusinessOpportunity
+
+---
+
+Your Referral Link: [Add your unique link here]
+Your Affiliate ID: AFF-12345
+
+Tips for Social Media:
+1. Post consistently (3-4 times per week)
+2. Use relevant hashtags
+3. Engage with comments
+4. Share success stories
+5. Create video content
+6. Run contests/giveaways
+`;
+            
+            // Create and download file
+            const blob = new Blob([socialContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PayMe-Social-Media-Content.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('📱 Social media content downloaded successfully!\n\nCheck your downloads folder for "PayMe-Social-Media-Content.txt"');
+        }
     </script>
     <!-- Edit Account Modal -->
     <div id="editAccountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
@@ -870,4 +1204,31 @@
     </div>
 
 </body>
+    <!-- Request Payout Modal -->
+    <div id="payoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+        <div style="background: white; max-width: 500px; margin: 50px auto; border-radius: 15px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin: 0; color: #667eea;"><i class="fas fa-wallet"></i> Request Payout</h2>
+                <button onclick="closePayoutModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                <p style="color: white; margin: 0; font-size: 14px; opacity: 0.9;">Pending Amount</p>
+                <h1 style="color: white; margin: 10px 0; font-size: 36px;" id="payoutAmount">₹12,450</h1>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="margin: 0 0 10px 0; color: #333;">Payment will be sent to:</h4>
+                <p style="margin: 5px 0; color: #666; font-size: 14px;" id="payoutBankInfo"><strong>Bank:</strong> State Bank of India</p>
+                <p style="margin: 5px 0; color: #666; font-size: 14px;" id="payoutAccountInfo"><strong>Account:</strong> ****0123</p>
+                <p style="margin: 5px 0; color: #666; font-size: 14px;"><strong>Processing Time:</strong> 3-5 business days</p>
+            </div>
+            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <p style="margin: 0; color: #856404; font-size: 13px;"><i class="fas fa-info-circle"></i> <strong>Note:</strong> Minimum payout amount is ₹1,000. You can request payout once per week.</p>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button onclick="closePayoutModal()" style="padding: 12px 24px; background: #f0f0f0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #666;">Cancel</button>
+                <button onclick="confirmPayout()" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="fas fa-check"></i> Confirm Request</button>
+            </div>
+        </div>
+    </div>
+
 </html>
