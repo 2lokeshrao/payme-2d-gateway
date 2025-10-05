@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Successful - PayMe 2D Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon i {
+            font-size: 50px;
+            color: white;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .plan-info {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .plan-info h2 {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .features-activated {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .features-activated h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .features-activated ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-activated li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+        }
+
+        .features-activated li i {
+            color: #10b981;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .transaction-id {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 30px 20px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <h1>🎉 Upgrade Successful!</h1>
+        <p class="success-message">
+            Congratulations! Your account has been successfully upgraded. All premium features are now activated and ready to use.
+        </p>
+
+        <div class="plan-info">
+            <h2 id="planName">Business Plan</h2>
+            <p style="color: #666; font-size: 14px;">Your new plan is now active</p>
+
+            <div class="features-activated">
+                <h3>✨ Features Activated</h3>
+                <ul id="featuresList">
+                    <li><i class="fas fa-check-circle"></i> Increased transaction limit to ₹5L/month</li>
+                    <li><i class="fas fa-check-circle"></i> Priority customer support</li>
+                    <li><i class="fas fa-check-circle"></i> Custom branding options</li>
+                    <li><i class="fas fa-check-circle"></i> Advanced analytics dashboard</li>
+                    <li><i class="fas fa-check-circle"></i> Multiple payment methods</li>
+                    <li><i class="fas fa-check-circle"></i> API rate limit increased</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="transaction-id">
+            <strong>Transaction ID:</strong> <span id="transactionId">TXN-2025-001234</span>
+        </div>
+
+        <div class="action-buttons">
+            <a href="dashboard.html" class="btn btn-primary">
+                <i class="fas fa-home"></i> Go to Dashboard
+            </a>
+            <a href="settings.html" class="btn btn-secondary">
+                <i class="fas fa-cog"></i> View Settings
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Get plan details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan') || 'business';
+
+        // Update plan name
+        const planNames = {
+            'business': 'Business Plan',
+            'enterprise': 'Enterprise Plan'
+        };
+        document.getElementById('planName').textContent = planNames[plan] || 'Business Plan';
+
+        // Generate transaction ID
+        const transactionId = 'TXN-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000000);
+        document.getElementById('transactionId').textContent = transactionId;
+
+        // Update localStorage with new plan
+        localStorage.setItem('userPlan', plan);
+        localStorage.setItem('accountType', plan);
+        localStorage.setItem('accountTypeText', planNames[plan]);
+        localStorage.setItem('transactionId', transactionId);
+
+        // Show confetti effect (optional)
+        console.log('🎉 Plan upgraded successfully!');
+    </script>
+</body>
+</html>
