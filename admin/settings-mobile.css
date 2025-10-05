@@ -33,18 +33,42 @@
         width: 100% !important;
         padding: 12px 15px !important;
         font-size: 14px !important;
+        text-align: left !important;
     }
     
     .settings-section {
         width: 100% !important;
     }
     
+    .section-title {
+        font-size: 20px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Crypto Wallet Cards - Single Column on Mobile */
+    .crypto-wallet-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .crypto-wallet-card {
+        width: 100% !important;
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .crypto-wallet-card h4 {
+        font-size: 16px !important;
+    }
+    
+    /* Form Groups */
     .form-group {
         margin-bottom: 15px !important;
     }
     
     .form-group label {
         font-size: 13px !important;
+        margin-bottom: 6px !important;
     }
     
     .form-group input,
@@ -52,12 +76,55 @@
     .form-group textarea {
         font-size: 14px !important;
         padding: 10px !important;
+        width: 100% !important;
     }
     
-    .btn {
+    /* Setting Items */
+    .setting-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 12px !important;
+    }
+    
+    .setting-item-info {
+        margin-bottom: 10px !important;
+        width: 100% !important;
+    }
+    
+    .setting-item-info h4 {
+        font-size: 14px !important;
+    }
+    
+    .setting-item-info p {
+        font-size: 12px !important;
+    }
+    
+    .toggle-switch {
+        align-self: flex-end !important;
+    }
+    
+    /* Buttons */
+    .btn,
+    .btn-save,
+    .btn-save-crypto {
         width: 100% !important;
         padding: 12px !important;
         font-size: 14px !important;
+        margin-top: 10px !important;
+    }
+    
+    /* Payment Gateway Section */
+    #payment-section .form-group,
+    #api-section .form-group {
+        margin-bottom: 15px !important;
+    }
+    
+    /* Security Note Box */
+    .security-note,
+    .info-box {
+        padding: 12px !important;
+        font-size: 13px !important;
+        margin-bottom: 15px !important;
     }
 }
 
@@ -66,10 +133,11 @@
     .settings-container {
         gap: 15px !important;
         margin-top: 15px !important;
+        padding: 0 10px !important;
     }
     
     .settings-sidebar {
-        padding: 15px !important;
+        padding: 12px !important;
     }
     
     .settings-content {
@@ -83,5 +151,47 @@
     
     .section-title {
         font-size: 18px !important;
+    }
+    
+    .crypto-wallet-card {
+        padding: 12px !important;
+    }
+    
+    .crypto-wallet-card h4 {
+        font-size: 15px !important;
+    }
+    
+    .form-group label {
+        font-size: 12px !important;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 13px !important;
+        padding: 8px !important;
+    }
+    
+    .setting-item {
+        padding: 10px !important;
+    }
+    
+    .setting-item-info h4 {
+        font-size: 13px !important;
+    }
+    
+    .setting-item-info p {
+        font-size: 11px !important;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .settings-container {
+        margin-top: 10px !important;
+    }
+    
+    .settings-sidebar {
+        margin-bottom: 15px !important;
     }
 }
