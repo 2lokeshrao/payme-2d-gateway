@@ -724,10 +724,92 @@
         }
 
         // Edit account
+
+        // Edit account - Open modal with current data
         function editAccount() {
-            alert('✏️ Opening account settings...');
+            // Get current data from localStorage or use defaults
+            const resellerData = JSON.parse(localStorage.getItem('currentReseller') || '{}');
+            
+            // Populate form with current data
+            document.getElementById('editBankName').value = resellerData.bankName || 'HDFC Bank';
+            document.getElementById('editAccountNumber').value = resellerData.accountNumber || '1234567890';
+            document.getElementById('editIfscCode').value = resellerData.ifscCode || 'HDFC0001234';
+            document.getElementById('editAccountHolder').value = resellerData.accountHolder || 'Affiliate Partner';
+            document.getElementById('editUpiId').value = resellerData.upiId || '9876543210@paytm';
+            
+            // Show modal
+            document.getElementById('editAccountModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editAccountModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Save account details
+        function saveAccountDetails(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const bankName = document.getElementById('editBankName').value;
+            const accountNumber = document.getElementById('editAccountNumber').value;
+            const ifscCode = document.getElementById('editIfscCode').value.toUpperCase();
+            const accountHolder = document.getElementById('editAccountHolder').value;
+            const upiId = document.getElementById('editUpiId').value;
+            
+            // Get current reseller data
+            const resellerData = JSON.parse(localStorage.getItem('currentReseller') || '{}');
+            
+            // Update with new values
+            resellerData.bankName = bankName;
+            resellerData.accountNumber = accountNumber;
+            resellerData.ifscCode = ifscCode;
+            resellerData.accountHolder = accountHolder;
+            resellerData.upiId = upiId;
+            
+            // Save to localStorage
+            localStorage.setItem('currentReseller', JSON.stringify(resellerData));
+            
+            // Update display on page
+            updateAccountDisplay();
+            
+            // Close modal
+            closeEditModal();
+            
+            // Show success message
+            alert('✅ Payment account details updated successfully!');
+        }
+
+        // Update account display on page
+        function updateAccountDisplay() {
+            const resellerData = JSON.parse(localStorage.getItem('currentReseller') || '{}');
+            
+            // Update Bank Account section
+            const bankSection = document.querySelector('#settings .section-header').nextElementSibling;
+            const bankCard = bankSection.querySelector('div:first-child');
+            
+            // Mask account number (show last 4 digits)
+            const maskedAccount = '****' + (resellerData.accountNumber || '4567').slice(-4);
+            
+            bankCard.innerHTML = `
+                <h4 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-university"></i> Bank Account</h4>
+                <p style="color: #666; font-size: 14px; margin-bottom: 8px;"><strong>Bank Name:</strong> ${resellerData.bankName || 'HDFC Bank'}</p>
+                <p style="color: #666; font-size: 14px; margin-bottom: 8px;"><strong>Account Number:</strong> ${maskedAccount}</p>
+                <p style="color: #666; font-size: 14px; margin-bottom: 8px;"><strong>IFSC Code:</strong> ${resellerData.ifscCode || 'HDFC0001234'}</p>
+                <p style="color: #666; font-size: 14px;"><strong>Account Holder:</strong> <span id="accountHolder">${resellerData.accountHolder || 'Affiliate Partner'}</span></p>
+            `;
+            
+            // Update UPI section
+            const upiCard = bankSection.querySelector('div:last-child');
+            upiCard.innerHTML = `
+                <h4 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-mobile-alt"></i> UPI Details</h4>
+                <p style="color: #666; font-size: 14px; margin-bottom: 8px;"><strong>UPI ID:</strong> <span id="upiId">${resellerData.upiId || '9876543210@paytm'}</span></p>
+                <p style="color: #666; font-size: 14px; margin-bottom: 8px;"><strong>Status:</strong> <span class="status-badge status-active">Verified</span></p>
+                <p style="color: #666; font-size: 14px;"><strong>Preferred Method:</strong> Bank Transfer</p>
+            `;
+        }
         // Download marketing materials
         function downloadBanners() {
             alert('🎨 Downloading banner images...');
@@ -744,5 +826,48 @@
         // Load data on page load
         window.onload = loadResellerData;
     </script>
+    <!-- Edit Account Modal -->
+    <div id="editAccountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+        <div style="background: white; max-width: 600px; margin: 50px auto; border-radius: 15px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin: 0; color: #667eea;"><i class="fas fa-edit"></i> Edit Payment Account</h2>
+                <button onclick="closeEditModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            <form id="editAccountForm" onsubmit="saveAccountDetails(event)">
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-university"></i> Bank Account Details</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Bank Name</label>
+                        <input type="text" id="editBankName" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Account Number</label>
+                        <input type="text" id="editAccountNumber" required pattern="[0-9]{9,18}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">IFSC Code</label>
+                        <input type="text" id="editIfscCode" required pattern="[A-Z]{4}0[A-Z0-9]{6}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; text-transform: uppercase;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Account Holder Name</label>
+                        <input type="text" id="editAccountHolder" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-mobile-alt"></i> UPI Details</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">UPI ID</label>
+                        <input type="text" id="editUpiId" required pattern="[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                        <small style="color: #666;">Example: 9876543210@paytm</small>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" onclick="closeEditModal()" style="padding: 12px 24px; background: #f0f0f0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #666;">Cancel</button>
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
