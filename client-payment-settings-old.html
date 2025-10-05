@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Settings - PayMe 2D Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,101 +15,76 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f7fa;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .header-top {
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .navbar h1 {
+            font-size: 22px;
         }
 
-        .back-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 14px 28px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.2s;
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
-        .back-btn:hover {
-            transform: translateY(-2px);
+        .page-header {
+            margin-bottom: 30px;
         }
 
-        .header p {
-            font-size: 18px;
+        .page-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
             color: #666;
-            line-height: 1.6;
+            font-size: 15px;
         }
 
         .settings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
         }
 
         .settings-card {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .settings-card:hover {
-            transform: translateY(-5px);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 3px solid #f0f0f0;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .card-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 24px;
             color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .card-icon.upi {
@@ -124,46 +99,124 @@
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
 
-        .card-icon.gateway {
+        .card-icon.card {
             background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
         }
 
         .card-title h3 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 5px;
         }
 
         .card-title p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
-            color: #6b7280;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        .current-details {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            border-left: 5px solid #10b981;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+        .btn-save:hover {
+            opacity: 0.9;
         }
 
-        .current-details h4 {
-            font-size: 20px;
-            font-weight: 700;
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
             color: #065f46;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .info-box i {
+            color: #667eea;
+            margin-right: 8px;
+        }
+
+        .saved-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .saved-details h4 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
         }
 
         .detail-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #d1fae5;
-            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .detail-item:last-child {
@@ -171,147 +224,52 @@
         }
 
         .detail-label {
-            font-weight: 600;
-            color: #047857;
+            color: #666;
+            font-size: 13px;
         }
 
         .detail-value {
-            color: #065f46;
-            font-weight: 500;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 17px;
+            color: #333;
             font-weight: 600;
-            color: #374151;
-            margin-bottom: 10px;
+            font-size: 13px;
         }
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s;
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .submit-btn.upi-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .submit-btn.bank-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-
-        .submit-btn.crypto-btn {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-
-        .submit-btn.gateway-btn {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-        }
-
-        .info-box {
-            background: #eff6ff;
-            border-left: 5px solid #3b82f6;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 25px;
-        }
-
-        .info-box p {
-            font-size: 15px;
-            color: #1e40af;
-            line-height: 1.6;
-        }
-
-        .info-box strong {
-            font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .card-title h3 {
-                font-size: 24px;
-            }
-
-            .header-top {
-                flex-direction: column;
-                gap: 20px;
-            }
+        .btn-back:hover {
+            background: #f0f4ff;
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <h1>💳 PayMe 2D Gateway</h1>
+        <div>
+            <span id="userName">Client Dashboard</span>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-top">
-                <h1>💰 Payment Settings</h1>
-                <a href="client-dashboard.html" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </a>
-            </div>
-            <p>Configure where you want to receive payments from your merchants. Add your bank account, UPI ID, crypto wallet, or payment gateway details for seamless transactions.</p>
+        <a href="client-dashboard.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="page-header">
+            <h2>💰 Payment Receiving Settings</h2>
+            <p>Configure where you want to receive payments from your merchants. Add your bank account, UPI ID, crypto wallet, or card details.</p>
         </div>
 
-        <!-- Settings Grid -->
         <div class="settings-grid">
-            <!-- UPI Payment Card -->
+            <!-- UPI Settings -->
             <div class="settings-card">
                 <div class="card-header">
                     <div class="card-icon upi">
@@ -319,49 +277,47 @@
                     </div>
                     <div class="card-title">
                         <h3>UPI Payment</h3>
-                        <p>Receive instant payments via UPI</p>
+                        <p>Receive payments via UPI</p>
                     </div>
                 </div>
 
-                <div class="current-details" id="currentUPIDetails" style="display: none;">
-                    <h4><i class="fas fa-check-circle"></i> Current UPI Details</h4>
+                <div class="saved-details" id="savedUPI" style="display: none;">
+                    <h4>✅ Current UPI Details</h4>
                     <div class="detail-item">
                         <span class="detail-label">UPI ID:</span>
-                        <span class="detail-value" id="savedUPIId"></span>
+                        <span class="detail-value" id="currentUPI">-</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Name:</span>
-                        <span class="detail-value" id="savedUPIName"></span>
+                        <span class="detail-value" id="currentUPIName">-</span>
                     </div>
                 </div>
 
-                <form id="upiForm" onsubmit="saveUPISettings(event)">
+                <form onsubmit="saveUPISettings(event)">
                     <div class="form-group">
                         <label>UPI ID *</label>
                         <input type="text" id="upiId" placeholder="yourname@paytm" required>
                     </div>
-
                     <div class="form-group">
                         <label>Account Holder Name *</label>
                         <input type="text" id="upiName" placeholder="Full name as per bank" required>
                     </div>
-
                     <div class="form-group">
                         <label>Phone Number</label>
                         <input type="tel" id="upiPhone" placeholder="9876543210">
                     </div>
-
-                    <button type="submit" class="submit-btn upi-btn">
+                    <button type="submit" class="btn-save">
                         <i class="fas fa-save"></i> Save UPI Details
                     </button>
-
-                    <div class="info-box">
-                        <p><strong>Note:</strong> Your merchants' payments will be directly sent to this UPI ID. Make sure it's active and verified.</p>
-                    </div>
                 </form>
+
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Note:</strong> Your merchants' payments will be directly sent to this UPI ID. Make sure it's active and verified.
+                </div>
             </div>
 
-            <!-- Bank Account Card -->
+            <!-- Bank Account Settings -->
             <div class="settings-card">
                 <div class="card-header">
                     <div class="card-icon bank">
@@ -373,75 +329,69 @@
                     </div>
                 </div>
 
-                <div class="current-details" id="currentBankDetails" style="display: none;">
-                    <h4><i class="fas fa-check-circle"></i> Current Bank Details</h4>
+                <div class="saved-details" id="savedBank" style="display: none;">
+                    <h4>✅ Current Bank Details</h4>
                     <div class="detail-item">
                         <span class="detail-label">Account Number:</span>
-                        <span class="detail-value" id="savedBankAccount"></span>
+                        <span class="detail-value" id="currentBankAcc">-</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">IFSC Code:</span>
-                        <span class="detail-value" id="savedIFSC"></span>
+                        <span class="detail-value" id="currentIFSC">-</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Bank Name:</span>
-                        <span class="detail-value" id="savedBankName"></span>
+                        <span class="detail-value" id="currentBankName">-</span>
                     </div>
                 </div>
 
-                <form id="bankForm" onsubmit="saveBankSettings(event)">
+                <form onsubmit="saveBankSettings(event)">
                     <div class="form-group">
                         <label>Account Holder Name *</label>
                         <input type="text" id="bankHolderName" placeholder="Full name as per bank" required>
                     </div>
-
                     <div class="form-group">
                         <label>Account Number *</label>
-                        <input type="text" id="bankAccount" placeholder="1234567890123456" required>
+                        <input type="text" id="bankAccount" placeholder="1234567890" required>
                     </div>
-
                     <div class="form-group">
                         <label>Confirm Account Number *</label>
-                        <input type="text" id="confirmBankAccount" placeholder="Re-enter account number" required>
+                        <input type="text" id="bankAccountConfirm" placeholder="Re-enter account number" required>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label>IFSC Code *</label>
                             <input type="text" id="ifscCode" placeholder="SBIN0001234" required>
                         </div>
-
                         <div class="form-group">
                             <label>Account Type *</label>
                             <select id="accountType" required>
                                 <option value="">Select Type</option>
-                                <option value="Savings">Savings</option>
-                                <option value="Current">Current</option>
+                                <option value="savings">Savings</option>
+                                <option value="current">Current</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label>Bank Name *</label>
                         <input type="text" id="bankName" placeholder="State Bank of India" required>
                     </div>
-
                     <div class="form-group">
                         <label>Branch Name</label>
                         <input type="text" id="branchName" placeholder="Mumbai Main Branch">
                     </div>
-
-                    <button type="submit" class="submit-btn bank-btn">
+                    <button type="submit" class="btn-save">
                         <i class="fas fa-save"></i> Save Bank Details
                     </button>
-
-                    <div class="info-box">
-                        <p><strong>Secure:</strong> Your bank details are encrypted and stored securely. We never share them with anyone.</p>
-                    </div>
                 </form>
+
+                <div class="info-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <strong>Secure:</strong> Your bank details are encrypted and stored securely. We never share them with anyone.
+                </div>
             </div>
 
-            <!-- Cryptocurrency Card -->
+            <!-- Crypto Wallet Settings -->
             <div class="settings-card">
                 <div class="card-header">
                     <div class="card-icon crypto">
@@ -453,42 +403,45 @@
                     </div>
                 </div>
 
-                <form id="cryptoForm" onsubmit="saveCryptoSettings(event)">
+                <div class="saved-details" id="savedCrypto" style="display: none;">
+                    <h4>✅ Current Crypto Wallets</h4>
+                    <div id="cryptoWalletsList"></div>
+                </div>
+
+                <form onsubmit="saveCryptoSettings(event)">
                     <div class="form-group">
                         <label>Cryptocurrency *</label>
                         <select id="cryptoType" required>
                             <option value="">Select Crypto</option>
-                            <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
-                            <option value="Ethereum (ETH)">Ethereum (ETH)</option>
-                            <option value="Tether (USDT)">Tether (USDT)</option>
-                            <option value="USD Coin (USDC)">USD Coin (USDC)</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="USDT">Tether (USDT)</option>
+                            <option value="USDC">USD Coin (USDC)</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Wallet Address *</label>
                         <input type="text" id="walletAddress" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb" required>
                     </div>
-
                     <div class="form-group">
                         <label>Wallet Label (Optional)</label>
-                        <input type="text" id="walletLabel" placeholder="My Business Wallet">
+                        <input type="text" id="walletLabel" placeholder="My Main Wallet">
                     </div>
-
-                    <button type="submit" class="submit-btn crypto-btn">
-                        <i class="fas fa-plus"></i> Add Crypto Wallet
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i> Add Crypto Wallet
                     </button>
-
-                    <div class="info-box" style="background: #fef3c7; border-left-color: #f59e0b;">
-                        <p style="color: #92400e;"><strong>Important:</strong> Double-check your wallet address. Crypto transactions are irreversible.</p>
-                    </div>
                 </form>
+
+                <div class="info-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> Double-check your wallet address. Crypto transactions are irreversible.
+                </div>
             </div>
 
-            <!-- Payment Gateway API Card -->
+            <!-- Card/PG Settings -->
             <div class="settings-card">
                 <div class="card-header">
-                    <div class="card-icon gateway">
+                    <div class="card-icon card">
                         <i class="fas fa-credit-card"></i>
                     </div>
                     <div class="card-title">
@@ -497,42 +450,51 @@
                     </div>
                 </div>
 
-                <form id="gatewayForm" onsubmit="saveGatewaySettings(event)">
+                <div class="saved-details" id="savedPG" style="display: none;">
+                    <h4>✅ Current Gateway</h4>
+                    <div class="detail-item">
+                        <span class="detail-label">Provider:</span>
+                        <span class="detail-value" id="currentPGProvider">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Merchant ID:</span>
+                        <span class="detail-value" id="currentMerchantID">-</span>
+                    </div>
+                </div>
+
+                <form onsubmit="savePGSettings(event)">
                     <div class="form-group">
                         <label>Payment Gateway Provider *</label>
-                        <select id="gatewayProvider" required>
+                        <select id="pgProvider" required>
                             <option value="">Select Provider</option>
-                            <option value="Razorpay">Razorpay</option>
-                            <option value="Paytm">Paytm</option>
-                            <option value="PhonePe">PhonePe</option>
-                            <option value="Cashfree">Cashfree</option>
-                            <option value="Instamojo">Instamojo</option>
+                            <option value="razorpay">Razorpay</option>
+                            <option value="paytm">Paytm</option>
+                            <option value="phonepe">PhonePe</option>
+                            <option value="cashfree">Cashfree</option>
+                            <option value="instamojo">Instamojo</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Merchant ID / Key ID *</label>
-                        <input type="text" id="merchantId" placeholder="rzp_live_abc123xyz" required>
+                        <input type="text" id="merchantId" placeholder="rzp_live_xxxxx" required>
                     </div>
-
                     <div class="form-group">
                         <label>API Secret Key *</label>
-                        <input type="password" id="apiSecret" placeholder="sk_live_xyz789abc" required>
+                        <input type="password" id="apiSecret" placeholder="Enter your API secret" required>
                     </div>
-
                     <div class="form-group">
                         <label>Webhook Secret (Optional)</label>
-                        <input type="password" id="webhookSecret" placeholder="whsec_abc123xyz">
+                        <input type="text" id="webhookSecret" placeholder="whsec_xxxxx">
                     </div>
-
-                    <button type="submit" class="submit-btn gateway-btn">
-                        <i class="fas fa-link"></i> Save Gateway Details
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i> Save Gateway Details
                     </button>
-
-                    <div class="info-box" style="background: #f3e8ff; border-left-color: #8b5cf6;">
-                        <p style="color: #5b21b6;"><strong>Integration:</strong> Connect your existing payment gateway to receive card/UPI payments directly.</p>
-                    </div>
                 </form>
+
+                <div class="info-box">
+                    <i class="fas fa-link"></i>
+                    <strong>Integration:</strong> Connect your existing payment gateway to receive card/UPI payments directly.
+                </div>
             </div>
         </div>
     </div>
@@ -547,9 +509,9 @@
             // Load UPI settings
             const upiSettings = JSON.parse(localStorage.getItem('upiSettings') || '{}');
             if (upiSettings.upiId) {
-                document.getElementById('currentUPIDetails').style.display = 'block';
-                document.getElementById('savedUPIId').textContent = upiSettings.upiId;
-                document.getElementById('savedUPIName').textContent = upiSettings.name;
+                document.getElementById('savedUPI').style.display = 'block';
+                document.getElementById('currentUPI').textContent = upiSettings.upiId;
+                document.getElementById('currentUPIName').textContent = upiSettings.name;
                 document.getElementById('upiId').value = upiSettings.upiId;
                 document.getElementById('upiName').value = upiSettings.name;
                 document.getElementById('upiPhone').value = upiSettings.phone || '';
@@ -558,11 +520,34 @@
             // Load Bank settings
             const bankSettings = JSON.parse(localStorage.getItem('bankSettings') || '{}');
             if (bankSettings.accountNumber) {
-                document.getElementById('currentBankDetails').style.display = 'block';
-                const maskedAccount = '****' + bankSettings.accountNumber.slice(-4);
-                document.getElementById('savedBankAccount').textContent = maskedAccount;
-                document.getElementById('savedIFSC').textContent = bankSettings.ifscCode;
-                document.getElementById('savedBankName').textContent = bankSettings.bankName;
+                document.getElementById('savedBank').style.display = 'block';
+                document.getElementById('currentBankAcc').textContent = '****' + bankSettings.accountNumber.slice(-4);
+                document.getElementById('currentIFSC').textContent = bankSettings.ifscCode;
+                document.getElementById('currentBankName').textContent = bankSettings.bankName;
+            }
+
+            // Load Crypto settings
+            const cryptoSettings = JSON.parse(localStorage.getItem('cryptoSettings') || '[]');
+            if (cryptoSettings.length > 0) {
+                document.getElementById('savedCrypto').style.display = 'block';
+                const walletsList = document.getElementById('cryptoWalletsList');
+                walletsList.innerHTML = '';
+                cryptoSettings.forEach(wallet => {
+                    walletsList.innerHTML += `
+                        <div class="detail-item">
+                            <span class="detail-label">${wallet.type}:</span>
+                            <span class="detail-value">${wallet.address.slice(0, 10)}...${wallet.address.slice(-8)}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            // Load PG settings
+            const pgSettings = JSON.parse(localStorage.getItem('pgSettings') || '{}');
+            if (pgSettings.provider) {
+                document.getElementById('savedPG').style.display = 'block';
+                document.getElementById('currentPGProvider').textContent = pgSettings.provider.toUpperCase();
+                document.getElementById('currentMerchantID').textContent = pgSettings.merchantId;
             }
         }
 
@@ -585,7 +570,7 @@
             event.preventDefault();
             
             const accountNumber = document.getElementById('bankAccount').value;
-            const confirmAccount = document.getElementById('confirmBankAccount').value;
+            const confirmAccount = document.getElementById('bankAccountConfirm').value;
 
             if (accountNumber !== confirmAccount) {
                 alert('❌ Account numbers do not match!');
@@ -604,42 +589,46 @@
 
             localStorage.setItem('bankSettings', JSON.stringify(bankSettings));
             alert('✅ Bank details saved successfully!');
-            document.getElementById('confirmBankAccount').value = '';
+            document.getElementById('bankAccountConfirm').value = '';
             loadSavedSettings();
         }
 
         function saveCryptoSettings(event) {
             event.preventDefault();
             
-            const cryptoSettings = {
+            const cryptoSettings = JSON.parse(localStorage.getItem('cryptoSettings') || '[]');
+            
+            const newWallet = {
                 type: document.getElementById('cryptoType').value,
                 address: document.getElementById('walletAddress').value,
                 label: document.getElementById('walletLabel').value,
                 savedAt: new Date().toISOString()
             };
 
-            // Get existing crypto wallets
-            const cryptoWallets = JSON.parse(localStorage.getItem('cryptoWallets') || '[]');
-            cryptoWallets.push(cryptoSettings);
-            localStorage.setItem('cryptoWallets', JSON.stringify(cryptoWallets));
-
+            cryptoSettings.push(newWallet);
+            localStorage.setItem('cryptoSettings', JSON.stringify(cryptoSettings));
+            
             alert('✅ Crypto wallet added successfully!');
-            document.getElementById('cryptoForm').reset();
+            document.getElementById('cryptoType').value = '';
+            document.getElementById('walletAddress').value = '';
+            document.getElementById('walletLabel').value = '';
+            loadSavedSettings();
         }
 
-        function saveGatewaySettings(event) {
+        function savePGSettings(event) {
             event.preventDefault();
             
-            const gatewaySettings = {
-                provider: document.getElementById('gatewayProvider').value,
+            const pgSettings = {
+                provider: document.getElementById('pgProvider').value,
                 merchantId: document.getElementById('merchantId').value,
                 apiSecret: document.getElementById('apiSecret').value,
                 webhookSecret: document.getElementById('webhookSecret').value,
                 savedAt: new Date().toISOString()
             };
 
-            localStorage.setItem('gatewaySettings', JSON.stringify(gatewaySettings));
+            localStorage.setItem('pgSettings', JSON.stringify(pgSettings));
             alert('✅ Payment gateway details saved successfully!');
+            loadSavedSettings();
         }
     </script>
 </body>
