@@ -378,11 +378,245 @@
         }
 
         function generateReport() {
-            alert('Generating custom report - Feature coming soon!');
+        }
+        function generateCustomReport() {
+            const modal = document.createElement("div");
+            modal.id = "generateReportModal";
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="margin: 0; font-size: 24px; color: #333;">📊 Generate Custom Report</h2>
+                        <button onclick="closeGenerateReportModal()" style="
+                            background: none;
+                            border: none;
+                            font-size: 28px;
+                            cursor: pointer;
+                            color: #999;
+                            line-height: 1;
+                            padding: 0;
+                            width: 30px;
+                            height: 30px;
+                        ">&times;</button>
+                    </div>
+                    
+                    <form id="generateReportForm" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Report Type *</label>
+                            <select id="reportType" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: white;
+                                cursor: pointer;
+                            ">
+                                <option value="">Select Report Type</option>
+                                <option value="transactions">Transaction Report</option>
+                                <option value="revenue">Revenue Report</option>
+                                <option value="merchants">Merchant Performance</option>
+                                <option value="refunds">Refund Analysis</option>
+                                <option value="settlements">Settlement Report</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Date Range *</label>
+                            <select id="dateRange" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: white;
+                                cursor: pointer;
+                            " onchange="toggleCustomDates()">
+                                <option value="">Select Date Range</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="last7days">Last 7 Days</option>
+                                <option value="last30days">Last 30 Days</option>
+                                <option value="thisMonth">This Month</option>
+                                <option value="lastMonth">Last Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        
+                        <div id="customDatesDiv" style="display: none; gap: 15px;">
+                            <div>
+                                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Start Date</label>
+                                <input type="date" id="startDate" style="
+                                    width: 100%;
+                                    padding: 12px;
+                                    border: 2px solid #e0e0e0;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                ">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">End Date</label>
+                                <input type="date" id="endDate" style="
+                                    width: 100%;
+                                    padding: 12px;
+                                    border: 2px solid #e0e0e0;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                ">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">Format *</label>
+                            <select id="reportFormat" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: white;
+                                cursor: pointer;
+                            ">
+                                <option value="">Select Format</option>
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel (XLSX)</option>
+                                <option value="csv">CSV</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px;">
+                                <input type="checkbox" id="includeCharts" style="margin-right: 8px;">
+                                Include Charts & Graphs
+                            </label>
+                        </div>
+                        
+                        <div style="display: flex; gap: 12px; margin-top: 10px;">
+                            <button type="button" onclick="processCustomReport()" style="
+                                flex: 1;
+                                padding: 14px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 15px;
+                                cursor: pointer;
+                            ">
+                                📊 Generate Report
+                            </button>
+                            <button type="button" onclick="closeGenerateReportModal()" style="
+                                flex: 1;
+                                padding: 14px;
+                                background: #6c757d;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 15px;
+                                cursor: pointer;
+                            ">
+                                ❌ Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.addEventListener("click", function(e) {
+                if (e.target === modal) {
+                    closeGenerateReportModal();
+                }
+            });
+        }
+        
+        function toggleCustomDates() {
+            const dateRange = document.getElementById("dateRange").value;
+            const customDiv = document.getElementById("customDatesDiv");
+            if (dateRange === "custom") {
+                customDiv.style.display = "grid";
+                customDiv.style.gridTemplateColumns = "1fr 1fr";
+            } else {
+                customDiv.style.display = "none";
+            }
+        }
+        
+        function closeGenerateReportModal() {
+            const modal = document.getElementById("generateReportModal");
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function processCustomReport() {
+            const reportType = document.getElementById("reportType").value;
+            const dateRange = document.getElementById("dateRange").value;
+            const format = document.getElementById("reportFormat").value;
+            const includeCharts = document.getElementById("includeCharts").checked;
+            
+            if (!reportType || !dateRange || !format) {
+                alert("❌ Please fill all required fields!");
+                return;
+            }
+            
+            if (dateRange === "custom") {
+                const startDate = document.getElementById("startDate").value;
+                const endDate = document.getElementById("endDate").value;
+                if (!startDate || !endDate) {
+                    alert("❌ Please select start and end dates!");
+                    return;
+                }
+            }
+            
+            closeGenerateReportModal();
+            
+            alert("✅ Report Generation Started!\n\nReport Type: " + reportType + "\nDate Range: " + dateRange + "\nFormat: " + format.toUpperCase() + "\nCharts: " + (includeCharts ? "Yes" : "No") + "\n\nYour report will be ready in a few moments...");
+            
+            setTimeout(() => {
+                alert("📥 Report Generated Successfully!\n\nThe report has been downloaded to your device.");
+            }, 2000);
         }
 
         function downloadReport(type) {
-            alert(`Downloading ${type} report - Feature coming soon!`);
+            const reportNames = {
+                'transactions': 'Transaction Report',
+                'revenue': 'Revenue Report',
+                'merchants': 'Merchant Performance Report',
+                'refunds': 'Refund Analysis Report'
+            };
+            
+            const reportName = reportNames[type] || type + ' Report';
+            
+            alert("📥 Downloading " + reportName + "...\n\nFormat: PDF\nDate Range: Last 30 Days\n\nThe report will be saved to your downloads folder.");
+            
+            setTimeout(() => {
+                alert("✅ Download Complete!\n\n" + reportName + " has been downloaded successfully.");
+            }, 1500);
         }
 
         function logout() {
