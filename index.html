@@ -84,6 +84,78 @@
             box-shadow: 0 6px 20px rgba(102,126,234,0.6);
         }
 
+        /* Login Dropdown */
+        .login-dropdown {
+            position: relative;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.4);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.6);
+        }
+
+        .login-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .login-dropdown:hover .login-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .login-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .login-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .login-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea;
+            padding-left: 25px;
+        }
+
+        .login-menu a i {
+            font-size: 18px;
+            width: 20px;
+        }
+
         .mobile-menu-btn {
             display: none;
             font-size: 24px;
@@ -776,6 +848,26 @@
                 <a href="#features">Features</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#contact">Contact</a>
+                
+                <!-- Login Dropdown -->
+                <div class="login-dropdown">
+                    <div class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                        <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+                    </div>
+                    <div class="login-menu">
+                        <a href="merchant-login.html">
+                            <i class="fas fa-store"></i> Merchant Login
+                        </a>
+                        <a href="reseller-login.html">
+                            <i class="fas fa-users"></i> Reseller Login
+                        </a>
+                        <a href="admin-login.html">
+                            <i class="fas fa-user-shield"></i> Admin Login
+                        </a>
+                    </div>
+                </div>
+                
                 <a href="pricing.html" class="nav-btn">Get Started</a>
             </div>
             <div class="mobile-menu-btn">
@@ -792,10 +884,7 @@
             <p class="description">Complete payment solution for merchants, resellers, and businesses. Start accepting payments in minutes with our secure and reliable gateway.</p>
             <div class="hero-buttons">
                 <a href="pricing.html" class="btn btn-white">
-                    <i class="fas fa-rocket"></i> Start Now - From ₹5,999/month
-                </a>
-                <a href="#business-model" class="btn btn-outline">
-                    <i class="fas fa-play-circle"></i> How It Works
+                    <i class="fas fa-rocket"></i> Get Started
                 </a>
             </div>
         </div>
@@ -846,8 +935,8 @@
                         <li>Easy Integration</li>
                         <li>24/7 Support</li>
                     </ul>
-                    <a href="merchant-login.html" class="model-btn">
-                        <i class="fas fa-sign-in-alt"></i> Merchant Login
+                    <a href="merchant-signup.html" class="model-btn">
+                        <i class="fas fa-rocket"></i> Get Started as Merchant
                     </a>
                 </div>
 
@@ -866,28 +955,28 @@
                         <li>Marketing Support</li>
                         <li>Unlimited Earning Potential</li>
                     </ul>
-                    <a href="reseller-login.html" class="model-btn">
-                        <i class="fas fa-sign-in-alt"></i> Reseller Login
+                    <a href="reseller-signup.html" class="model-btn">
+                        <i class="fas fa-rocket"></i> Get Started as Reseller
                     </a>
                 </div>
 
-                <!-- Admin -->
+                <!-- Client -->
                 <div class="model-card">
                     <div class="model-icon">
-                        <i class="fas fa-user-shield"></i>
+                        <i class="fas fa-briefcase"></i>
                     </div>
-                    <h3>Admin Panel</h3>
-                    <p>Complete control over your gateway. Manage merchants, resellers, transactions, and monitor everything in real-time.</p>
+                    <h3>For Clients</h3>
+                    <p>Get your own payment gateway license. Complete control over your gateway with subscription or lifetime access.</p>
                     <ul class="model-features">
+                        <li>Own Payment Gateway</li>
                         <li>Complete Dashboard Control</li>
-                        <li>Merchant Management</li>
-                        <li>Reseller Management</li>
-                        <li>Transaction Monitoring</li>
-                        <li>Revenue Analytics</li>
-                        <li>System Configuration</li>
+                        <li>Unlimited Merchants</li>
+                        <li>API Access</li>
+                        <li>Real-time Analytics</li>
+                        <li>White Label Solution</li>
                     </ul>
-                    <a href="admin-login.html" class="model-btn">
-                        <i class="fas fa-lock"></i> Admin Login
+                    <a href="client-signup.html" class="model-btn">
+                        <i class="fas fa-rocket"></i> Get Started as Client
                     </a>
                 </div>
             </div>
