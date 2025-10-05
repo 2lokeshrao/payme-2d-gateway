@@ -521,23 +521,28 @@
             const purchaseData = {
                 plan: selectedPlan,
                 price: selectedPrice,
-                name: document.getElementById('buyerName').value,
-                email: document.getElementById('buyerEmail').value,
-                phone: document.getElementById('buyerPhone').value,
-                business: document.getElementById('businessName').value,
+                name: document.getElementById("buyerName").value,
+                email: document.getElementById("buyerEmail").value,
+                phone: document.getElementById("buyerPhone").value,
+                business: document.getElementById("businessName").value,
                 timestamp: new Date().toISOString()
             };
 
             // Save to localStorage
-            localStorage.setItem('pendingPurchase', JSON.stringify(purchaseData));
+            localStorage.setItem("pendingPurchase", JSON.stringify(purchaseData));
 
-            // Show success message
-            alert(`Thank you for choosing ${selectedPlan} Plan!\n\nAmount: ₹${selectedPrice.toLocaleString('en-IN')}\n\nOur team will contact you within 24 hours to complete the setup.\n\nYou will receive:\n- Gateway Instance Credentials\n- API Keys\n- Setup Instructions\n\nContact: support@payme2d.com`);
-
-            closePurchaseModal();
+            // Redirect to payment gateway page
+            const params = new URLSearchParams({
+                plan: selectedPlan,
+                price: selectedPrice,
+                name: purchaseData.name,
+                email: purchaseData.email,
+                phone: purchaseData.phone,
+                business: purchaseData.business
+            });
             
-            // Reset form
-            event.target.reset();
+            window.location.href = `payment-gateway.html?${params.toString()}`;
+        }
         }
 
         // Close modal when clicking outside

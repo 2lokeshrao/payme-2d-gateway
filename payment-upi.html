@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Payment - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .payment-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .amount-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .amount-display h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .amount-display .amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            margin: 25px auto;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .upi-id {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .upi-id span {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn-copy {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        .payment-apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .payment-app {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-app:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .payment-app img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+        }
+
+        .payment-app p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-verify:hover {
+            opacity: 0.9;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>📱 UPI Payment</h1>
+            <p>Scan QR or use UPI ID</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="amount-display">
+                <h3>Amount to Pay</h3>
+                <div class="amount" id="amount">₹0</div>
+            </div>
+
+            <div class="qr-code">
+                <div style="text-align: center; color: #999;">
+                    <i class="fas fa-qrcode" style="font-size: 80px; margin-bottom: 10px;"></i>
+                    <p>QR Code</p>
+                </div>
+            </div>
+
+            <div class="upi-id">
+                <span id="upiId">payme2d@paytm</span>
+                <button class="btn-copy" onclick="copyUPI()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+
+            <h4 style="margin: 20px 0 15px 0; color: #333;">Pay using</h4>
+            <div class="payment-apps">
+                <div class="payment-app" onclick="openUPIApp('gpay')">
+                    <div style="font-size: 40px;">📱</div>
+                    <p>Google Pay</p>
+                </div>
+                <div class="payment-app" onclick="openUPIApp('phonepe')">
+                    <div style="font-size: 40px;">💜</div>
+                    <p>PhonePe</p>
+                </div>
+                <div class="payment-app" onclick="openUPIApp('paytm')">
+                    <div style="font-size: 40px;">💙</div>
+                    <p>Paytm</p>
+                </div>
+            </div>
+
+            <button class="btn-verify" onclick="verifyPayment()">
+                <i class="fas fa-check-circle"></i> I have paid, Verify
+            </button>
+
+            <div class="note">
+                <strong>Note:</strong> After completing payment, click "I have paid" button. Our team will verify and activate your gateway within 24 hours.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orderData = {};
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            
+            // Load payment data
+            const paymentData = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+            orderData = paymentData;
+            
+            // Display amount
+            document.getElementById('amount').textContent = '₹' + (paymentData.price || 0).toLocaleString('en-IN');
+        };
+
+        function copyUPI() {
+            const upiId = document.getElementById('upiId').textContent;
+            navigator.clipboard.writeText(upiId);
+            alert('UPI ID copied: ' + upiId);
+        }
+
+        function openUPIApp(app) {
+            const upiId = 'payme2d@paytm';
+            const amount = orderData.price;
+            const name = 'PayMe 2D Gateway';
+            
+            let upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+            
+            window.location.href = upiUrl;
+        }
+
+        function verifyPayment() {
+            // Update payment status
+            orderData.status = 'verification_pending';
+            orderData.paidAt = new Date().toISOString();
+            
+            // Save to localStorage
+            const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+            payments.push(orderData);
+            localStorage.setItem('payments', JSON.stringify(payments));
+            
+            // Redirect to success page
+            window.location.href = `payment-success.html?orderId=${orderData.orderId}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - PayMe 2D Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .payment-body {
+            padding: 30px;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .order-summary h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 15px;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 20px;
+            color: #667eea;
+            margin-top: 10px;
+        }
+
+        .payment-methods {
+            margin-bottom: 25px;
+        }
+
+        .payment-methods h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .payment-method {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .payment-method input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .payment-method-info {
+            flex: 1;
+        }
+
+        .payment-method-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .payment-method-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .payment-method-icon {
+            font-size: 32px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-pay:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .security-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .security-note i {
+            color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1><i class="fas fa-credit-card"></i> Complete Payment</h1>
+            <p>Secure payment powered by PayMe 2D Gateway</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="order-item">
+                    <span>Plan:</span>
+                    <span id="planName">-</span>
+                </div>
+                <div class="order-item">
+                    <span>Customer:</span>
+                    <span id="customerName">-</span>
+                </div>
+                <div class="order-item">
+                    <span>Email:</span>
+                    <span id="customerEmail">-</span>
+                </div>
+                <div class="order-item">
+                    <span>Total Amount:</span>
+                    <span id="totalAmount">₹0</span>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <h3>Select Payment Method</h3>
+                
+                <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                    <input type="radio" name="payment" id="upi" value="upi">
+                    <div class="payment-method-icon">📱</div>
+                    <div class="payment-method-info">
+                        <h4>UPI Payment</h4>
+                        <p>Pay using Google Pay, PhonePe, Paytm</p>
+                    </div>
+                </div>
+
+                <div class="payment-method" onclick="selectPaymentMethod('card')">
+                    <input type="radio" name="payment" id="card" value="card">
+                    <div class="payment-method-icon">💳</div>
+                    <div class="payment-method-info">
+                        <h4>Credit/Debit Card</h4>
+                        <p>Visa, Mastercard, Rupay accepted</p>
+                    </div>
+                </div>
+
+                <div class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                    <input type="radio" name="payment" id="netbanking" value="netbanking">
+                    <div class="payment-method-icon">🏦</div>
+                    <div class="payment-method-info">
+                        <h4>Net Banking</h4>
+                        <p>All major banks supported</p>
+                    </div>
+                </div>
+
+                <div class="payment-method" onclick="selectPaymentMethod('crypto')">
+                    <input type="radio" name="payment" id="crypto" value="crypto">
+                    <div class="payment-method-icon">₿</div>
+                    <div class="payment-method-info">
+                        <h4>Cryptocurrency</h4>
+                        <p>Bitcoin, Ethereum, USDT</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-pay" onclick="processPayment()" id="payBtn" disabled>
+                <i class="fas fa-lock"></i> Proceed to Pay
+            </button>
+
+            <div class="security-note">
+                <i class="fas fa-shield-alt"></i> Your payment is secured with 256-bit SSL encryption
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMethod = null;
+        let orderData = {};
+
+        // Load order data from URL parameters
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            orderData = {
+                plan: urlParams.get('plan') || 'Basic',
+                price: parseInt(urlParams.get('price')) || 29999,
+                name: urlParams.get('name') || 'Customer',
+                email: urlParams.get('email') || 'customer@example.com',
+                phone: urlParams.get('phone') || '',
+                business: urlParams.get('business') || ''
+            };
+
+            // Display order details
+            document.getElementById('planName').textContent = orderData.plan + ' Plan';
+            document.getElementById('customerName').textContent = orderData.name;
+            document.getElementById('customerEmail').textContent = orderData.email;
+            document.getElementById('totalAmount').textContent = '₹' + orderData.price.toLocaleString('en-IN');
+        };
+
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            document.getElementById(method).checked = true;
+            
+            // Remove selected class from all
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked one
+            event.currentTarget.classList.add('selected');
+            
+            // Enable pay button
+            document.getElementById('payBtn').disabled = false;
+        }
+
+        function processPayment() {
+            if (!selectedMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            // Create payment order
+            const paymentOrder = {
+                orderId: 'ORD' + Date.now(),
+                ...orderData,
+                paymentMethod: selectedMethod,
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Save to localStorage
+            localStorage.setItem('currentPayment', JSON.stringify(paymentOrder));
+
+            // Redirect to payment processing page based on method
+            switch(selectedMethod) {
+                case 'upi':
+                    window.location.href = `payment-upi.html?orderId=${paymentOrder.orderId}`;
+                    break;
+                case 'card':
+                    window.location.href = `payment-card.html?orderId=${paymentOrder.orderId}`;
+                    break;
+                case 'netbanking':
+                    window.location.href = `payment-netbanking.html?orderId=${paymentOrder.orderId}`;
+                    break;
+                case 'crypto':
+                    window.location.href = `payment-crypto.html?orderId=${paymentOrder.orderId}`;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
