@@ -1027,8 +1027,25 @@
 
         // Load Merchants Data
         function loadMerchants() {
-            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            let merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
             const merchantsTableBody = document.getElementById('merchantsTableBody');
+            
+            // If no merchants in localStorage, use demo merchant data to match merchants.html
+            if (merchants.length === 0) {
+                merchants = [
+                    {
+                        id: 1,
+                        businessName: 'Test Business',
+                        email: 'merchant@test.com',
+                        businessType: 'E-commerce',
+                        kycStatus: 'Pending',
+                        status: 'Active',
+                        transactions: 0,
+                        revenue: 0,
+                        clientId: 'CLIENT001'
+                    }
+                ];
+            }
             const relationshipsTableBody = document.getElementById('relationshipsTableBody');
 
             // Update stats
