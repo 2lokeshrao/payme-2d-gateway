@@ -461,6 +461,10 @@
             
             // Demo login - replace with actual API call
             if (email && password) {
+                // Set authentication tokens for client-auth-check.js
+                localStorage.setItem('clientToken', 'demo-token-' + Date.now());
+                localStorage.setItem('clientEmail', email);
+                // Also keep old keys for backward compatibility
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
                 window.location.href = 'client-dashboard.html';
