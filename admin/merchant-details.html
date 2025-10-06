@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merchant Details - PayMe 2D Gateway Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <style>
         * {
             margin: 0;
@@ -345,6 +346,28 @@
             font-size: 14px;
             margin-bottom: 10px;
             color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .doc-card h4 i {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            min-height: 20px;
+            max-width: 20px;
+            max-height: 20px;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            flex-shrink: 0;
+            margin-right: 8px;
+        }
+        
+        .doc-card h4 i::before {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
         }
         
         .doc-card .status {
