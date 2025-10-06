@@ -1030,19 +1030,21 @@
             let merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
             const merchantsTableBody = document.getElementById('merchantsTableBody');
             
+            
             // If no merchants in localStorage, use demo merchant data to match merchants.html
             if (merchants.length === 0) {
                 merchants = [
                     {
-                        id: 1,
+                        merchantId: 'MERCH001',
                         businessName: 'Test Business',
                         email: 'merchant@test.com',
-                        businessType: 'E-commerce',
+                        businessType: 'e-commerce',
                         kycStatus: 'Pending',
-                        status: 'Active',
+                        status: 'active',
                         transactions: 0,
                         revenue: 0,
-                        clientId: 'CLIENT001'
+                        clientId: 'CLIENT001',
+                        clientName: 'PayMe Gateway Solutions'
                     }
                 ];
             }
