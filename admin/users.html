@@ -317,7 +317,7 @@
         }
 
         function editUser(id) {
-            alert(`Edit user ${id} - Feature coming soon!`);
+            window.location.href = `edit-user.html?id=${id}`;
         }
 
         function blockUser(id) {
@@ -345,6 +345,44 @@
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Load user data from localStorage on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const userId = row.cells[0].textContent;
+                const savedData = localStorage.getItem(`userDetails_${userId}`);
+                
+                if (savedData) {
+                    const userData = JSON.parse(savedData);
+                    
+                    // Update table cells with saved data
+                    row.cells[1].textContent = userData.fullName;
+                    row.cells[2].textContent = userData.email;
+                    
+                    // Update role badge
+                    const roleBadge = row.cells[3].querySelector('.badge');
+                    if (roleBadge) {
+                        roleBadge.textContent = userData.role;
+                        roleBadge.className = 'badge';
+                        if (userData.role === 'Admin') roleBadge.classList.add('badge-danger');
+                        else if (userData.role === 'Merchant') roleBadge.classList.add('badge-info');
+                        else roleBadge.classList.add('badge-secondary');
+                    }
+                    
+                    // Update status badge
+                    const statusBadge = row.cells[4].querySelector('.badge');
+                    if (statusBadge) {
+                        statusBadge.textContent = userData.status;
+                        statusBadge.className = 'badge';
+                        if (userData.status === 'Active') statusBadge.classList.add('badge-success');
+                        else if (userData.status === 'Inactive') statusBadge.classList.add('badge-warning');
+                        else statusBadge.classList.add('badge-danger');
+                    }
+                }
             });
         });
     </script>
