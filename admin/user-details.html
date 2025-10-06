@@ -907,7 +907,7 @@
                 localStorage.setItem(`userDetails_${userId}`, JSON.stringify(userData));
                 
                 // Update password display on page
-                const passwordDisplay = document.querySelector('.password-display');
+                const passwordDisplay = document.querySelector('.password-field .value');
                 if (passwordDisplay) {
                     passwordDisplay.textContent = newPassword;
                 }
@@ -959,23 +959,37 @@
             }
         }
 
+
         // Password Toggle Function
         document.querySelector('.password-toggle').addEventListener('click', function() {
-            const passwordValue = document.querySelectorAll('.info-item .value')[6];
+            const passwordField = document.querySelector('.password-field .value');
             const icon = this;
             
-            if (passwordValue.textContent === '••••••') {
-                passwordValue.textContent = 'PayMe@2025';
+            // Get user ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id') || '1';
+            
+            // Get password from localStorage or use default
+            const savedData = localStorage.getItem(`userDetails_${userId}`);
+            let actualPassword = 'PayMe@2025'; // Default password
+            
+            if (savedData) {
+                const userData = JSON.parse(savedData);
+                if (userData.password) {
+                    actualPassword = userData.password;
+                }
+            }
+            
+            if (passwordField.textContent === '••••••') {
+                passwordField.textContent = actualPassword;
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
             } else {
-                passwordValue.textContent = '••••••';
+                passwordField.textContent = '••••••';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
             }
         });
-
-
         // Close modal when clicking outside
         document.getElementById('editUserModal').addEventListener('click', function(e) {
             if (e.target === this) {
