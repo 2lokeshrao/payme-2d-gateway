@@ -740,6 +740,31 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('id') || '1';
 
+        // Check if email is already verified on page load
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem(`userDetails_${userId}`);
+            
+            if (savedData) {
+                const userData = JSON.parse(savedData);
+                
+                // If email is verified, update UI
+                if (userData.emailVerified === true) {
+                    const emailBadge = document.querySelector('.badge-warning');
+                    if (emailBadge) {
+                        emailBadge.textContent = 'Email Verified';
+                        emailBadge.classList.remove('badge-warning');
+                        emailBadge.classList.add('badge-success');
+                    }
+                    
+                    // Hide Verify Email button
+                    const verifyBtn = document.querySelector('button[onclick="verifyEmail()"]');
+                    if (verifyBtn) {
+                        verifyBtn.style.display = 'none';
+                    }
+                }
+            }
+        });
+
         // Edit User Function with Modal
         function editUser() {
             // Get current values
@@ -798,15 +823,53 @@
 
         // Verify Email Function
         function verifyEmail() {
-            const emailBadge = document.querySelector('.badge-warning');
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id') || '1';
+            
             if (confirm('Are you sure you want to verify this user\'s email?')) {
-                emailBadge.textContent = 'Email Verified';
-                emailBadge.classList.remove('badge-warning');
-                emailBadge.classList.add('badge-success');
+                // Get user data from localStorage or create new
+                const savedData = localStorage.getItem(`userDetails_${userId}`);
+                let userData;
+                
+                if (savedData) {
+                    userData = JSON.parse(savedData);
+                } else {
+                    // Create default user data
+                    userData = {
+                        id: parseInt(userId),
+                        fullName: document.querySelector('.user-info h2').textContent,
+                        email: document.querySelector('.user-info p').textContent,
+                        phone: document.querySelector('[class*="phone"]') ? document.querySelector('[class*="phone"]').textContent : '',
+                        role: 'User',
+                        status: 'Active',
+                        joinedDate: 'Oct 1, 2025',
+                        lastLogin: 'Just now'
+                    };
+                }
+                
+                // Add emailVerified field
+                userData.emailVerified = true;
+                
+                // Save to localStorage
+                localStorage.setItem(`userDetails_${userId}`, JSON.stringify(userData));
+                
+                // Update UI
+                const emailBadge = document.querySelector('.badge-warning');
+                if (emailBadge) {
+                    emailBadge.textContent = 'Email Verified';
+                    emailBadge.classList.remove('badge-warning');
+                    emailBadge.classList.add('badge-success');
+                }
+                
+                // Hide Verify Email button
+                const verifyBtn = document.querySelector('button[onclick="verifyEmail()"]');
+                if (verifyBtn) {
+                    verifyBtn.style.display = 'none';
+                }
+                
                 alert('✅ Email verified successfully!');
             }
         }
-
         // Reset Password Function
         function resetPassword() {
             if (confirm('Are you sure you want to reset this user\'s password? A new password will be sent to their email.')) {
