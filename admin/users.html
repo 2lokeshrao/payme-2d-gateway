@@ -263,6 +263,7 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
+                            <th>Email Verified</th>
                             <th>Joined Date</th>
                             <th>Last Login</th>
                             <th>Actions</th>
@@ -275,6 +276,7 @@
                             <td>admin@payme2d.com</td>
                             <td><span class="badge badge-danger">Admin</span></td>
                             <td><span class="badge badge-success">Active</span></td>
+                            <td><span class="badge badge-success" id="emailStatus_1">Verified</span></td>
                             <td>Oct 1, 2025</td>
                             <td>Just now</td>
                             <td>
@@ -290,6 +292,7 @@
                             <td>merchant@test.com</td>
                             <td><span class="badge badge-info">Merchant</span></td>
                             <td><span class="badge badge-success">Active</span></td>
+                            <td><span class="badge badge-warning" id="emailStatus_2">Not Verified</span></td>
                             <td>Oct 1, 2025</td>
                             <td>2 hours ago</td>
                             <td>
@@ -485,10 +488,21 @@
                         else if (userData.status === 'Inactive') statusBadge.classList.add('badge-warning');
                         else statusBadge.classList.add('badge-danger');
                     }
+                    
+                    // Update email verified badge
+                    const emailBadge = row.cells[5].querySelector('.badge');
+                    if (emailBadge && userData.emailVerified !== undefined) {
+                        if (userData.emailVerified === true) {
+                            emailBadge.textContent = 'Verified';
+                            emailBadge.className = 'badge badge-success';
+                        } else {
+                            emailBadge.textContent = 'Not Verified';
+                            emailBadge.className = 'badge badge-warning';
+                        }
+                    }
                 }
             });
         });
-    </script>
     <script src="responsive-menu.js"></script>
     <script src="load-navbar.js"></script>
     <script src="../js/admin-auth-check.js"></script>
