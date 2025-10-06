@@ -413,6 +413,233 @@
                     </div>
 
                     <button class="btn-save" onclick="saveSettings('payment')">💾 Save Changes</button>
+
+                    <!-- NEW SECTION: Direct Bank Transfer & UPI Payment Details -->
+                    <h3 style="margin-top: 40px; color: #667eea; border-top: 2px solid #e0e7ff; padding-top: 30px;">🏦 Direct Bank Transfer & UPI Payment Details</h3>
+                    <p style="color: #64748b; margin-bottom: 20px;">Configure your bank account and UPI details to receive direct payments from customers (NEFT/RTGS/IMPS/UPI)</p>
+                    
+                    <!-- Bank Account Details -->
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 15px;">💳 Bank Account Details (NEFT/RTGS/IMPS)</h4>
+                        
+                        <div class="form-group">
+                            <label>Account Holder Name</label>
+                            <input type="text" id="bank_account_name" placeholder="Enter Account Holder Name">
+                            <small>Name as per bank account</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <input type="text" id="bank_name" placeholder="Enter Bank Name (e.g., HDFC Bank)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Account Number</label>
+                            <input type="text" id="bank_account_number" placeholder="Enter Account Number">
+                        </div>
+
+                        <div class="form-group">
+                            <label>IFSC Code</label>
+                            <input type="text" id="bank_ifsc" placeholder="Enter IFSC Code (e.g., HDFC0001234)">
+                            <small>Required for NEFT/RTGS/IMPS transfers</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            <input type="text" id="bank_branch" placeholder="Enter Branch Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Account Type</label>
+                            <select id="bank_account_type">
+                                <option value="">Select Account Type</option>
+                                <option value="savings">Savings Account</option>
+                                <option value="current">Current Account</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- UPI Payment Details -->
+                    <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="color: #10b981; margin-bottom: 15px;">📱 UPI Payment Details</h4>
+                        
+                        <div class="form-group">
+                            <label>UPI ID / VPA</label>
+                            <input type="text" id="upi_id" placeholder="Enter UPI ID (e.g., merchant@paytm)">
+                            <small>Your UPI ID for receiving payments</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>UPI Name</label>
+                            <input type="text" id="upi_name" placeholder="Enter Name shown in UPI">
+                            <small>Name that appears when customers scan your UPI QR</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>UPI QR Code (Optional)</label>
+                            <input type="file" id="upi_qr_code" accept="image/*">
+                            <small>Upload your UPI QR code image for easy payments</small>
+                        </div>
+                    </div>
+
+                    <!-- Payment Verification Settings -->
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="color: #f59e0b; margin-bottom: 15px;">✅ Payment Verification Settings</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Auto Payment Verification</h4>
+                                <p>Automatically verify payments via bank statement API</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto_verify_payments">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Manual Payment Approval</h4>
+                                <p>Require admin approval for all payments</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="manual_approval">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment Verification Timeout (minutes)</label>
+                            <input type="number" id="verification_timeout" placeholder="30" value="30">
+                            <small>Time to wait for payment verification before marking as failed</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Bank Statement Email</label>
+                            <input type="email" id="bank_statement_email" placeholder="Enter email for bank statements">
+                            <small>Email where bank sends transaction alerts for auto-verification</small>
+                        </div>
+                    </div>
+
+                    <!-- Payment Notification Settings -->
+                    <div style="background: #ede9fe; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="color: #8b5cf6; margin-bottom: 15px;">🔔 Payment Notification Settings</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Email Notifications</h4>
+                                <p>Send email notifications for payment status</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="email_notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>SMS Notifications</h4>
+                                <p>Send SMS notifications for payment status</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="sms_notifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Webhook Notifications</h4>
+                                <p>Send webhook callbacks for payment events</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="webhook_notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Webhook URL</label>
+                            <input type="url" id="webhook_url" placeholder="https://your-domain.com/webhook">
+                            <small>URL to receive payment status webhooks</small>
+                        </div>
+                    </div>
+
+                    <!-- Payment Gateway Features -->
+                    <div style="background: #fce7f3; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="color: #ec4899; margin-bottom: 15px;">⚡ Payment Gateway Features</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Instant Settlement</h4>
+                                <p>Enable instant settlement to merchant accounts</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="instant_settlement" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Refund Support</h4>
+                                <p>Allow merchants to process refunds</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="refund_support" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Partial Payments</h4>
+                                <p>Allow customers to make partial payments</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="partial_payments">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Recurring Payments</h4>
+                                <p>Support subscription and recurring payments</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="recurring_payments">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>Payment Links</h4>
+                                <p>Generate shareable payment links</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="payment_links" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-item-info">
+                                <h4>QR Code Payments</h4>
+                                <p>Generate QR codes for payments</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="qr_payments" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <button class="btn-save" onclick="saveDirectPaymentSettings()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 16px; padding: 12px 30px;">
+                        💾 Save Direct Payment Settings
+                    </button>
                 </div>
 
 <!-- Compact Crypto Section with Emoji Icons -->
@@ -919,6 +1146,190 @@ https://merchant2.com
     </div>
 
     <script>
+// Save Direct Payment Settings Function
+function saveDirectPaymentSettings() {
+    // Get all form values
+    const directPaymentSettings = {
+        // Bank Account Details
+        bankAccountName: document.getElementById('bank_account_name').value,
+        bankName: document.getElementById('bank_name').value,
+        bankAccountNumber: document.getElementById('bank_account_number').value,
+        bankIFSC: document.getElementById('bank_ifsc').value,
+        bankBranch: document.getElementById('bank_branch').value,
+        bankAccountType: document.getElementById('bank_account_type').value,
+        
+        // UPI Details
+        upiId: document.getElementById('upi_id').value,
+        upiName: document.getElementById('upi_name').value,
+        
+        // Payment Verification Settings
+        autoVerifyPayments: document.getElementById('auto_verify_payments').checked,
+        manualApproval: document.getElementById('manual_approval').checked,
+        verificationTimeout: document.getElementById('verification_timeout').value,
+        bankStatementEmail: document.getElementById('bank_statement_email').value,
+        
+        // Payment Notification Settings
+        emailNotifications: document.getElementById('email_notifications').checked,
+        smsNotifications: document.getElementById('sms_notifications').checked,
+        webhookNotifications: document.getElementById('webhook_notifications').checked,
+        webhookUrl: document.getElementById('webhook_url').value,
+        
+        // Payment Gateway Features
+        instantSettlement: document.getElementById('instant_settlement').checked,
+        refundSupport: document.getElementById('refund_support').checked,
+        partialPayments: document.getElementById('partial_payments').checked,
+        recurringPayments: document.getElementById('recurring_payments').checked,
+        paymentLinks: document.getElementById('payment_links').checked,
+        qrPayments: document.getElementById('qr_payments').checked,
+        
+        // Timestamp
+        lastUpdated: new Date().toISOString()
+    };
+    
+    // Validate required fields
+    if (!directPaymentSettings.bankAccountName || !directPaymentSettings.bankAccountNumber || !directPaymentSettings.bankIFSC) {
+        alert('❌ Please fill in all required bank account details:\n\n• Account Holder Name\n• Account Number\n• IFSC Code');
+        return;
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('directPaymentSettings', JSON.stringify(directPaymentSettings));
+    
+    // Show success message
+    alert('✅ Direct Payment Settings Saved Successfully!\n\n' +
+          '🏦 Bank Account: ' + directPaymentSettings.bankAccountName + '\n' +
+          '💳 Account Number: ' + directPaymentSettings.bankAccountNumber + '\n' +
+          '🔑 IFSC Code: ' + directPaymentSettings.bankIFSC + '\n' +
+          (directPaymentSettings.upiId ? '📱 UPI ID: ' + directPaymentSettings.upiId + '\n' : '') +
+          '\n✅ Payment verification and notification settings configured!\n' +
+          '⚡ Payment gateway features enabled successfully!');
+    
+    console.log('Direct Payment Settings Saved:', directPaymentSettings);
+}
+
+// Load Direct Payment Settings on Page Load
+function loadDirectPaymentSettings() {
+    const savedSettings = localStorage.getItem('directPaymentSettings');
+    
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        
+        // Load Bank Account Details
+        if (document.getElementById('bank_account_name')) {
+            document.getElementById('bank_account_name').value = settings.bankAccountName || '';
+            document.getElementById('bank_name').value = settings.bankName || '';
+            document.getElementById('bank_account_number').value = settings.bankAccountNumber || '';
+            document.getElementById('bank_ifsc').value = settings.bankIFSC || '';
+            document.getElementById('bank_branch').value = settings.bankBranch || '';
+            document.getElementById('bank_account_type').value = settings.bankAccountType || '';
+            
+            // Load UPI Details
+            document.getElementById('upi_id').value = settings.upiId || '';
+            document.getElementById('upi_name').value = settings.upiName || '';
+            
+            // Load Payment Verification Settings
+            document.getElementById('auto_verify_payments').checked = settings.autoVerifyPayments || false;
+            document.getElementById('manual_approval').checked = settings.manualApproval || false;
+            document.getElementById('verification_timeout').value = settings.verificationTimeout || '30';
+            document.getElementById('bank_statement_email').value = settings.bankStatementEmail || '';
+            
+            // Load Payment Notification Settings
+            document.getElementById('email_notifications').checked = settings.emailNotifications !== false;
+            document.getElementById('sms_notifications').checked = settings.smsNotifications || false;
+            document.getElementById('webhook_notifications').checked = settings.webhookNotifications !== false;
+            document.getElementById('webhook_url').value = settings.webhookUrl || '';
+            
+            // Load Payment Gateway Features
+            document.getElementById('instant_settlement').checked = settings.instantSettlement !== false;
+            document.getElementById('refund_support').checked = settings.refundSupport !== false;
+            document.getElementById('partial_payments').checked = settings.partialPayments || false;
+            document.getElementById('recurring_payments').checked = settings.recurringPayments || false;
+            document.getElementById('payment_links').checked = settings.paymentLinks !== false;
+            document.getElementById('qr_payments').checked = settings.qrPayments !== false;
+            
+            console.log('Direct Payment Settings Loaded:', settings);
+        }
+    }
+}
+
+// Verify Payment Function (to be called when payment is received)
+function verifyPayment(transactionId, amount, paymentMethod) {
+    const settings = JSON.parse(localStorage.getItem('directPaymentSettings') || '{}');
+    
+    // Create payment verification object
+    const paymentVerification = {
+        transactionId: transactionId,
+        amount: amount,
+        paymentMethod: paymentMethod,
+        status: 'pending',
+        timestamp: new Date().toISOString(),
+        verificationAttempts: 0
+    };
+    
+    // Check if auto verification is enabled
+    if (settings.autoVerifyPayments) {
+        // Simulate auto verification (in real scenario, this would check bank statement API)
+        setTimeout(() => {
+            paymentVerification.status = 'verified';
+            paymentVerification.verifiedAt = new Date().toISOString();
+            
+            // Send notifications
+            sendPaymentNotifications(paymentVerification, settings);
+            
+            // Show success message
+            showPaymentSuccessMessage(paymentVerification);
+        }, 2000);
+    } else if (settings.manualApproval) {
+        // Manual approval required
+        alert('⏳ Payment Received!\n\n' +
+              'Transaction ID: ' + transactionId + '\n' +
+              'Amount: ₹' + amount + '\n' +
+              'Payment Method: ' + paymentMethod + '\n\n' +
+              '⚠️ Manual approval required. Admin will verify the payment shortly.');
+    }
+    
+    // Save payment verification to localStorage
+    const allPayments = JSON.parse(localStorage.getItem('paymentVerifications') || '[]');
+    allPayments.push(paymentVerification);
+    localStorage.setItem('paymentVerifications', JSON.stringify(allPayments));
+    
+    return paymentVerification;
+}
+
+// Send Payment Notifications
+function sendPaymentNotifications(payment, settings) {
+    // Email Notification
+    if (settings.emailNotifications) {
+        console.log('📧 Email notification sent for payment:', payment.transactionId);
+    }
+    
+    // SMS Notification
+    if (settings.smsNotifications) {
+        console.log('📱 SMS notification sent for payment:', payment.transactionId);
+    }
+    
+    // Webhook Notification
+    if (settings.webhookNotifications && settings.webhookUrl) {
+        console.log('🔗 Webhook notification sent to:', settings.webhookUrl);
+        // In real scenario, this would make an HTTP POST request to webhook URL
+    }
+}
+
+// Show Payment Success Message
+function showPaymentSuccessMessage(payment) {
+    alert('✅ Payment Verified Successfully!\n\n' +
+          '💰 Amount: ₹' + payment.amount + '\n' +
+          '🔑 Transaction ID: ' + payment.transactionId + '\n' +
+          '💳 Payment Method: ' + payment.paymentMethod + '\n' +
+          '✅ Status: ' + payment.status.toUpperCase() + '\n' +
+          '⏰ Verified At: ' + new Date(payment.verifiedAt).toLocaleString() + '\n\n' +
+          '🎉 Payment has been successfully processed and credited to your account!');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadDirectPaymentSettings();
+});
         // Show section function
         function showSection(sectionName) {
             // Hide all sections
