@@ -322,10 +322,113 @@
 
         function blockUser(id) {
             if (confirm('Are you sure you want to block this user?')) {
-                alert(`User ${id} blocked successfully!`);
+                // Get user data from localStorage or use default
+                const savedData = localStorage.getItem(`userDetails_${id}`);
+                let userData;
+                
+                if (savedData) {
+                    userData = JSON.parse(savedData);
+                } else {
+                    // Get data from table
+                    const row = document.querySelector(`#usersTableBody tr td:first-child`);
+                    const userRow = Array.from(document.querySelectorAll('#usersTableBody tr')).find(r => r.cells[0].textContent == id);
+                    
+                    if (userRow) {
+                        userData = {
+                            id: parseInt(id),
+                            fullName: userRow.cells[1].textContent,
+                            email: userRow.cells[2].textContent,
+                            phone: userRow.cells[3] ? userRow.cells[3].textContent : '',
+                            role: userRow.cells[3].querySelector('.badge').textContent,
+                            status: 'Blocked',
+                            joinedDate: userRow.cells[5].textContent,
+                            lastLogin: userRow.cells[6].textContent
+                        };
+                    }
+                }
+                
+                // Update status to Blocked
+                if (userData) {
+                    userData.status = 'Blocked';
+                    localStorage.setItem(`userDetails_${id}`, JSON.stringify(userData));
+                    
+                    // Update table immediately
+                    const userRow = Array.from(document.querySelectorAll('#usersTableBody tr')).find(r => r.cells[0].textContent == id);
+                    if (userRow) {
+                        const statusBadge = userRow.cells[4].querySelector('.badge');
+                        if (statusBadge) {
+                            statusBadge.textContent = 'Blocked';
+                            statusBadge.className = 'badge badge-danger';
+                        }
+                        
+                        // Change Block button to Unblock
+                        const blockBtn = userRow.querySelector('button[onclick*="blockUser"]');
+                        if (blockBtn) {
+                            blockBtn.textContent = '🔓 Unblock';
+                            blockBtn.className = 'btn-sm btn-success';
+                            blockBtn.setAttribute('onclick', `unblockUser(${id})`);
+                        }
+                    }
+                    
+                    alert(`User ${id} blocked successfully!`);
+                }
             }
         }
 
+
+        function unblockUser(id) {
+            if (confirm('Are you sure you want to unblock this user?')) {
+                // Get user data from localStorage
+                const savedData = localStorage.getItem(`userDetails_${id}`);
+                let userData;
+                
+                if (savedData) {
+                    userData = JSON.parse(savedData);
+                } else {
+                    // Get data from table
+                    const userRow = Array.from(document.querySelectorAll('#usersTableBody tr')).find(r => r.cells[0].textContent == id);
+                    
+                    if (userRow) {
+                        userData = {
+                            id: parseInt(id),
+                            fullName: userRow.cells[1].textContent,
+                            email: userRow.cells[2].textContent,
+                            phone: userRow.cells[3] ? userRow.cells[3].textContent : '',
+                            role: userRow.cells[3].querySelector('.badge').textContent,
+                            status: 'Active',
+                            joinedDate: userRow.cells[5].textContent,
+                            lastLogin: userRow.cells[6].textContent
+                        };
+                    }
+                }
+                
+                // Update status to Active
+                if (userData) {
+                    userData.status = 'Active';
+                    localStorage.setItem(`userDetails_${id}`, JSON.stringify(userData));
+                    
+                    // Update table immediately
+                    const userRow = Array.from(document.querySelectorAll('#usersTableBody tr')).find(r => r.cells[0].textContent == id);
+                    if (userRow) {
+                        const statusBadge = userRow.cells[4].querySelector('.badge');
+                        if (statusBadge) {
+                            statusBadge.textContent = 'Active';
+                            statusBadge.className = 'badge badge-success';
+                        }
+                        
+                        // Change Unblock button back to Block
+                        const unblockBtn = userRow.querySelector('button[onclick*="unblockUser"]');
+                        if (unblockBtn) {
+                            unblockBtn.textContent = '🚫 Block';
+                            unblockBtn.className = 'btn-sm btn-danger';
+                            unblockBtn.setAttribute('onclick', `blockUser(${id})`);
+                        }
+                    }
+                    
+                    alert(`User ${id} unblocked successfully!`);
+                }
+            }
+        }
         function addUser() {
             alert('Add new user - Feature coming soon!');
         }
