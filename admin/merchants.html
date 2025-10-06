@@ -264,6 +264,7 @@
                             <th>ID</th>
                             <th>Business Name</th>
                             <th>Owner Email</th>
+                            <th>Password</th>
                             <th>Business Type</th>
                             <th>KYC Status</th>
                             <th>Status</th>
@@ -277,6 +278,12 @@
                             <td>1</td>
                             <td>Test Business</td>
                             <td>merchant@test.com</td>
+                            <td>
+                                <span id="password1" style="letter-spacing: 2px;">••••••••</span>
+                                <button onclick="toggleMerchantPassword(1)" style="background: none; border: none; cursor: pointer; color: #667eea; font-size: 14px; margin-left: 8px;">
+                                    <i id="passwordIcon1" class="fas fa-eye"></i>
+                                </button>
+                            </td>
                             <td>E-commerce</td>
                             <td><span class="badge badge-warning">Pending</span></td>
                             <td><span class="badge badge-success">Active</span></td>
@@ -286,6 +293,7 @@
                                 <div class="action-btns">
                                     <button class="btn-sm btn-view" onclick="viewMerchant(1)">👁️ View</button>
                                     <button class="btn-sm btn-approve" onclick="approveKYC(1)">✅ KYC</button>
+                                    <button class="btn-sm btn-reset" onclick="resetMerchantPassword(1)" style="background: #ffc107; color: #333;">🔑 Reset</button>
                                 </div>
                             </td>
                         </tr>
@@ -533,5 +541,59 @@
     <script src="responsive-menu.js"></script>
     <script src="load-navbar.js"></script>
     <script src="../js/admin-auth-check.js"></script>
+
+    <script>
+        // Store merchant passwords (in real app, fetch from backend)
+        const merchantPasswords = {
+            1: 'Merchant@2025'
+        };
+        
+        const passwordVisibility = {};
+        
+        function toggleMerchantPassword(merchantId) {
+            const passwordSpan = document.getElementById('password' + merchantId);
+            const passwordIcon = document.getElementById('passwordIcon' + merchantId);
+            
+            if (passwordVisibility[merchantId]) {
+                // Hide password
+                passwordSpan.textContent = '••••••••';
+                passwordSpan.style.letterSpacing = '2px';
+                passwordIcon.className = 'fas fa-eye';
+                passwordVisibility[merchantId] = false;
+            } else {
+                // Show password
+                passwordSpan.textContent = merchantPasswords[merchantId] || 'N/A';
+                passwordSpan.style.letterSpacing = 'normal';
+                passwordIcon.className = 'fas fa-eye-slash';
+                passwordVisibility[merchantId] = true;
+            }
+        }
+        
+        function resetMerchantPassword(merchantId) {
+            if (confirm('Are you sure you want to reset password for this merchant?\n\nA new password will be generated and sent to their email.')) {
+                // Generate random password
+                const newPassword = 'Temp' + Math.random().toString(36).substring(2, 10) + '@2025';
+                
+                // Store password (in real app, this would be API call)
+                if (!window.merchantPasswords) {
+                    window.merchantPasswords = {1: 'Merchant@2025'};
+                }
+                window.merchantPasswords[merchantId] = newPassword;
+                
+                // Update display if password is visible
+                if (passwordVisibility[merchantId]) {
+                    document.getElementById('password' + merchantId).textContent = newPassword;
+                }
+                
+                alert('Password reset successful!\n\nNew Password: ' + newPassword + '\n\nThis password has been sent to merchant email: merchant@test.com');
+            }
+        }
+        
+        function approveKYC(merchantId) {
+            if (confirm('Approve KYC for this merchant?')) {
+                alert('KYC approved for merchant #' + merchantId);
+            }
+        }
+    </script>
 </body>
 </html>
