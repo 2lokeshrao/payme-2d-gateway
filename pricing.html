@@ -473,6 +473,39 @@
                 font-size: 28px;
             }
         }
+    
+        /* Mobile Fix: Disable hover effects and animations on mobile */
+        @media (max-width: 768px) {
+            .pricing-card {
+                transform: none !important;
+                transition: none !important;
+            }
+            
+            .pricing-card:hover {
+                transform: none !important;
+            }
+            
+            .plan-icon {
+                transform: none !important;
+                transition: none !important;
+            }
+            
+            .btn-purchase {
+                transform: none !important;
+                transition: none !important;
+            }
+            
+            .btn-purchase:hover {
+                transform: none !important;
+            }
+            
+            /* Prevent any element from moving */
+            * {
+                transform: none !important;
+                -webkit-transform: none !important;
+            }
+        }
+    
     </style>
 </head>
 <body>
