@@ -871,13 +871,55 @@
             }
         }
         // Reset Password Function
+
         function resetPassword() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id') || '1';
+            
             if (confirm('Are you sure you want to reset this user\'s password? A new password will be sent to their email.')) {
+                // Generate new password
                 const newPassword = 'PayMe' + Math.floor(Math.random() * 10000);
-                alert('✅ Password reset successfully!\n\nNew temporary password: ' + newPassword + '\n\nPassword has been sent to user\'s email.');
+                
+                // Get user data from localStorage or create new
+                const savedData = localStorage.getItem(`userDetails_${userId}`);
+                let userData;
+                
+                if (savedData) {
+                    userData = JSON.parse(savedData);
+                } else {
+                    // Create default user data
+                    userData = {
+                        id: parseInt(userId),
+                        fullName: document.querySelector('.profile-info h2').textContent,
+                        email: document.querySelector('.profile-info p').textContent,
+                        phone: document.querySelector('[class*="phone"]') ? document.querySelector('[class*="phone"]').textContent : '',
+                        role: 'User',
+                        status: 'Active',
+                        joinedDate: 'Oct 1, 2025',
+                        lastLogin: 'Just now'
+                    };
+                }
+                
+                // Update password in userData
+                userData.password = newPassword;
+                
+                // Save to localStorage
+                localStorage.setItem(`userDetails_${userId}`, JSON.stringify(userData));
+                
+                // Update password display on page
+                const passwordDisplay = document.querySelector('.password-display');
+                if (passwordDisplay) {
+                    passwordDisplay.textContent = newPassword;
+                }
+                
+                // Get user email for notification
+                const userEmail = userData.email || 'user@example.com';
+                const userName = userData.fullName || 'User';
+                
+                // Show success message with email notification
+                alert('✅ Password reset successfully!\n\nNew temporary password: ' + newPassword + '\n\n📧 Password reset email sent to: ' + userEmail + '\n\nThe user will receive an email with their new password and instructions to change it.');
             }
         }
-
         // Block User Function
         function blockUser() {
             const statusBadge = document.querySelector('.badge-success');
