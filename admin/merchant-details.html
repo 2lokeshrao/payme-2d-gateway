@@ -524,6 +524,27 @@
         
         <div class="section">
             <h3 class="section-title">
+                <i class="fas fa-key"></i> Login Credentials
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Login Email</label>
+                    <div class="value">contact@techmart.com</div>
+                </div>
+                <div class="info-item">
+                    <label>Password</label>
+                    <div class="value" style="display: flex; align-items: center; gap: 10px;">
+                        <span id="merchantPassword" style="letter-spacing: 2px;">••••••••••</span>
+                        <button onclick="togglePassword()" style="background: none; border: none; cursor: pointer; color: #667eea; font-size: 16px; padding: 5px;">
+                            <i id="passwordIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">
                 <i class="fas fa-university"></i> Bank Account Details
             </h3>
             <div class="info-grid">
@@ -732,5 +753,53 @@
     <script src="merchant-edit-inline.js"></script>
     <script src="load-navbar.js"></script>
     <script src="../js/admin-auth-check.js"></script>
+    <script>
+        // Store the actual password (in real app, this would come from secure backend)
+        const actualPassword = 'TechMart@2025';
+        let isPasswordVisible = false;
+        
+        function togglePassword() {
+            const passwordSpan = document.getElementById('merchantPassword');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (isPasswordVisible) {
+                // Hide password
+                passwordSpan.textContent = '••••••••••';
+                passwordSpan.style.letterSpacing = '2px';
+                passwordIcon.className = 'fas fa-eye';
+                isPasswordVisible = false;
+            } else {
+                // Show password
+                passwordSpan.textContent = actualPassword;
+                passwordSpan.style.letterSpacing = 'normal';
+                passwordIcon.className = 'fas fa-eye-slash';
+                isPasswordVisible = true;
+            }
+        }
+        
+        function editMerchantDetails() {
+            alert('Edit merchant details functionality');
+        }
+        
+        function approveKYC() {
+            alert('KYC approval functionality');
+        }
+        
+        function viewAPIKeys() {
+            window.location.href = 'merchant-api-keys.html';
+        }
+        
+        function suspendMerchant() {
+            if (confirm('Are you sure you want to suspend this merchant?')) {
+                alert('Merchant suspended');
+            }
+        }
+        
+        function blockMerchant() {
+            if (confirm('Are you sure you want to block this merchant?')) {
+                alert('Merchant blocked');
+            }
+        }
+    </script>
 </body>
 </html>
