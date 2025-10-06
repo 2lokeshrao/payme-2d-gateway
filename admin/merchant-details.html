@@ -371,6 +371,33 @@
         }
         
         .doc-card .status {
+        
+        .btn-view-doc {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-view-doc:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+        
+        .btn-view-doc i {
+            margin-right: 4px;
+        }
+        
+        .doc-card .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
             font-size: 12px;
             margin-top: 8px;
         }
@@ -527,7 +554,7 @@
             </div>
             
             <div class="action-buttons">
-                <button class="btn btn-primary" onclick="editMerchantDetails()">
+                <button class="btn btn-primary" onclick="editDetails()">
                     <i class="fas fa-edit"></i> Edit Details
                 </button>
                 <button class="btn btn-success" onclick="approveKYC()">
@@ -607,6 +634,7 @@
                     <h4><i class="fas fa-id-card"></i> Aadhaar Card</h4>
                     <p>Front & Back uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('aadhaar')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -614,6 +642,7 @@
                     <h4><i class="fas fa-credit-card"></i> PAN Card</h4>
                     <p>Document uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('pan')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -621,6 +650,7 @@
                     <h4><i class="fas fa-building"></i> Business Registration</h4>
                     <p>Certificate uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('business')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -628,6 +658,7 @@
                     <h4><i class="fas fa-file-invoice"></i> GST Certificate</h4>
                     <p>Document uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('gst')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -635,6 +666,7 @@
                     <h4><i class="fas fa-home"></i> Address Proof</h4>
                     <p>Electricity bill uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('address')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -642,6 +674,7 @@
                     <h4><i class="fas fa-money-check"></i> Cancelled Cheque</h4>
                     <p>Bank proof uploaded</p>
                     <div class="status">
+                        <button class="btn-view-doc" onclick="viewDocument('cheque')"><i class="fas fa-eye"></i> View</button>
                         <span class="badge badge-success">Verified</span>
                     </div>
                 </div>
@@ -821,6 +854,40 @@
         function blockMerchant() {
             if (confirm('Are you sure you want to block this merchant?')) {
                 alert('Merchant blocked');
+            }
+        }
+        
+        // View Document Function
+        function viewDocument(docType) {
+            const docNames = {
+                aadhaar: "Aadhaar Card",
+                pan: "PAN Card",
+                business: "Business Registration Certificate",
+                gst: "GST Certificate",
+                address: "Address Proof",
+                cheque: "Cancelled Cheque"
+            };
+            
+            alert(`Opening ${docNames[docType]}...\n\nIn production, this would open the document viewer with the uploaded ${docNames[docType]}.`);
+            
+            // In production, this would open a modal or new tab with the document
+            // window.open(`/admin/view-document.html?type=${docType}&merchantId=MERCH001`, "_blank");
+        }
+        
+        // Edit Details Function
+        function editDetails() {
+            if (confirm("Do you want to edit merchant details?")) {
+                window.location.href = "edit-merchant.html?id=MERCH001";
+            }
+        }
+        
+        // Approve KYC Function
+        function approveKYC() {
+            if (confirm("Are you sure you want to approve KYC for this merchant?\n\nThis will activate their account for transactions.")) {
+                alert("KYC Approved Successfully!\n\nMerchant can now process transactions.");
+                // In production, this would make an API call
+                // Update UI to show approved status
+                location.reload();
             }
         }
     </script>
