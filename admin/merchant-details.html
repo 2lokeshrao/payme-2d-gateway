@@ -876,7 +876,7 @@
         
         // Edit Details Function
         function editDetails() {
-            alert("Edit Merchant Details\n\nFeature: Edit merchant information\n\nThis would allow you to:\n• Update business details\n• Modify contact information\n• Change bank account details\n• Update KYC documents\n\nNote: This feature will be available in the next update.");
+            window.location.href = "edit-merchant.html?id=1";
         }
         // Approve KYC Function
         function approveKYC() {
@@ -887,6 +887,82 @@
                 location.reload();
             }
         }
+        // Load merchant data from localStorage on page load
+        window.addEventListener("DOMContentLoaded", function() {
+            const savedData = localStorage.getItem("merchantDetails_MERCH001");
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                // Update page content with saved data
+                if (data.businessName) {
+                    document.querySelector(".merchant-header h2").textContent = data.businessName;
+                }
+                if (data.email) {
+                    const emailElements = document.querySelectorAll(".merchant-header p");
+                    if (emailElements[0]) emailElements[0].textContent = data.email;
+                }
+                if (data.businessType) {
+                    const businessTypeElement = document.querySelector(".info-grid .info-item:nth-child(2) .info-value");
+                    if (businessTypeElement) businessTypeElement.textContent = data.businessType;
+                }
+                if (data.industry) {
+                    const industryElement = document.querySelector(".info-grid .info-item:nth-child(3) .info-value");
+                    if (industryElement) industryElement.textContent = data.industry;
+                }
+                if (data.gstNumber) {
+                    const gstElement = document.querySelector(".info-grid .info-item:nth-child(4) .info-value");
+                    if (gstElement) gstElement.textContent = data.gstNumber;
+                }
+                if (data.panNumber) {
+                    const panElement = document.querySelector(".info-grid .info-item:nth-child(5) .info-value");
+                    if (panElement) panElement.textContent = data.panNumber;
+                }
+                if (data.phone) {
+                    const phoneElement = document.querySelector(".info-grid .info-item:nth-child(6) .info-value");
+                    if (phoneElement) phoneElement.textContent = data.phone;
+                }
+                if (data.website) {
+                    const websiteElement = document.querySelector(".info-grid .info-item:nth-child(9) .info-value");
+                    if (websiteElement) websiteElement.textContent = data.website;
+                }
+                if (data.city) {
+                    const cityElement = document.querySelector(".info-grid .info-item:nth-child(10) .info-value");
+                    if (cityElement) cityElement.textContent = data.city;
+                }
+                if (data.state) {
+                    const stateElement = document.querySelector(".info-grid .info-item:nth-child(11) .info-value");
+                    if (stateElement) stateElement.textContent = data.state;
+                }
+                if (data.country) {
+                    const countryElement = document.querySelector(".info-grid .info-item:nth-child(12) .info-value");
+                    if (countryElement) countryElement.textContent = data.country;
+                }
+                if (data.bankName) {
+                    const bankNameElement = document.querySelector(".bank-details .info-item:nth-child(1) .info-value");
+                    if (bankNameElement) bankNameElement.textContent = data.bankName;
+                }
+                if (data.accountHolder) {
+                    const accountHolderElement = document.querySelector(".bank-details .info-item:nth-child(2) .info-value");
+                    if (accountHolderElement) accountHolderElement.textContent = data.accountHolder;
+                }
+                if (data.accountNumber) {
+                    const accountNumberElement = document.querySelector(".bank-details .info-item:nth-child(3) .info-value");
+                    if (accountNumberElement) accountNumberElement.textContent = data.accountNumber;
+                }
+                if (data.ifscCode) {
+                    const ifscElement = document.querySelector(".bank-details .info-item:nth-child(4) .info-value");
+                    if (ifscElement) ifscElement.textContent = data.ifscCode;
+                }
+                if (data.accountType) {
+                    const accountTypeElement = document.querySelector(".bank-details .info-item:nth-child(5) .info-value");
+                    if (accountTypeElement) accountTypeElement.textContent = data.accountType;
+                }
+                if (data.branch) {
+                    const branchElement = document.querySelector(".bank-details .info-item:nth-child(6) .info-value");
+                    if (branchElement) branchElement.textContent = data.branch;
+                }
+            }
+        });
+
     </script>
 </body>
 </html>
