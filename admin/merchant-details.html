@@ -892,72 +892,63 @@
             const savedData = localStorage.getItem("merchantDetails_MERCH001");
             if (savedData) {
                 const data = JSON.parse(savedData);
-                // Update page content with saved data
+                
+                // Update Business Name in header
                 if (data.businessName) {
-                    document.querySelector(".merchant-header h2").textContent = data.businessName;
+                    const businessNameElement = document.querySelector(".profile-info h2");
+                    if (businessNameElement) businessNameElement.textContent = data.businessName;
                 }
+                
+                // Update Email in header
                 if (data.email) {
-                    const emailElements = document.querySelectorAll(".merchant-header p");
-                    if (emailElements[0]) emailElements[0].textContent = data.email;
+                    const emailElement = document.querySelector(".profile-info p");
+                    if (emailElement) emailElement.textContent = data.email;
                 }
-                if (data.businessType) {
-                    const businessTypeElement = document.querySelector(".info-grid .info-item:nth-child(2) .info-value");
-                    if (businessTypeElement) businessTypeElement.textContent = data.businessType;
-                }
-                if (data.industry) {
-                    const industryElement = document.querySelector(".info-grid .info-item:nth-child(3) .info-value");
-                    if (industryElement) industryElement.textContent = data.industry;
-                }
-                if (data.gstNumber) {
-                    const gstElement = document.querySelector(".info-grid .info-item:nth-child(4) .info-value");
-                    if (gstElement) gstElement.textContent = data.gstNumber;
-                }
-                if (data.panNumber) {
-                    const panElement = document.querySelector(".info-grid .info-item:nth-child(5) .info-value");
-                    if (panElement) panElement.textContent = data.panNumber;
-                }
-                if (data.phone) {
-                    const phoneElement = document.querySelector(".info-grid .info-item:nth-child(6) .info-value");
-                    if (phoneElement) phoneElement.textContent = data.phone;
-                }
-                if (data.website) {
-                    const websiteElement = document.querySelector(".info-grid .info-item:nth-child(9) .info-value");
-                    if (websiteElement) websiteElement.textContent = data.website;
-                }
-                if (data.city) {
-                    const cityElement = document.querySelector(".info-grid .info-item:nth-child(10) .info-value");
-                    if (cityElement) cityElement.textContent = data.city;
-                }
-                if (data.state) {
-                    const stateElement = document.querySelector(".info-grid .info-item:nth-child(11) .info-value");
-                    if (stateElement) stateElement.textContent = data.state;
-                }
-                if (data.country) {
-                    const countryElement = document.querySelector(".info-grid .info-item:nth-child(12) .info-value");
-                    if (countryElement) countryElement.textContent = data.country;
-                }
-                if (data.bankName) {
-                    const bankNameElement = document.querySelector(".bank-details .info-item:nth-child(1) .info-value");
-                    if (bankNameElement) bankNameElement.textContent = data.bankName;
-                }
-                if (data.accountHolder) {
-                    const accountHolderElement = document.querySelector(".bank-details .info-item:nth-child(2) .info-value");
-                    if (accountHolderElement) accountHolderElement.textContent = data.accountHolder;
-                }
-                if (data.accountNumber) {
-                    const accountNumberElement = document.querySelector(".bank-details .info-item:nth-child(3) .info-value");
-                    if (accountNumberElement) accountNumberElement.textContent = data.accountNumber;
-                }
-                if (data.ifscCode) {
-                    const ifscElement = document.querySelector(".bank-details .info-item:nth-child(4) .info-value");
-                    if (ifscElement) ifscElement.textContent = data.ifscCode;
-                }
-                if (data.accountType) {
-                    const accountTypeElement = document.querySelector(".bank-details .info-item:nth-child(5) .info-value");
-                    if (accountTypeElement) accountTypeElement.textContent = data.accountType;
-                }
-                if (data.branch) {
-                    const branchElement = document.querySelector(".bank-details .info-item:nth-child(6) .info-value");
+                
+                // Update all info-item fields by finding label and updating corresponding value
+                const infoItems = document.querySelectorAll(".info-item");
+                infoItems.forEach(item => {
+                    const label = item.querySelector("label");
+                    const value = item.querySelector(".value");
+                    
+                    if (label && value) {
+                        const labelText = label.textContent.trim().toLowerCase();
+                        
+                        if (labelText === "business type" && data.businessType) {
+                            value.textContent = data.businessType;
+                        } else if (labelText === "industry" && data.industry) {
+                            value.textContent = data.industry;
+                        } else if (labelText === "gst number" && data.gstNumber) {
+                            value.textContent = data.gstNumber;
+                        } else if (labelText === "pan number" && data.panNumber) {
+                            value.textContent = data.panNumber;
+                        } else if (labelText === "phone" && data.phone) {
+                            value.textContent = data.phone;
+                        } else if (labelText === "website" && data.website) {
+                            value.textContent = data.website;
+                        } else if (labelText === "city" && data.city) {
+                            value.textContent = data.city;
+                        } else if (labelText === "state" && data.state) {
+                            value.textContent = data.state;
+                        } else if (labelText === "country" && data.country) {
+                            value.textContent = data.country;
+                        } else if (labelText === "bank name" && data.bankName) {
+                            value.textContent = data.bankName;
+                        } else if (labelText === "account holder" && data.accountHolder) {
+                            value.textContent = data.accountHolder;
+                        } else if (labelText === "account number" && data.accountNumber) {
+                            value.textContent = data.accountNumber;
+                        } else if (labelText === "ifsc code" && data.ifscCode) {
+                            value.textContent = data.ifscCode;
+                        } else if (labelText === "account type" && data.accountType) {
+                            value.textContent = data.accountType;
+                        } else if (labelText === "branch" && data.branch) {
+                            value.textContent = data.branch;
+                        }
+                    }
+                });
+            }
+        });
                     if (branchElement) branchElement.textContent = data.branch;
                 }
             }
