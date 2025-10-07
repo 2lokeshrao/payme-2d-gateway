@@ -1,389 +1,479 @@
-# PayMe 2D Gateway
+# PayMe 2D Gateway - Complete Payment Gateway System
 
-**Complete Payment Gateway Solution for Direct Payment Collection**
+![PayMe Gateway](https://img.shields.io/badge/Version-1.0.0-blue)
+![License](https://img.shields.io/badge/License-Proprietary-red)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-green)
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/2lokeshrao/payme-2d-gateway)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net)
-[![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-orange.svg)](https://mysql.com)
+## 🚀 Overview
 
----
+PayMe 2D Gateway is a complete, production-ready payment gateway system supporting UPI, Cryptocurrency, Bank Transfers, Cards, and Digital Wallets. Built with PHP, PostgreSQL, and modern web technologies.
 
-## Overview
-
-PayMe 2D Gateway is a comprehensive payment gateway solution that enables businesses and individuals to accept payments directly into their bank accounts, UPI IDs, or cryptocurrency wallets without any middleman or commission fees.
-
-### Key Features
-
-✅ **Direct Payment Collection** - Payments go directly to your account  
-✅ **Multiple Payment Methods** - Bank Transfer, UPI, Cryptocurrency  
-✅ **Automated Code Generation** - Instant activation code delivery  
-✅ **Email Automation** - Professional email templates  
-✅ **Reseller System** - Build your own reseller network  
-✅ **Complete API** - Integrate with any platform  
-✅ **Real-time Analytics** - Track all transactions  
-✅ **Secure & Reliable** - Bank-grade security
+**Live Demo:** https://hungry-nights-cough.lindy.site
 
 ---
 
-## Quick Start
+## ✨ Features
 
-### Installation
+### 🔐 Multi-User System
+- **Admin Panel** - Complete control over merchants, transactions, KYC verification
+- **Merchant Dashboard** - Business analytics, transaction management, API integration
+- **Client Portal** - Gateway owners can manage their business
+- **Reseller System** - Affiliate program with commission tracking
 
-**Step 1: Clone the Repository**
+### 💳 Payment Methods
+- ✅ UPI Payments
+- ✅ Cryptocurrency (Bitcoin, Ethereum, USDT)
+- ✅ Bank Transfers
+- ✅ Card Payments
+- ✅ Digital Wallets
+
+### 🛡️ Security Features
+- ✅ CSRF Protection
+- ✅ Password Hashing (bcrypt)
+- ✅ Prepared Statements (SQL Injection Prevention)
+- ✅ Rate Limiting
+- ✅ Input Validation & Sanitization
+- ✅ API Key Authentication
+- ✅ Session Management
+
+### 📊 Business Features
+- Real-time transaction tracking
+- Revenue analytics & statistics
+- KYC document management
+- API integration for merchants
+- Webhook callbacks
+- Settlement management
+- Commission tracking for resellers
+
+---
+
+## 📁 Project Structure
+
+```
+payme-2d-gateway/
+├── api/                          # Backend APIs
+│   ├── config/
+│   │   ├── database.php         # PostgreSQL connection
+│   │   └── security.php         # Security helpers
+│   ├── auth/
+│   │   ├── login.php            # User authentication
+│   │   └── register.php         # User registration
+│   ├── payment/
+│   │   ├── create_payment_link.php
+│   │   └── verify_payment.php
+│   ├── merchant/
+│   │   ├── get_transactions.php
+│   │   └── upload_kyc.php
+│   └── admin/
+│       └── verify_kyc.php
+├── admin/                        # Admin panel
+│   ├── dashboard.html
+│   ├── merchants.html
+│   └── transactions.html
+├── merchant/                     # Merchant portal
+│   ├── merchant-login.html
+│   └── merchant-dashboard.html
+├── client/                       # Client portal
+│   ├── client-login.html
+│   └── client-dashboard.html
+├── reseller/                     # Reseller system
+│   ├── reseller-register.html
+│   └── reseller-dashboard.html
+├── js/                          # JavaScript files
+│   └── init-merchants.js        # Initialize default data
+├── css/                         # Stylesheets
+├── database.sql                 # MySQL schema
+├── database_postgres.sql        # PostgreSQL schema
+├── API_DOCUMENTATION.md         # Complete API docs
+└── README.md                    # This file
+```
+
+---
+
+## 🔧 Installation & Setup
+
+### Prerequisites
+
+- **PostgreSQL** 14+ or **MySQL** 5.7+
+- **PHP** 7.4+ with PDO extension
+- **Web Server** (Apache/Nginx)
+- **Git**
+
+### Step 1: Clone Repository
 
 ```bash
 git clone https://github.com/2lokeshrao/payme-2d-gateway.git
 cd payme-2d-gateway
 ```
 
-**Step 2: Setup Database**
+### Step 2: Database Setup
+
+#### For PostgreSQL:
 
 ```bash
 # Create database
-mysql -u root -p -e "CREATE DATABASE payme_gateway;"
+createdb -h localhost payme_gateway
 
 # Import schema
-mysql -u root -p payme_gateway < database.sql
+psql -h localhost -d payme_gateway -f database_postgres.sql
 ```
 
-**Step 3: Configure Database Connection**
+#### For MySQL:
 
-Edit `config/database.php`:
+```bash
+# Import schema
+mysql -u root -p < database.sql
+```
+
+### Step 3: Configure Database Connection
+
+Edit `api/config/database.php`:
 
 ```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'payme_gateway');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
+// For PostgreSQL (default)
+private $host = 'localhost';
+private $db_name = 'payme_gateway';
+private $username = 'your_username';
+private $password = 'your_password';
+
+// Or use environment variables
+$this->username = getenv('PGUSER') ?: 'postgres';
+$this->password = getenv('PGPASSWORD') ?: '';
 ```
 
-**Step 4: Access the System**
+### Step 4: Set Permissions
 
-- **Homepage:** `http://your-domain.com`
-- **Admin Panel:** `http://your-domain.com/admin/login.html`
-- **User Panel:** `http://your-domain.com/user/login.html`
+```bash
+# Create uploads directory
+mkdir -p api/uploads/kyc
+chmod -R 755 api/uploads
 
-**Default Admin Credentials:**
-- Username: `admin`
-- Password: `admin123`
+# Set proper permissions
+chmod 644 api/config/*.php
+chmod 644 api/**/*.php
+```
 
-⚠️ **Important:** Change the default password immediately after first login!
+### Step 5: Configure Web Server
+
+#### Apache (.htaccess):
+
+```apache
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/$1 [L]
+```
+
+#### Nginx:
+
+```nginx
+location /api/ {
+    try_files $uri $uri/ /api/index.php?$query_string;
+}
+
+location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+}
+```
+
+### Step 6: Test Installation
+
+1. Open browser: `http://localhost/payme-2d-gateway`
+2. Login as Admin:
+   - Email: `admin@payme.com`
+   - Password: `admin123`
+3. Login as Merchant:
+   - Email: `merchant@test.com`
+   - Password: `Merchant@2025`
 
 ---
 
-## System Requirements
+## 📚 Database Schema
 
-### Minimum Requirements
+### Tables (10 Total)
 
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Apache/Nginx web server
-- 1 GB RAM
-- 10 GB Storage
+1. **users** - All user types (Admin, Merchant, Client, Reseller)
+2. **merchants** - Business details, API keys, KYC status
+3. **kyc_documents** - Document uploads and verification
+4. **transactions** - Payment records with status tracking
+5. **settlements** - Merchant payouts
+6. **subscriptions** - License plans (Monthly/Yearly/Lifetime)
+7. **resellers** - Affiliate program data
+8. **referrals** - Commission tracking
+9. **api_logs** - API request logging
+10. **notifications** - User notifications
 
-### Recommended Requirements
+### Sample Data Included
 
-- PHP 8.0 or higher
-- MySQL 8.0 or higher
-- Apache/Nginx with SSL
-- 2 GB RAM
-- 20 GB Storage
+- ✅ Admin user
+- ✅ Test merchant with verified KYC
+- ✅ Test reseller
+- ✅ 4 sample transactions
+- ✅ Active subscription
+- ✅ Sample notifications
 
 ---
 
-## Features
+## 🔌 API Integration
 
-### For Businesses
+### Quick Start
 
-**Self Payment Gateway**
-- Configure your own bank account
-- Configure your own UPI ID
-- Configure crypto wallets
-- Payments come directly to you
-- No commission, no middleman
+```javascript
+// Create Payment Link
+const response = await fetch('https://yoursite.com/api/payment/create_payment_link.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'pk_test_51234567890abcdef'
+  },
+  body: JSON.stringify({
+    amount: 1500.00,
+    customer_email: 'customer@example.com',
+    payment_method: 'upi',
+    description: 'Order #12345',
+    callback_url: 'https://yoursite.com/webhook'
+  })
+});
 
-**Payment Methods Supported**
-- 🏦 Bank Transfer (NEFT/RTGS/IMPS)
-- 📱 UPI Payments (Google Pay, PhonePe, Paytm, BHIM)
-- 💎 Cryptocurrency (BTC, ETH, USDT, BNB)
+const data = await response.json();
+console.log(data.data.payment_link);
+```
 
-**Transaction Management**
-- Real-time transaction tracking
-- Detailed analytics and reports
-- Export transaction data
-- Download invoices
-- Payment verification
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/auth/login.php` | POST | User authentication |
+| `/api/auth/register.php` | POST | User registration |
+| `/api/payment/create_payment_link.php` | POST | Create payment link |
+| `/api/payment/verify_payment.php` | POST | Verify payment status |
+| `/api/merchant/get_transactions.php` | GET | Get transaction list |
+| `/api/merchant/upload_kyc.php` | POST | Upload KYC documents |
+| `/api/admin/verify_kyc.php` | POST | Verify KYC (Admin) |
+
+**Full API Documentation:** [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
+
+---
+
+## 🎯 Usage Examples
+
+### For Merchants
+
+1. **Get API Credentials**
+   - Login to merchant dashboard
+   - Copy API Key and Merchant ID
+   - Read API documentation
+
+2. **Create Payment Link**
+   ```bash
+   curl -X POST https://yoursite.com/api/payment/create_payment_link.php \
+     -H "X-API-Key: your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "amount": 1500.00,
+       "customer_email": "customer@example.com",
+       "payment_method": "upi"
+     }'
+   ```
+
+3. **Verify Payment**
+   ```bash
+   curl -X POST https://yoursite.com/api/payment/verify_payment.php \
+     -H "X-API-Key: your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "transaction_id": "TXN1a2b3c4d5e6f7g8h9",
+       "payment_status": "success",
+       "utr_number": "UTR123456789"
+     }'
+   ```
 
 ### For Admins
 
-**Complete Control Panel**
-- Dashboard with analytics
-- User management
-- Subscription plan management
-- Reseller management
-- Payment configuration
-- Email configuration
-- Transaction monitoring
+1. **Verify Merchant KYC**
+   - Login to admin panel
+   - Navigate to Merchants section
+   - Review KYC documents
+   - Approve or reject
 
-**Reseller System**
-- Create reseller accounts
-- Set commission rates
-- Track reseller sales
-- Manage payouts
-- Generate activation codes
-- Revenue sharing
-
-### For Customers
-
-**Easy Purchase Process**
-- Select subscription plan
-- Enter details
-- Choose payment method
-- Complete payment
-- Receive activation code via email
-- Activate subscription instantly
-
-**Subscription Plans**
-- Monthly Plan: ₹60/month
-- Quarterly Plan: ₹150/3 months (Save 17%)
-- Yearly Plan: ₹500/year (Save 30%)
-- Lifetime Plan: ₹2,999 one-time (Best Value)
+2. **Monitor Transactions**
+   - View all transactions across merchants
+   - Filter by status, date, merchant
+   - Export reports
 
 ---
 
-## Documentation
+## 💰 Pricing Plans
 
-### Complete Documentation
+| Plan | Price | Features |
+|------|-------|----------|
+| **Monthly** | ₹4,999/month | Full features, monthly billing |
+| **Yearly** | ₹49,999/year | Save 17%, annual billing |
+| **Lifetime** | ₹2,99,999 | One-time payment, lifetime access |
 
-For detailed documentation, please refer to:
-
-📚 **[DOCUMENTATION.md](DOCUMENTATION.md)** - Complete system documentation
-
-This includes:
-- Installation guide
-- Configuration guide
-- Admin setup guide
-- Payment configuration
-- User guide
-- Reseller system
-- API documentation
-- Security features
-- Troubleshooting
-
-### Quick Start Guide
-
-📖 **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide for getting started
+### Reseller Commission
+- Up to **30% commission** on referrals
+- Recurring revenue on subscriptions
+- Dedicated reseller dashboard
 
 ---
 
-## Configuration
+## 🔒 Security Best Practices
 
-### Payment Configuration
+1. **Change Default Passwords**
+   ```sql
+   UPDATE users SET password_hash = '$2y$10$your_new_hash' WHERE email = 'admin@payme.com';
+   ```
 
-**Bank Account Setup**
+2. **Use Environment Variables**
+   ```bash
+   export PGUSER="your_db_user"
+   export PGPASSWORD="your_db_password"
+   ```
 
-1. Login to Admin Panel
-2. Go to "Payment Configuration"
-3. Click "Bank Transfer" tab
-4. Enter bank details:
-   - Bank Name
-   - Account Holder Name
-   - Account Number
-   - IFSC Code
-5. Save configuration
+3. **Enable HTTPS**
+   - Use SSL certificate
+   - Force HTTPS redirects
+   - Secure cookie flags
 
-**UPI Payment Setup**
+4. **Regular Backups**
+   ```bash
+   pg_dump -h localhost payme_gateway > backup_$(date +%Y%m%d).sql
+   ```
 
-1. Go to "Payment Configuration"
-2. Click "UPI Payment" tab
-3. Enter UPI details:
-   - UPI ID (e.g., yourname@okhdfc)
-   - UPI Name
-   - UPI Provider
-4. Save configuration
-
-**Cryptocurrency Setup**
-
-1. Go to "Payment Configuration"
-2. Click "Cryptocurrency" tab
-3. Enter wallet addresses:
-   - Bitcoin (BTC) wallet
-   - Ethereum (ETH) wallet
-   - Tether (USDT) wallet
-   - Binance Coin (BNB) wallet
-4. Save configuration
-
-### Email Configuration
-
-**Gmail Setup (Recommended)**
-
-1. Go to "Payment Configuration"
-2. Click "Email Settings" tab
-3. Enter SMTP details:
-   - SMTP Host: `smtp.gmail.com`
-   - SMTP Port: `587`
-   - SMTP Username: Your Gmail address
-   - SMTP Password: Gmail App Password
-4. Test email delivery
-5. Save configuration
-
-**How to Get Gmail App Password:**
-1. Go to Google Account Settings
-2. Security → 2-Step Verification
-3. App Passwords
-4. Generate password for "Mail"
-5. Use this password in SMTP settings
+5. **Update Dependencies**
+   - Keep PHP updated
+   - Update PostgreSQL/MySQL
+   - Monitor security advisories
 
 ---
 
-## API Integration
+## 🐛 Troubleshooting
 
-### Authentication
-
-All API requests require authentication using API key.
+### Database Connection Failed
 
 ```bash
-Authorization: Bearer YOUR_API_KEY
+# Check PostgreSQL is running
+sudo systemctl status postgresql
+
+# Test connection
+psql -h localhost -d payme_gateway -U your_user
 ```
 
-### Create Payment Link
+### API Returns 500 Error
 
 ```bash
-POST /api/create-payment-link.php
-Content-Type: application/json
-
-{
-  "amount": 1000,
-  "description": "Product Purchase",
-  "customer_email": "customer@example.com",
-  "payment_methods": ["upi", "bank", "crypto"]
-}
+# Check PHP error logs
+tail -f /var/log/apache2/error.log
+# or
+tail -f /var/log/nginx/error.log
 ```
 
-### Verify Payment
+### File Upload Fails
 
 ```bash
-POST /api/verify-payment.php
-Content-Type: application/json
+# Check permissions
+ls -la api/uploads/
+chmod -R 755 api/uploads/
 
-{
-  "payment_id": "PAY123456",
-  "transaction_id": "UPI123456789"
-}
+# Check PHP upload settings
+php -i | grep upload_max_filesize
 ```
 
-For complete API documentation, see [DOCUMENTATION.md](DOCUMENTATION.md#api-documentation)
+---
+
+## 📈 Performance Optimization
+
+1. **Enable PHP OPcache**
+   ```ini
+   opcache.enable=1
+   opcache.memory_consumption=128
+   opcache.max_accelerated_files=10000
+   ```
+
+2. **Database Indexing**
+   - All foreign keys indexed
+   - Transaction queries optimized
+   - Proper use of EXPLAIN ANALYZE
+
+3. **Caching**
+   - Use Redis for session storage
+   - Cache API responses
+   - CDN for static assets
 
 ---
 
-## Security
+## 🤝 Contributing
 
-### Security Features
-
-- ✅ SSL/TLS encryption
-- ✅ Password hashing (Bcrypt)
-- ✅ SQL injection protection
-- ✅ XSS protection
-- ✅ CSRF protection
-- ✅ Two-factor authentication (2FA)
-- ✅ Session management
-- ✅ Activity logging
-
-### Best Practices
-
-1. Use strong passwords
-2. Enable 2FA for admin accounts
-3. Regular database backups
-4. Keep software updated
-5. Monitor transactions regularly
-6. Use HTTPS (SSL certificate)
-7. Restrict admin access by IP
+This is a proprietary project. For feature requests or bug reports, contact:
+- Email: support@payme.com
+- GitHub Issues: https://github.com/2lokeshrao/payme-2d-gateway/issues
 
 ---
 
-## Support
+## 📄 License
 
-### Getting Help
+**Proprietary License**
 
-**Documentation:**
-- [Complete Documentation](DOCUMENTATION.md)
-- [Quick Start Guide](QUICKSTART.md)
+This software is licensed for use only by authorized clients who have purchased a valid license.
 
-**Support Channels:**
-- Email: support@payme-gateway.com
-- GitHub Issues: [Create Issue](https://github.com/2lokeshrao/payme-2d-gateway/issues)
+### License Tiers:
+- **Monthly License:** ₹4,999/month
+- **Yearly License:** ₹49,999/year
+- **Lifetime License:** ₹2,99,999 (one-time)
 
-**Before Contacting Support:**
-1. Check documentation
-2. Review error messages
-3. Check browser console
-4. Try troubleshooting steps
+Unauthorized copying, distribution, or modification is strictly prohibited.
 
 ---
 
-## Contributing
+## 📞 Support
 
-We welcome contributions! Please follow these steps:
+### Technical Support
+- Email: support@payme.com
+- Phone: +91 98765 43210
+- Hours: 9 AM - 6 PM IST (Mon-Fri)
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Documentation
+- API Docs: [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
+- Video Tutorials: Coming soon
+- Knowledge Base: https://docs.payme.com
 
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Changelog
-
-### Version 1.0.0 (October 4, 2025)
-
-**Initial Release**
-- Complete payment gateway system
-- Admin, user, and reseller panels
-- Multiple payment methods (Bank, UPI, Crypto)
-- Automated code generation and email delivery
-- API integration
-- Complete documentation
+### Community
+- Discord: https://discord.gg/payme
+- Forum: https://forum.payme.com
 
 ---
 
-## Screenshots
+## 🎉 Changelog
 
-### Homepage
-![Homepage](https://payme-gateway.lindy.site/assets/images/screenshot-home.png)
-
-### Purchase Page
-![Purchase Page](https://payme-gateway.lindy.site/assets/images/screenshot-purchase.png)
-
-### Admin Dashboard
-![Admin Dashboard](https://payme-gateway.lindy.site/assets/images/screenshot-admin.png)
-
----
-
-## Links
-
-- **Live Demo:** https://payme-gateway.lindy.site
-- **Documentation:** [DOCUMENTATION.md](DOCUMENTATION.md)
-- **Quick Start:** [QUICKSTART.md](QUICKSTART.md)
-- **GitHub:** https://github.com/2lokeshrao/payme-2d-gateway
+### Version 1.0.0 (October 7, 2025)
+- ✅ Complete database schema with 10 tables
+- ✅ Backend APIs with security features
+- ✅ Authentication system (Login/Register)
+- ✅ Payment link creation and verification
+- ✅ KYC document upload and verification
+- ✅ Transaction management
+- ✅ Admin panel for merchant management
+- ✅ Merchant dashboard with analytics
+- ✅ Reseller commission tracking
+- ✅ API documentation
+- ✅ Sample data for testing
 
 ---
 
-## Contact
+## 🙏 Acknowledgments
 
-**Developer:** Lokesh Rao  
-**Email:** 2lokeshrao@gmail.com  
-**Website:** https://payme-gateway.lindy.site
+- Built with ❤️ by the PayMe Team
+- PostgreSQL for robust database
+- PHP for backend APIs
+- Bootstrap for responsive UI
 
 ---
 
 **© 2025 PayMe 2D Gateway. All rights reserved.**
 
-Made with ❤️ in India
+**Repository:** https://github.com/2lokeshrao/payme-2d-gateway
+**Live Demo:** https://hungry-nights-cough.lindy.site
+**Version:** 1.0.0

@@ -1,38 +1,41 @@
--- PayMe 2D Gateway - Complete Database Schema
--- MySQL Database Schema with Foreign Keys and Sample Data
+-- PayMe 2D Gateway - PostgreSQL Database Schema
+-- Complete Database Schema with Foreign Keys and Sample Data
 
--- Drop existing database if exists
-DROP DATABASE IF EXISTS payme_gateway;
-CREATE DATABASE payme_gateway CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE payme_gateway;
+-- Drop existing database if exists (run separately)
+-- DROP DATABASE IF EXISTS payme_gateway;
+-- CREATE DATABASE payme_gateway;
+
+-- Connect to database
+-- \c payme_gateway;
 
 -- ============================================
 -- 1. USERS TABLE (Admin, Client, Merchant, Reseller)
 -- ============================================
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_type ENUM('admin', 'client', 'merchant', 'reseller') NOT NULL,
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('admin', 'client', 'merchant', 'reseller')),
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     full_name VARCHAR(255) NOT NULL,
     phone VARCHAR(20),
-    status ENUM('active', 'inactive', 'suspended', 'pending') DEFAULT 'pending',
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('active', 'inactive', 'suspended', 'pending')),
     email_verified BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    last_login TIMESTAMP NULL,
-    INDEX idx_email (email),
-    INDEX idx_user_type (user_type),
-    INDEX idx_status (status)
-) ENGINE=InnoDB;
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP NULL
+);
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_type ON users(user_type);
+CREATE INDEX idx_users_status ON users(status);
 
 -- ============================================
 -- 2. MERCHANTS TABLE
 -- ============================================
-CREATE TABLE merchants (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS merchants (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     merchant_id VARCHAR(50) UNIQUE NOT NULL,
     business_name VARCHAR(255) NOT NULL,
     business_type VARCHAR(100),
@@ -45,7 +48,7 @@ CREATE TABLE merchants (
     pincode VARCHAR(20),
     gstin VARCHAR(50),
     pan_number VARCHAR(20),
-    kyc_status ENUM('pending', 'submitted', 'verified', 'rejected') DEFAULT 'pending',
+    kyc_status VARCHAR(20) DEFAULT 'pending' CHECK (kyc_status IN ('pending', 'submitted', 'verified', 'rejected')),
     kyc_verified_at TIMESTAMP NULL,
     api_key VARCHAR(255) UNIQUE,
     api_secret VARCHAR(255),
@@ -55,46 +58,45 @@ CREATE TABLE merchants (
     settlement_bank_name VARCHAR(100),
     commission_rate DECIMAL(5,2) DEFAULT 2.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_merchant_id (merchant_id),
-    INDEX idx_kyc_status (kyc_status)
-) ENGINE=InnoDB;
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_merchants_merchant_id ON merchants(merchant_id);
+CREATE INDEX idx_merchants_kyc_status ON merchants(kyc_status);
 
 -- ============================================
 -- 3. KYC DOCUMENTS TABLE
 -- ============================================
-CREATE TABLE kyc_documents (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    merchant_id INT NOT NULL,
-    document_type ENUM('pan_card', 'aadhar_card', 'gst_certificate', 'bank_statement', 'business_proof', 'other') NOT NULL,
+CREATE TABLE IF NOT EXISTS kyc_documents (
+    id SERIAL PRIMARY KEY,
+    merchant_id INTEGER NOT NULL REFERENCES merchants(id) ON DELETE CASCADE,
+    document_type VARCHAR(50) NOT NULL CHECK (document_type IN ('pan_card', 'aadhar_card', 'gst_certificate', 'bank_statement', 'business_proof', 'other')),
     document_number VARCHAR(100),
     document_file_path VARCHAR(255) NOT NULL,
     upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    verification_status ENUM('pending', 'verified', 'rejected') DEFAULT 'pending',
-    verified_by INT NULL,
+    verification_status VARCHAR(20) DEFAULT 'pending' CHECK (verification_status IN ('pending', 'verified', 'rejected')),
+    verified_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
     verified_at TIMESTAMP NULL,
-    rejection_reason TEXT,
-    FOREIGN KEY (merchant_id) REFERENCES merchants(id) ON DELETE CASCADE,
-    FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL,
-    INDEX idx_merchant_kyc (merchant_id, verification_status)
-) ENGINE=InnoDB;
+    rejection_reason TEXT
+);
+
+CREATE INDEX idx_kyc_merchant ON kyc_documents(merchant_id, verification_status);
 
 -- ============================================
 -- 4. TRANSACTIONS TABLE
 -- ============================================
-CREATE TABLE transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
     transaction_id VARCHAR(100) UNIQUE NOT NULL,
-    merchant_id INT NOT NULL,
-    payment_method ENUM('upi', 'crypto', 'bank_transfer', 'card', 'wallet') NOT NULL,
+    merchant_id INTEGER NOT NULL REFERENCES merchants(id) ON DELETE CASCADE,
+    payment_method VARCHAR(50) NOT NULL CHECK (payment_method IN ('upi', 'crypto', 'bank_transfer', 'card', 'wallet')),
     amount DECIMAL(15,2) NOT NULL,
     currency VARCHAR(10) DEFAULT 'INR',
     customer_name VARCHAR(255),
     customer_email VARCHAR(255),
     customer_phone VARCHAR(20),
     customer_upi_id VARCHAR(255),
-    payment_status ENUM('pending', 'processing', 'success', 'failed', 'refunded') DEFAULT 'pending',
+    payment_status VARCHAR(20) DEFAULT 'pending' CHECK (payment_status IN ('pending', 'processing', 'success', 'failed', 'refunded')),
     payment_gateway VARCHAR(50),
     gateway_transaction_id VARCHAR(255),
     payment_screenshot VARCHAR(255),
@@ -105,133 +107,130 @@ CREATE TABLE transactions (
     ip_address VARCHAR(50),
     user_agent TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    completed_at TIMESTAMP NULL,
-    FOREIGN KEY (merchant_id) REFERENCES merchants(id) ON DELETE CASCADE,
-    INDEX idx_transaction_id (transaction_id),
-    INDEX idx_merchant_transactions (merchant_id, payment_status),
-    INDEX idx_payment_status (payment_status),
-    INDEX idx_created_at (created_at)
-) ENGINE=InnoDB;
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP NULL
+);
+
+CREATE INDEX idx_transactions_id ON transactions(transaction_id);
+CREATE INDEX idx_transactions_merchant ON transactions(merchant_id, payment_status);
+CREATE INDEX idx_transactions_status ON transactions(payment_status);
+CREATE INDEX idx_transactions_created ON transactions(created_at);
 
 -- ============================================
 -- 5. SETTLEMENTS TABLE
 -- ============================================
-CREATE TABLE settlements (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS settlements (
+    id SERIAL PRIMARY KEY,
     settlement_id VARCHAR(100) UNIQUE NOT NULL,
-    merchant_id INT NOT NULL,
+    merchant_id INTEGER NOT NULL REFERENCES merchants(id) ON DELETE CASCADE,
     settlement_amount DECIMAL(15,2) NOT NULL,
     commission_amount DECIMAL(15,2) NOT NULL,
     net_amount DECIMAL(15,2) NOT NULL,
-    transaction_count INT DEFAULT 0,
-    settlement_status ENUM('pending', 'processing', 'completed', 'failed') DEFAULT 'pending',
+    transaction_count INTEGER DEFAULT 0,
+    settlement_status VARCHAR(20) DEFAULT 'pending' CHECK (settlement_status IN ('pending', 'processing', 'completed', 'failed')),
     settlement_date DATE,
     bank_reference_number VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    completed_at TIMESTAMP NULL,
-    FOREIGN KEY (merchant_id) REFERENCES merchants(id) ON DELETE CASCADE,
-    INDEX idx_merchant_settlements (merchant_id, settlement_status)
-) ENGINE=InnoDB;
+    completed_at TIMESTAMP NULL
+);
+
+CREATE INDEX idx_settlements_merchant ON settlements(merchant_id, settlement_status);
 
 -- ============================================
--- 6. SUBSCRIPTIONS TABLE (For Clients/Gateway Owners)
+-- 6. SUBSCRIPTIONS TABLE
 -- ============================================
-CREATE TABLE subscriptions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    plan_type ENUM('monthly', 'yearly', 'lifetime') NOT NULL,
+CREATE TABLE IF NOT EXISTS subscriptions (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    plan_type VARCHAR(20) NOT NULL CHECK (plan_type IN ('monthly', 'yearly', 'lifetime')),
     plan_name VARCHAR(100),
     amount DECIMAL(15,2) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE,
-    status ENUM('active', 'expired', 'cancelled', 'pending') DEFAULT 'pending',
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('active', 'expired', 'cancelled', 'pending')),
     payment_transaction_id VARCHAR(100),
     auto_renewal BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_subscription (user_id, status)
-) ENGINE=InnoDB;
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_subscriptions_user ON subscriptions(user_id, status);
 
 -- ============================================
 -- 7. RESELLERS TABLE
 -- ============================================
-CREATE TABLE resellers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS resellers (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     reseller_code VARCHAR(50) UNIQUE NOT NULL,
     commission_rate DECIMAL(5,2) DEFAULT 30.00,
-    total_referrals INT DEFAULT 0,
+    total_referrals INTEGER DEFAULT 0,
     total_earnings DECIMAL(15,2) DEFAULT 0.00,
     bank_account_number VARCHAR(50),
     bank_ifsc VARCHAR(20),
     bank_name VARCHAR(100),
     pan_number VARCHAR(20),
-    status ENUM('active', 'inactive', 'suspended') DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_reseller_code (reseller_code)
-) ENGINE=InnoDB;
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_resellers_code ON resellers(reseller_code);
 
 -- ============================================
 -- 8. REFERRALS TABLE
 -- ============================================
-CREATE TABLE referrals (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    reseller_id INT NOT NULL,
-    referred_user_id INT NOT NULL,
-    subscription_id INT,
+CREATE TABLE IF NOT EXISTS referrals (
+    id SERIAL PRIMARY KEY,
+    reseller_id INTEGER NOT NULL REFERENCES resellers(id) ON DELETE CASCADE,
+    referred_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    subscription_id INTEGER REFERENCES subscriptions(id) ON DELETE SET NULL,
     commission_amount DECIMAL(15,2) DEFAULT 0.00,
-    commission_status ENUM('pending', 'paid', 'cancelled') DEFAULT 'pending',
+    commission_status VARCHAR(20) DEFAULT 'pending' CHECK (commission_status IN ('pending', 'paid', 'cancelled')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    paid_at TIMESTAMP NULL,
-    FOREIGN KEY (reseller_id) REFERENCES resellers(id) ON DELETE CASCADE,
-    FOREIGN KEY (referred_user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (subscription_id) REFERENCES subscriptions(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+    paid_at TIMESTAMP NULL
+);
 
 -- ============================================
 -- 9. API LOGS TABLE
 -- ============================================
-CREATE TABLE api_logs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    merchant_id INT,
+CREATE TABLE IF NOT EXISTS api_logs (
+    id SERIAL PRIMARY KEY,
+    merchant_id INTEGER REFERENCES merchants(id) ON DELETE CASCADE,
     endpoint VARCHAR(255) NOT NULL,
     method VARCHAR(10) NOT NULL,
     request_data TEXT,
     response_data TEXT,
-    status_code INT,
+    status_code INTEGER,
     ip_address VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (merchant_id) REFERENCES merchants(id) ON DELETE CASCADE,
-    INDEX idx_merchant_logs (merchant_id, created_at)
-) ENGINE=InnoDB;
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_api_logs_merchant ON api_logs(merchant_id, created_at);
 
 -- ============================================
 -- 10. NOTIFICATIONS TABLE
 -- ============================================
-CREATE TABLE notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS notifications (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     title VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
-    type ENUM('info', 'success', 'warning', 'error') DEFAULT 'info',
+    type VARCHAR(20) DEFAULT 'info' CHECK (type IN ('info', 'success', 'warning', 'error')),
     is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_notifications (user_id, is_read)
-) ENGINE=InnoDB;
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_notifications_user ON notifications(user_id, is_read);
 
 -- ============================================
 -- SAMPLE DATA FOR TESTING
 -- ============================================
 
--- Insert Admin User
+-- Insert Admin User (password: admin123)
 INSERT INTO users (user_type, email, username, password_hash, full_name, phone, status, email_verified) VALUES
 ('admin', 'admin@payme.com', 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin User', '+919876543210', 'active', TRUE);
 
--- Insert Test Merchant User
+-- Insert Test Merchant User (password: Merchant@2025)
 INSERT INTO users (user_type, email, username, password_hash, full_name, phone, status, email_verified) VALUES
 ('merchant', 'merchant@test.com', 'merchant@test.com', '$2y$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yP1p5LoXxu', 'Test Business Owner', '+919876543211', 'active', TRUE);
 
@@ -241,14 +240,14 @@ INSERT INTO merchants (user_id, merchant_id, business_name, business_type, busin
 
 -- Insert Sample Transactions
 INSERT INTO transactions (transaction_id, merchant_id, payment_method, amount, customer_name, customer_email, customer_phone, payment_status, gateway_transaction_id, created_at, completed_at) VALUES
-('TXN001', 1, 'upi', 1500.00, 'John Doe', 'john@example.com', '+919876543212', 'success', 'GTW123456', NOW() - INTERVAL 5 DAY, NOW() - INTERVAL 5 DAY),
-('TXN002', 1, 'upi', 2500.00, 'Jane Smith', 'jane@example.com', '+919876543213', 'success', 'GTW123457', NOW() - INTERVAL 4 DAY, NOW() - INTERVAL 4 DAY),
-('TXN003', 1, 'crypto', 5000.00, 'Bob Johnson', 'bob@example.com', '+919876543214', 'success', 'GTW123458', NOW() - INTERVAL 3 DAY, NOW() - INTERVAL 3 DAY),
-('TXN004', 1, 'upi', 1200.00, 'Alice Brown', 'alice@example.com', '+919876543215', 'pending', NULL, NOW() - INTERVAL 1 DAY, NULL);
+('TXN001', 1, 'upi', 1500.00, 'John Doe', 'john@example.com', '+919876543212', 'success', 'GTW123456', NOW() - INTERVAL '5 days', NOW() - INTERVAL '5 days'),
+('TXN002', 1, 'upi', 2500.00, 'Jane Smith', 'jane@example.com', '+919876543213', 'success', 'GTW123457', NOW() - INTERVAL '4 days', NOW() - INTERVAL '4 days'),
+('TXN003', 1, 'crypto', 5000.00, 'Bob Johnson', 'bob@example.com', '+919876543214', 'success', 'GTW123458', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days'),
+('TXN004', 1, 'upi', 1200.00, 'Alice Brown', 'alice@example.com', '+919876543215', 'pending', NULL, NOW() - INTERVAL '1 day', NULL);
 
 -- Insert Sample Subscription
 INSERT INTO subscriptions (user_id, plan_type, plan_name, amount, start_date, end_date, status, payment_transaction_id) VALUES
-(2, 'yearly', 'Yearly License', 49999.00, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 YEAR), 'active', 'SUB001');
+(2, 'yearly', 'Yearly License', 49999.00, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 year', 'active', 'SUB001');
 
 -- Insert Reseller
 INSERT INTO users (user_type, email, username, password_hash, full_name, phone, status, email_verified) VALUES
@@ -261,8 +260,6 @@ INSERT INTO resellers (user_id, reseller_code, commission_rate, total_referrals,
 INSERT INTO notifications (user_id, title, message, type, is_read) VALUES
 (2, 'Welcome to PayMe Gateway', 'Your merchant account has been successfully created!', 'success', FALSE),
 (2, 'KYC Verification Complete', 'Your KYC documents have been verified successfully.', 'success', TRUE);
-
-COMMIT;
 
 -- ============================================
 -- END OF SCHEMA
