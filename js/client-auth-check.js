@@ -15,7 +15,6 @@
         'client-settings.html',
         'client-payment-settings.html',
         'client-settlements.html',
-        'merchant-register.html',
         'api-docs.html'
     ];
     
