@@ -658,6 +658,49 @@
                 margin-left: 0 !important;
                 margin-right: 0 !important;
                 overflow-x: hidden !important;
+
+            /* Fix features grid for mobile */
+            .features-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+                padding: 0 !important;
+            }
+            
+            .feature-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 25px !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.3rem !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.95rem !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            
+            /* Fix ROI Calculator section */
+            .roi-section {
+                padding: 20px !important;
+            }
+            
+            .roi-section p {
+                font-size: 1rem !important;
+                line-height: 1.6 !important;
+                text-align: left !important;
+            }
+            
+            .roi-section strong {
+                display: block !important;
+                margin-top: 10px !important;
+            }
             }
             
             /* Fix rows and columns */
@@ -1174,11 +1217,12 @@
                     <i class="fas fa-calculator"></i> ROI Calculator
                 </h3>
                 <p style="color: #666; font-size: 1.1rem; line-height: 1.8;">
-                    <strong>Example (Yearly License):</strong> If you onboard just 10 merchants doing ₹1,00,000/month each:<br>
+                    <strong>Example (Lifetime License):</strong> If you onboard just 10 merchants doing ₹1,00,000/month each:<br>
                     <strong>Total Volume:</strong> ₹10,00,000/month<br>
                     <strong>Your 2% Commission:</strong> ₹20,000/month<br>
-                    <strong>Yearly Profit:</strong> ₹2,40,000 (after ₹49,999 license cost = ₹1,90,001 net profit!)
-                </p>
+                    <strong>Yearly Revenue:</strong> ₹2,40,000/year<br>
+                    <strong>ROI Timeline:</strong> Break-even in ~15 months (₹2,99,999 ÷ ₹20,000/month)<br>
+                    <strong>3-Year Profit:</strong> ₹7,20,000 - ₹2,99,999 = <span style="color: #28a745; font-weight: bold;">₹4,20,001 net profit!</span>
             </div>
         </div>
     </section>
