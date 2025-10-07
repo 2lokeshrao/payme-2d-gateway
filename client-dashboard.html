@@ -604,5 +604,55 @@
         });
     </script>
     <script src="js/client-auth-check.js"></script>
+    <script>
+// Check client session
+const sessionData = sessionStorage.getItem('clientSession');
+if (!sessionData) {
+    window.location.href = 'client-login.html';
+}
+
+// Load client data from API
+async function loadClientData() {
+    try {
+        const session = JSON.parse(sessionData);
+        const response = await fetch('/api/client/get_transactions.php', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + session.csrf_token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            updateClientDashboard(data.data);
+        }
+    } catch (error) {
+        console.error('Error loading client data:', error);
+    }
+}
+
+function updateClientDashboard(apiData) {
+    if (apiData.statistics) {
+        const totalSpent = document.querySelector('.stat-value');
+        if (totalSpent) {
+            totalSpent.textContent = '₹' + apiData.statistics.total_amount.toLocaleString('en-IN');
+        }
+    }
+}
+
+// Load on page load
+window.addEventListener('DOMContentLoaded', loadClientData);
+
+// Logout functionality
+document.querySelectorAll('[href*="logout"], .logout-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        sessionStorage.removeItem('clientSession');
+        window.location.href = 'client-login.html';
+    });
+});
+    </script> 
+    
 </body>
 </html>
