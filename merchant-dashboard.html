@@ -554,7 +554,85 @@
 
     <script>
         // Check if merchant is logged in
-        const merchant = JSON.parse(localStorage.getItem('loggedInMerchant'));
+        // Check session and load merchant data
+        const sessionData = sessionStorage.getItem('merchantSession');
+        if (!sessionData) {
+            // Not logged in, redirect to login
+            window.location.href = 'merchant-login.html';
+            return;
+        }
+
+        let merchant;
+        try {
+            const session = JSON.parse(sessionData);
+            merchant = session.merchant || session.user;
+            
+            // Load real transaction data from API
+            loadDashboardData(merchant, session.csrf_token);
+        } catch (e) {
+            console.error('Session parse error:', e);
+            sessionStorage.removeItem('merchantSession');
+            window.location.href = 'merchant-login.html';
+            return;
+        }
+
+        async function loadDashboardData(merchant, csrfToken) {
+            try {
+                // Fetch transactions from API
+                const response = await fetch('/api/merchant/get_transactions.php?limit=100', {
+                    method: 'GET',
+                    headers: {
+                        'X-API-Key': merchant.api_key || 'pk_test_51234567890abcdef',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update dashboard with real data
+                    updateDashboardStats(data.data);
+                } else {
+                    console.error('Failed to load transactions:', data.message);
+                    // Use default data if API fails
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Continue with default display
+            }
+        }
+
+        function updateDashboardStats(apiData) {
+            // Update Total Revenue
+            const revenueElement = document.querySelector('.stat-card:nth-child(1) .stat-value');
+            if (revenueElement && apiData.statistics) {
+                revenueElement.textContent = '₹' + apiData.statistics.total_amount.toLocaleString('en-IN');
+            }
+
+            // Update Total Transactions
+            const transactionsElement = document.querySelector('.stat-card:nth-child(2) .stat-value');
+            if (transactionsElement && apiData.statistics) {
+                transactionsElement.textContent = apiData.statistics.total_transactions;
+            }
+
+            // Update Success Rate
+            const successRateElement = document.querySelector('.stat-card:nth-child(4) .stat-value');
+            if (successRateElement && apiData.statistics) {
+                const successRate = apiData.statistics.success_rate || 0;
+                successRateElement.textContent = successRate.toFixed(1) + '%';
+            }
+
+            // Update Pending Settlements (calculate from pending transactions)
+            const pendingElement = document.querySelector('.stat-card:nth-child(3) .stat-value');
+            if (pendingElement && apiData.transactions) {
+                const pendingAmount = apiData.transactions
+                    .filter(t => t.status === 'pending')
+                    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+                pendingElement.textContent = '₹' + pendingAmount.toLocaleString('en-IN');
+            }
+        }
+
+        const merchant = JSON.parse(sessionData).merchant || JSON.parse(sessionData).user;
 
         if (!merchant) {
             window.location.href = 'merchant-login.html';
@@ -589,6 +667,15 @@
                 window.location.href = 'merchant-login.html';
             }
         }
+    
+        // Logout functionality
+        document.querySelectorAll('[href*="logout"], .logout-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                sessionStorage.removeItem('merchantSession');
+                window.location.href = 'merchant-login.html';
+            });
+        });
     </script>
 </body>
 </html>

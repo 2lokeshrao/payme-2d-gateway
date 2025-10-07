@@ -262,34 +262,106 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = this.querySelector('button[type="submit"]');
 
-            // Get merchants from localStorage
-            const merchants = JSON.parse(localStorage.getItem('merchants') || '[]');
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
-            // Find merchant
-            const merchant = merchants.find(m => 
-                (m.username === username || m.email === username) && m.password === password
-            );
+            try {
+                // Call login API
+                const response = await fetch('/api/auth/login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: username,
+                        password: password
+                    })
+                });
 
-            if (merchant) {
-                // Save logged in merchant
-                localStorage.setItem('loggedInMerchant', JSON.stringify(merchant));
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store session data
+                    sessionStorage.setItem('merchantSession', JSON.stringify({
+                        user: data.data.user,
+                        merchant: data.data.merchant,
+                        csrf_token: data.data.csrf_token,
+                        loginTime: new Date().toISOString()
+                    }));
+
+                    // Show success message
+                    errorMessage.style.backgroundColor = '#28a745';
+                    errorMessage.textContent = '✓ Login successful! Redirecting...';
+                    errorMessage.classList.add('active');
+
+                    // Redirect to merchant dashboard
+                    setTimeout(() => {
+                        window.location.href = 'merchant-dashboard.html';
+                    }, 1000);
+                } else {
+                    // Show error message
+                    errorMessage.style.backgroundColor = '#dc3545';
+                    errorMessage.textContent = data.message || 'Invalid credentials. Please try again.';
+                    errorMessage.classList.add('active');
+
+                    // Reset button
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+
+                    // Hide error after 5 seconds
+                    setTimeout(() => {
+                        errorMessage.classList.remove('active');
+                    }, 5000);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
                 
-                // Redirect to merchant dashboard
-                window.location.href = 'merchant-dashboard.html';
-            } else {
-                // Show error
-                document.getElementById('errorMessage').classList.add('active');
-                
-                // Hide error after 3 seconds
+                // Show error message
+                errorMessage.style.backgroundColor = '#dc3545';
+                errorMessage.textContent = 'Connection error. Please check your internet connection.';
+                errorMessage.classList.add('active');
+
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+
+                // Hide error after 5 seconds
                 setTimeout(() => {
-                    document.getElementById('errorMessage').classList.remove('active');
-                }, 3000);
+                    errorMessage.classList.remove('active');
+                }, 5000);
+            }
+        });
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const session = sessionStorage.getItem('merchantSession');
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    // Check if session is still valid (less than 24 hours old)
+                    const loginTime = new Date(sessionData.loginTime);
+                    const now = new Date();
+                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+                    
+                    if (hoursDiff < 24) {
+                        // Redirect to dashboard
+                        window.location.href = 'merchant-dashboard.html';
+                    } else {
+                        // Clear expired session
+                        sessionStorage.removeItem('merchantSession');
+                    }
+                } catch (e) {
+                    console.error('Session parse error:', e);
+                }
             }
         });
     </script>
